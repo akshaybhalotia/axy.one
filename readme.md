@@ -1,0 +1,1 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/c513a722-6826-4a47-b022-c4a8b987ee00/deploy-status)](https://app.netlify.com/sites/peaceful-jepsen-c4fa03/deploys)
