@@ -1,0 +1,35 @@
+---
+layout: default
+---
+{%- comment -%} Hero is mandatory for work (also enforced at build time). {%- endcomment -%}
+<div class="-mx-6 -mt-20 desk:-mx-16 desk:-mt-16">
+  <img src="{{ page.hero | relative_url }}" alt="{{ page.title }}" class="w-full h-64 desk:h-[420px] object-cover">
+</div>
+
+<article class="mt-10 max-w-[900px]">
+  <h1 class="text-3xl desk:text-[2.5rem] font-bold">{{ page.title }}</h1>
+
+  {%- if page.client or page['for'] -%}
+  <div class="mt-4 flex justify-between gap-6">
+    {%- if page.client -%}
+    <div><div class="text-sm text-ink/60">Client</div><div class="font-bold">{{ page.client }}</div></div>
+    {%- endif -%}
+    {%- if page['for'] -%}
+    <div class="text-right"><div class="text-sm text-ink/60">For</div><div class="font-bold">{{ page['for'] }}</div></div>
+    {%- endif -%}
+  </div>
+  {%- endif -%}
+
+  {%- if page.categories and page.categories.size > 0 -%}
+  <h2 class="mt-8 text-xl font-bold">Technologies used</h2>
+  <div class="mt-4 flex flex-wrap gap-3">
+    {%- for cat in page.categories -%}
+      {%- assign cslug = cat | slugify -%}
+      {%- assign curl = "/work/" | append: cslug -%}
+      {%- include category-chip.html label=cat url=curl index=forloop.index0 -%}
+    {%- endfor -%}
+  </div>
+  {%- endif -%}
+
+  <div class="rich mt-10 text-lg leading-relaxed">{{ content }}</div>
+</article>

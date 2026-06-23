@@ -1,5 +1,23 @@
 ---
 layout: default
 ---
-{%- comment -%} Stub — fleshed out in step 4. {%- endcomment -%}
-<h1 class="text-3xl font-bold leading-snug">{{ content }}</h1>
+<section class="max-w-[840px]">
+  <h1 class="text-3xl desk:text-[2.5rem] font-bold leading-snug">{{ page.heading | default: site.title }}</h1>
+  <div class="rich mt-10 text-lg desk:text-xl leading-relaxed">{{ content }}</div>
+</section>
+
+{%- assign featured = site.posts | where: "featured", true -%}
+{%- if featured.size == 0 -%}{%- assign featured = site.posts -%}{%- endif -%}
+{%- if featured.size > 0 -%}
+<section class="mt-16">
+  <div class="flex items-baseline justify-between gap-4 max-w-[1120px]">
+    <h2 class="text-2xl desk:text-3xl font-bold">Featured posts</h2>
+    <a href="{{ '/posts' | relative_url }}" class="hover:opacity-70">View all</a>
+  </div>
+  <div class="mt-6 flex gap-6 overflow-x-auto pb-4">
+    {%- for post in featured limit: 8 -%}
+      {%- include featured-card.html item=post -%}
+    {%- endfor -%}
+  </div>
+</section>
+{%- endif -%}
