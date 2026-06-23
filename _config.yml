@@ -76,6 +76,7 @@ feed:
 #   - vendor/gems/
 #   - vendor/ruby/
 exclude:
+  # build/tooling
   - _tailwind
   - bin
   - script
@@ -84,6 +85,9 @@ exclude:
   - Gemfile.lock
   - README.md
   - readme.md
+  # restore Jekyll defaults that an explicit `exclude:` would otherwise drop
+  - node_modules
+  - gemfiles
 
 include:
   - _redirects
