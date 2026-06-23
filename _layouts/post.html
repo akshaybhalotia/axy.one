@@ -17,11 +17,7 @@ layout: default
 
   {%- if page.categories and page.categories.size > 0 -%}
   <div class="mt-4 flex flex-wrap gap-2">
-    {%- for cat in page.categories -%}
-      {%- assign cslug = cat | slugify -%}
-      {%- assign curl = "/posts/" | append: cslug -%}
-      {%- include category-chip.html label=cat url=curl index=forloop.index0 -%}
-    {%- endfor -%}
+    {%- include category-list.html categories=page.categories base="/posts" -%}
   </div>
   {%- endif -%}
 

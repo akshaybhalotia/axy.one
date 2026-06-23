@@ -23,11 +23,7 @@ layout: default
   {%- if page.categories and page.categories.size > 0 -%}
   <h2 class="mt-8 text-xl font-bold">Technologies used</h2>
   <div class="mt-4 flex flex-wrap gap-3">
-    {%- for cat in page.categories -%}
-      {%- assign cslug = cat | slugify -%}
-      {%- assign curl = "/work/" | append: cslug -%}
-      {%- include category-chip.html label=cat url=curl index=forloop.index0 -%}
-    {%- endfor -%}
+    {%- include category-list.html categories=page.categories base="/work" -%}
   </div>
   {%- endif -%}
 
