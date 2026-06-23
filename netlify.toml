@@ -1,0 +1,8 @@
+[build]
+  command = "JEKYLL_ENV=production bundle exec jekyll build"
+  publish = "_site"
+
+[build.environment]
+  # Match .ruby-version; the Tailwind standalone binary (linux-x64) is fetched
+  # by _plugins/tailwind.rb at build time, so no Node toolchain is needed.
+  RUBY_VERSION = "3.4.9"
