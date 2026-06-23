@@ -1,4 +1,5 @@
-<aside id="app-sidebar" class="app-sidebar flex flex-col p-8 desk:p-10">
+<aside id="app-sidebar" class="app-sidebar">
+  <div class="app-sidebar-inner flex flex-col p-8 desk:p-10">
   {%- comment -%} Avatar / logo (right-aligned like the Figma logo) {%- endcomment -%}
   <div class="flex justify-end">
     {%- if site.avatar -%}
@@ -27,4 +28,5 @@
     {%- endfor -%}
   </ul>
   {%- endif -%}
+  </div>
 </aside>
