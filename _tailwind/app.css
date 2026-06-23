@@ -67,26 +67,27 @@
 .rich blockquote { border-left: 3px solid rgb(255 255 255 / 0.3); padding-left: 1rem; opacity: 0.85; }
 .rich img { border-radius: var(--radius-card); }
 
-/* ---- Collapsible sidebar shell (in-flow, no overlay) ---------------------
-   The sidebar is a native part of the layout: it pushes/merges with content
-   rather than floating over it. State driven by html[data-nav="open"|"closed"].
-   Mobile: sidebar is a top region that collapses vertically (content flows
-   below). Desktop (>=1024px): sidebar is a left column that collapses
-   horizontally (content flows beside it). */
+/* ---- Collapsible sidebar shell (in-flow, no overlay, no JS) ---------------
+   State lives in the #nav-toggle checkbox; the avatar <label> toggles it, so
+   navigation works with JavaScript disabled. Defaults (unchecked): mobile
+   collapsed, desktop open. Checking the box flips each breakpoint.
+   The sidebar is in-flow — mobile collapses vertically (content flows below),
+   desktop collapses horizontally (content flows beside it). */
 .app-shell {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* Mobile: vertical accordion via grid-template-rows (animatable 1fr<->0fr). */
+/* Mobile: vertical accordion via grid-template-rows (animatable 1fr<->0fr).
+   Default collapsed; checked opens. */
 .app-sidebar {
   background-color: var(--color-sidebar);
   display: grid;
-  grid-template-rows: 1fr;
+  grid-template-rows: 0fr;
   transition: grid-template-rows 0.35s ease;
 }
-html[data-nav="closed"] .app-sidebar { grid-template-rows: 0fr; }
+#nav-toggle:checked ~ .app-shell .app-sidebar { grid-template-rows: 1fr; }
 .app-sidebar-inner {
   overflow: hidden;
   min-height: 0;
@@ -103,8 +104,9 @@ html[data-nav="closed"] .app-sidebar { grid-template-rows: 0fr; }
   margin-inline: auto;
 }
 
-/* The avatar doubles as the menu/collapse button. Collapsed = small corner
-   badge; expanded = large. Position + size animate between the two. */
+/* The avatar doubles as the menu/collapse toggle (a <label>). Collapsed = small
+   corner badge; expanded = large. Position + size animate between the two.
+   Mobile default = small (collapsed); checked = large. */
 .app-avatar {
   position: fixed;
   z-index: 50;
@@ -121,6 +123,7 @@ html[data-nav="closed"] .app-sidebar { grid-template-rows: 0fr; }
   transition: width 0.35s ease, height 0.35s ease, top 0.35s ease, left 0.35s ease, border-color 0.2s ease;
 }
 .app-avatar:hover { border-color: #fff; }
+#nav-toggle:focus-visible ~ .app-avatar { outline: 2px solid #fff; outline-offset: 2px; }
 .app-avatar img,
 .app-avatar-fallback {
   width: 100%;
@@ -133,15 +136,15 @@ html[data-nav="closed"] .app-sidebar { grid-template-rows: 0fr; }
   color: #fff;
   font-weight: 700;
 }
-html[data-nav="open"] .app-avatar {
+#nav-toggle:checked ~ .app-avatar {
   top: 2rem;
   left: 2rem;
   width: 7rem;
   height: 7rem;
 }
 
-/* Desktop: horizontal collapse via width. Inner keeps a fixed width and is
-   clipped, so content doesn't reflow mid-animation. */
+/* Desktop: horizontal collapse via width. Default open; checked collapses.
+   Inner keeps a fixed width and is clipped, so content doesn't reflow mid-animation. */
 @media (min-width: 1024px) {
   .app-shell { flex-direction: row; }
   .app-sidebar {
@@ -152,10 +155,24 @@ html[data-nav="open"] .app-avatar {
     flex-shrink: 0;
     transition: width 0.35s ease;
   }
-  html[data-nav="closed"] .app-sidebar { width: 0; }
+  #nav-toggle:checked ~ .app-shell .app-sidebar { width: 0; }
   .app-sidebar-inner {
     width: 360px;
     height: 100%;
+  }
+
+  /* Avatar large by default (open); small when collapsed. */
+  .app-avatar {
+    top: 2rem;
+    left: 2rem;
+    width: 7rem;
+    height: 7rem;
+  }
+  #nav-toggle:checked ~ .app-avatar {
+    top: 1rem;
+    left: 1rem;
+    width: 2.75rem;
+    height: 2.75rem;
   }
 }
 
