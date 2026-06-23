@@ -38,19 +38,15 @@ page.filter_value    = the category slug or ISO date (optional)
 <header>
   <h1 class="text-2xl xs:text-3xl desk:text-[2.5rem] font-bold break-words">{{ page.title }}</h1>
 
-  {%- comment -%} Category pills (distinct categories in this collection) {%- endcomment -%}
-  {%- assign cats = coll | map: "categories" | join: "," | split: "," | uniq | sort -%}
-  {%- if cats.size > 0 -%}
+  {%- comment -%} Category pills, pre-derived per collection by the archive generator. {%- endcomment -%}
+  {%- assign cats = site.data.category_index[page.collection_name] -%}
+  {%- if cats and cats.size > 0 -%}
   <div class="mt-6 flex flex-wrap gap-3">
     <a href="{{ base | relative_url }}" class="chip bg-white/15{% unless page.filter_type %} ring-2 ring-white{% endunless %}">All</a>
     {%- for cat in cats -%}
-      {%- assign trimmed = cat | strip -%}
-      {%- if trimmed == "" -%}{%- continue -%}{%- endif -%}
-      {%- assign cslug = trimmed | slugify -%}
-      {%- assign curl = base | append: "/" | append: cslug -%}
       {%- assign active = false -%}
-      {%- if page.filter_type == "category" and page.filter_value == cslug -%}{%- assign active = true -%}{%- endif -%}
-      {%- include category-chip.html label=trimmed url=curl index=forloop.index0 active=active -%}
+      {%- if page.filter_type == "category" and page.filter_value == cat.slug -%}{%- assign active = true -%}{%- endif -%}
+      {%- include category-chip.html label=cat.label url=cat.url index=forloop.index0 active=active -%}
     {%- endfor -%}
   </div>
   {%- endif -%}

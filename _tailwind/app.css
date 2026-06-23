@@ -7,6 +7,8 @@
 @source "../*.{html,md,markdown}";
 @source "../_work/**/*.{md,markdown}";
 @source "../_posts/**/*.{md,markdown}";
+@source "../work/**/*.html";
+@source "../posts/**/*.html";
 
 @theme {
   /* Type — Ubuntu Mono (Regular 400 / Bold 700) */
