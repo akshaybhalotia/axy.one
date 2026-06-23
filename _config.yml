@@ -29,7 +29,7 @@ author:
   email: contact@axy.one
 twitter_username: akshay_bhalotia
 github_username:  akshaybhalotia
-# avatar: /assets/img/avatar.png   # set once the avatar file is added
+avatar: /assets/img/avatar.png
 
 # Build settings
 plugins:
