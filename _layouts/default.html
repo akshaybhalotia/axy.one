@@ -23,27 +23,27 @@
   </script>
 </head>
 <body class="bg-panel text-ink font-mono antialiased">
-  {% include sidebar.html %}
+  <div class="app-shell">
+    {% include sidebar.html %}
+    <main class="app-main px-6 pt-20 pb-12 desk:px-16 desk:py-16">
+      {{ content }}
+    </main>
+  </div>
 
   <button id="app-toggle" class="app-toggle" aria-label="Toggle navigation" aria-controls="app-sidebar">
-    <span class="nav-icon-open">{% include icon.html name="menu" class="w-7 h-7" %}</span>
-    <span class="nav-icon-close">{% include icon.html name="x" class="w-7 h-7" %}</span>
+    {%- comment -%} Collapsed: hamburger to expand. Expanded: arrow to collapse. {%- endcomment -%}
+    <span class="icon-expand">{% include icon.html name="menu" class="w-7 h-7" %}</span>
+    <span class="icon-collapse">{% include icon.html name="chevron-left" class="w-7 h-7" %}</span>
   </button>
-
-  <div id="app-overlay" class="app-overlay"></div>
-
-  <main class="app-main px-6 pt-20 pb-12 desk:px-16 desk:py-16">
-    {{ content }}
-  </main>
 
   <script>
     (function () {
       var root = document.documentElement;
-      function set(state) { root.setAttribute("data-nav", state); localStorage.setItem("nav", state); }
       document.getElementById("app-toggle").addEventListener("click", function () {
-        set(root.getAttribute("data-nav") === "open" ? "closed" : "open");
+        var next = root.getAttribute("data-nav") === "open" ? "closed" : "open";
+        root.setAttribute("data-nav", next);
+        localStorage.setItem("nav", next);
       });
-      document.getElementById("app-overlay").addEventListener("click", function () { set("closed"); });
     })();
   </script>
 </body>

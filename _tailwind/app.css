@@ -67,20 +67,35 @@
 .rich blockquote { border-left: 3px solid rgb(255 255 255 / 0.3); padding-left: 1rem; opacity: 0.85; }
 .rich img { border-radius: var(--radius-card); }
 
-/* ---- Collapsible sidebar shell -------------------------------------------
-   State driven by html[data-nav="open"|"closed"]. Mobile: off-canvas drawer
-   with overlay. Desktop (>=1024px): pushes main content via margin. */
-.app-sidebar {
-  position: fixed;
-  inset: 0 auto 0 0;
-  z-index: 40;
-  width: min(300px, 85vw);
-  background-color: var(--color-sidebar);
-  overflow-y: auto;
-  transform: translateX(-100%);
-  transition: transform 0.2s ease;
+/* ---- Collapsible sidebar shell (in-flow, no overlay) ---------------------
+   The sidebar is a native part of the layout: it pushes/merges with content
+   rather than floating over it. State driven by html[data-nav="open"|"closed"].
+   Mobile: sidebar is a top region that collapses vertically (content flows
+   below). Desktop (>=1024px): sidebar is a left column that collapses
+   horizontally (content flows beside it). */
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
-html[data-nav="open"] .app-sidebar { transform: translateX(0); }
+
+/* Mobile: vertical accordion via grid-template-rows (animatable 1fr<->0fr). */
+.app-sidebar {
+  background-color: var(--color-sidebar);
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.35s ease;
+}
+html[data-nav="closed"] .app-sidebar { grid-template-rows: 0fr; }
+.app-sidebar-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.app-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
 
 .app-toggle {
   position: fixed;
@@ -90,28 +105,31 @@ html[data-nav="open"] .app-sidebar { transform: translateX(0); }
   display: inline-flex;
   padding: 0.5rem;
   color: var(--color-ink);
-  border-radius: 0.375rem;
+  background-color: rgb(0 0 0 / 0.35);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(4px);
+  transition: color 0.2s ease, background-color 0.2s ease;
 }
-html[data-nav="open"] .nav-icon-open { display: none; }
-html[data-nav="closed"] .nav-icon-close { display: none; }
+html[data-nav="open"] .icon-expand { display: none; }
+html[data-nav="closed"] .icon-collapse { display: none; }
 
-.app-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 30;
-  background-color: rgb(0 0 0 / 0.5);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-}
-html[data-nav="open"] .app-overlay { opacity: 1; pointer-events: auto; }
-
-.app-main { transition: margin-left 0.2s ease; }
-
+/* Desktop: horizontal collapse via width. Inner keeps a fixed width and is
+   clipped, so content doesn't reflow mid-animation. */
 @media (min-width: 1024px) {
-  .app-sidebar { width: 360px; }
-  .app-overlay { display: none; }
-  html[data-nav="open"] .app-main { margin-left: 360px; }
+  .app-shell { flex-direction: row; }
+  .app-sidebar {
+    display: block;
+    grid-template-rows: none;
+    width: 360px;
+    overflow: hidden;
+    flex-shrink: 0;
+    transition: width 0.35s ease;
+  }
+  html[data-nav="closed"] .app-sidebar { width: 0; }
+  .app-sidebar-inner {
+    width: 360px;
+    height: 100%;
+  }
 }
 
 /* Category color helpers, cycled 1..8 by the chip include */
