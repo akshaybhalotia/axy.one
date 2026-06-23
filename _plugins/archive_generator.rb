@@ -17,6 +17,7 @@ module AxyArchives
     }.freeze
 
     def generate(site)
+      index = {}
       COLLECTIONS.each do |name, cfg|
         coll = site.collections[name]
         next if coll.nil? || coll.docs.empty?
@@ -26,25 +27,42 @@ module AxyArchives
         validate_dates!(name, docs)
 
         slugs = docs.map { |d| slug_of(d) }
-        categories = docs.flat_map { |d| Array(d.data["categories"]) }
-                         .map { |c| Jekyll::Utils.slugify(c.to_s) }
-                         .reject(&:empty?).uniq
+        cats = distinct_categories(docs) # [{ "slug" =>, "label" => }], unique by slug
         dates = docs.map { |d| date_of(d) }.compact.uniq
 
-        validate_collisions!(name, slugs, categories, dates)
+        validate_collisions!(name, slugs, cats.map { |c| c["slug"] }, dates)
 
-        categories.each do |cat|
-          site.pages << filter_page(site, name, cfg, "category", cat,
-                                    "#{cfg[:prefix]} · #{cat}")
+        # Pill list for list.html: derived once here (proper flatten/dedupe in Ruby
+        # rather than a fragile join/split in Liquid).
+        index[name] = cats.map { |c| c.merge("url" => "/#{cfg[:base]}/#{c['slug']}") }
+
+        cats.each do |c|
+          site.pages << filter_page(site, name, cfg, "category", c["slug"],
+                                    "#{cfg[:prefix]} · #{c['label']}")
         end
         dates.each do |date|
           site.pages << filter_page(site, name, cfg, "date", date,
                                     "#{cfg[:prefix]} · #{date}")
         end
       end
+      site.data["category_index"] = index
     end
 
     private
+
+    # Distinct categories across docs, deduped by slug (first label wins), sorted.
+    def distinct_categories(docs)
+      by_slug = {}
+      docs.each do |doc|
+        Array(doc.data["categories"]).each do |c|
+          label = c.to_s.strip
+          next if label.empty?
+          by_slug[Jekyll::Utils.slugify(label)] ||= label
+        end
+      end
+      by_slug.map { |slug, label| { "slug" => slug, "label" => label } }
+             .sort_by { |c| c["label"].downcase }
+    end
 
     def slug_of(doc)
       doc.data["slug"] || doc.url.split("/").reject(&:empty?).last
