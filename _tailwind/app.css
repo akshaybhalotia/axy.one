@@ -9,37 +9,55 @@
 @source "../_posts/**/*.{md,markdown}";
 
 @theme {
-  /* Type — confirmed: Ubuntu Mono */
+  /* Type — Ubuntu Mono (Regular 400 / Bold 700) */
   --font-mono: "Ubuntu Mono", ui-monospace, "SF Mono", monospace;
   --default-font-family: var(--font-mono);
 
-  /* Surfaces — TODO step 2: confirm exact hex via get_design_context */
-  --color-sidebar: #000000;
-  --color-panel: #595959;
-  --color-ink: #ffffff;
-  --color-muted: #b3b3b3;
-  --color-card: #c8c8c8;
-  --color-card-ink: #111111;
+  /* Surfaces (exact from Figma get_design_context) */
+  --color-sidebar: #000000; /* sidebar frame */
+  --color-panel: #555555; /* main frame bg-[#555] */
+  --color-ink: #ffffff; /* primary text on panel/sidebar */
+  --color-card: #dddddd; /* post/list card bg-[#ddd] */
+  --color-card-ink: #000000; /* card title/body text */
+  --color-card-muted: #555555; /* card subtitle/secondary */
 
-  /* Category chip palette — TODO step 2: confirm exact hex */
-  --color-cat-1: #9b2fd4;
-  --color-cat-2: #1f9e3a;
-  --color-cat-3: #1f8aa0;
-  --color-cat-4: #d4231f;
-  --color-cat-5: #7fa01f;
-  --color-cat-6: #d4731f;
-  --color-cat-7: #1fa06a;
+  /* Category pill palette (exact hex, 8 colors, cycled by index) */
+  --color-cat-1: #9300d9;
+  --color-cat-2: #008e1f;
+  --color-cat-3: #008b94;
+  --color-cat-4: #c00000;
+  --color-cat-5: #7eaa00;
+  --color-cat-6: #d85b00;
+  --color-cat-7: #00b071;
+  --color-cat-8: #d1007e;
 
-  /* Breakpoints from the artboard widths */
+  /* Radii & shadow */
+  --radius-pill: 8px; /* category pills */
+  --radius-card: 20px; /* post/list cards */
+  --shadow-card: 0 4px 4px 0 rgb(0 0 0 / 0.25);
+
+  /* Breakpoints from artboard widths */
   --breakpoint-xs: 414px;
   --breakpoint-desk: 1024px;
 }
 
 @layer components {
+  /* Category pill — bg color applied per-instance via .cat-N (see below) */
   .chip {
-    @apply rounded-md px-3 py-1.5 text-sm text-white;
+    @apply inline-flex items-center justify-center rounded-pill px-4 py-1.5 text-white;
   }
+  /* Sidebar nav link — right-aligned, bold (Ubuntu Mono Bold 20px in design) */
   .nav-link {
-    @apply block text-right tracking-wide hover:opacity-70;
+    @apply block text-right font-bold tracking-wide hover:opacity-70;
   }
 }
+
+/* Category color helpers, cycled 1..8 by the chip include */
+.cat-1 { background-color: var(--color-cat-1); }
+.cat-2 { background-color: var(--color-cat-2); }
+.cat-3 { background-color: var(--color-cat-3); }
+.cat-4 { background-color: var(--color-cat-4); }
+.cat-5 { background-color: var(--color-cat-5); }
+.cat-6 { background-color: var(--color-cat-6); }
+.cat-7 { background-color: var(--color-cat-7); }
+.cat-8 { background-color: var(--color-cat-8); }
