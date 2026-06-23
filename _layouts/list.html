@@ -36,14 +36,14 @@ page.filter_value    = the category slug or ISO date (optional)
 {%- endif -%}
 
 <header>
-  <h1 class="text-3xl desk:text-[2.5rem] font-bold">{{ page.title }}</h1>
+  <h1 class="text-2xl xs:text-3xl desk:text-[2.5rem] font-bold break-words">{{ page.title }}</h1>
 
   {%- comment -%} Category pills (distinct categories in this collection) {%- endcomment -%}
   {%- assign cats = coll | map: "categories" | join: "," | split: "," | uniq | sort -%}
   {%- if cats.size > 0 -%}
   <div class="mt-6 flex flex-wrap gap-3">
     {%- unless page.filter_type -%}{%- assign all_active = true -%}{%- else -%}{%- assign all_active = false -%}{%- endunless -%}
-    <a href="{{ base | relative_url }}" class="chip {% if all_active %}cat-1{% else %}bg-white/15{% endif %}">All</a>
+    <a href="{{ base | relative_url }}" class="chip bg-white/15{% if all_active %} ring-2 ring-white{% endif %}">All</a>
     {%- for cat in cats -%}
       {%- assign trimmed = cat | strip -%}
       {%- if trimmed == "" -%}{%- continue -%}{%- endif -%}
