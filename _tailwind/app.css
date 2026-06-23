@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+/* Scan Jekyll templates/content for class names (generated archive pages reuse
+   _layouts, so scanning layouts/includes covers them too). */
+@source "../_layouts";
+@source "../_includes";
+@source "../*.{html,md,markdown}";
+@source "../_work/**/*.{md,markdown}";
+@source "../_posts/**/*.{md,markdown}";
+
+@theme {
+  /* Type — confirmed: Ubuntu Mono */
+  --font-mono: "Ubuntu Mono", ui-monospace, "SF Mono", monospace;
+  --default-font-family: var(--font-mono);
+
+  /* Surfaces — TODO step 2: confirm exact hex via get_design_context */
+  --color-sidebar: #000000;
+  --color-panel: #595959;
+  --color-ink: #ffffff;
+  --color-muted: #b3b3b3;
+  --color-card: #c8c8c8;
+  --color-card-ink: #111111;
+
+  /* Category chip palette — TODO step 2: confirm exact hex */
+  --color-cat-1: #9b2fd4;
+  --color-cat-2: #1f9e3a;
+  --color-cat-3: #1f8aa0;
+  --color-cat-4: #d4231f;
+  --color-cat-5: #7fa01f;
+  --color-cat-6: #d4731f;
+  --color-cat-7: #1fa06a;
+
+  /* Breakpoints from the artboard widths */
+  --breakpoint-xs: 414px;
+  --breakpoint-desk: 1024px;
+}
+
+@layer components {
+  .chip {
+    @apply rounded-md px-3 py-1.5 text-sm text-white;
+  }
+  .nav-link {
+    @apply block text-right tracking-wide hover:opacity-70;
+  }
+}

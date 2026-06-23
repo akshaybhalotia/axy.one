@@ -3,3 +3,7 @@ _site
 .jekyll-cache
 .jekyll-metadata
 vendor
+
+# Build artifacts (Tailwind binary + compiled CSS are fetched/generated at build)
+bin/tailwindcss
+assets/css/main.css

@@ -1,0 +1,11 @@
+- label: Home
+  url: /
+- label: Work
+  url: /work
+- label: Posts
+  url: /posts
+- label: Resume
+  url: /resume
+  new_tab: true
+- label: Contact
+  url: /contact
