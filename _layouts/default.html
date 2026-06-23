@@ -27,6 +27,8 @@
     <span class="app-avatar-fallback">AB</span>
     {%- endif -%}
   </label>
+  {%- comment -%} Backdrop behind the open mobile menu; tapping it closes (no JS). {%- endcomment -%}
+  <label for="nav-toggle" class="app-scrim" aria-hidden="true"></label>
 
   <div class="app-shell">
     {% include sidebar.html %}
