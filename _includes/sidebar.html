@@ -20,8 +20,8 @@
   <ul class="mt-auto pt-12 grid grid-cols-4 gap-4 justify-items-start">
     {%- for s in site.data.social -%}
     <li>
-      <a href="{{ s.url | relative_url }}" aria-label="{{ s.name }}" class="block size-10 text-ink hover:opacity-70">
-        {%- include icon.html name=s.icon class="w-full h-full" -%}
+      <a href="{{ s.url | relative_url }}" aria-label="{{ s.name }}" class="grid place-items-center size-10 rounded-full hover:opacity-80 transition-opacity" style="background-color: {{ s.bg | default: '#ffffff' }}; color: {{ s.fg | default: '#000000' }}">
+        {%- include icon.html name=s.icon class="w-5 h-5" -%}
       </a>
     </li>
     {%- endfor -%}

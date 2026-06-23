@@ -1,8 +1,13 @@
-# Social links shown in the sidebar. icon = name in _includes/icon.html.
+# Social links shown in the sidebar as brand-colored circle badges.
+# icon = name in _includes/icon.html. bg = circle color, fg = glyph color.
 # URLs use the existing Netlify redirects (/linkedin, /github).
 - name: LinkedIn
   url: /linkedin
   icon: linkedin
+  bg: "#0A66C2"
+  fg: "#ffffff"
 - name: GitHub
   url: /github
   icon: github
+  bg: "#ffffff"
+  fg: "#181717"
