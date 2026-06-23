@@ -1,0 +1,8 @@
+{%- comment -%} Stub — fleshed out in step 3 (logo, nav, social, collapse). {%- endcomment -%}
+<aside class="bg-sidebar text-ink p-6 desk:min-h-screen">
+  <nav class="flex flex-col gap-2">
+    {%- for item in site.data.nav -%}
+      <a class="nav-link" href="{{ item.url | relative_url }}"{% if item.new_tab %} target="_blank" rel="noopener"{% endif %}>{{ item.label }}</a>
+    {%- endfor -%}
+  </nav>
+</aside>
