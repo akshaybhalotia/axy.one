@@ -56,9 +56,10 @@ module TailwindBuild
     input = File.join(site.source, "_tailwind", "app.css")
     output = File.join(site.source, "assets", "css", "main.css")
     FileUtils.mkdir_p(File.dirname(output))
+    prod = Jekyll.env == "production"
     cmd = [bin, "-i", input, "-o", output]
-    cmd << "--minify" if Jekyll.env == "production"
-    Jekyll.logger.info "Tailwind:", "compiling #{Jekyll.env == 'production' ? '(minified)' : ''}"
+    cmd << "--minify" if prod
+    Jekyll.logger.info "Tailwind:", "compiling#{prod ? ' (minified)' : ''}"
     system(*cmd) || raise("Tailwind plugin: compile failed")
   end
 end
