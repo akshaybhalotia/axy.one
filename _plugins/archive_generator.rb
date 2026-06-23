@@ -23,6 +23,7 @@ module AxyArchives
         docs = coll.docs
 
         validate_heroes!(name, docs) if name == "work"
+        validate_dates!(name, docs)
 
         slugs = docs.map { |d| slug_of(d) }
         categories = docs.flat_map { |d| Array(d.data["categories"]) }
@@ -50,6 +51,8 @@ module AxyArchives
     end
 
     def date_of(doc)
+      # Jekyll parses & validates `date` on read (failing the build on an
+      # unparseable value), so data["date"] is always a Time or nil here.
       d = doc.data["date"]
       d.respond_to?(:strftime) ? d.strftime("%Y-%m-%d") : nil
     end
@@ -72,6 +75,13 @@ module AxyArchives
       return if missing.empty?
       paths = missing.map(&:relative_path).join(", ")
       raise "axy archives: #{coll_name} item(s) missing required `hero`: #{paths}"
+    end
+
+    def validate_dates!(coll_name, docs)
+      missing = docs.reject { |d| d.data["date"].respond_to?(:strftime) }
+      return if missing.empty?
+      paths = missing.map(&:relative_path).join(", ")
+      raise "axy archives: #{coll_name} item(s) missing required `date`: #{paths}"
     end
 
     def validate_collisions!(coll_name, slugs, categories, dates)
