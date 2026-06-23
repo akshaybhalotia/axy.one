@@ -25,15 +25,21 @@
 <body class="bg-panel text-ink font-mono antialiased">
   <div class="app-shell">
     {% include sidebar.html %}
-    <main class="app-main px-6 pt-20 pb-12 desk:px-16 desk:py-16">
-      {{ content }}
+    <main class="app-main px-6 pt-24 pb-12 desk:px-16 desk:py-16">
+      <div class="app-main-inner">
+        {{ content }}
+      </div>
     </main>
   </div>
 
-  <button id="app-toggle" class="app-toggle" aria-label="Toggle navigation" aria-controls="app-sidebar">
-    {%- comment -%} Collapsed: hamburger to expand. Expanded: arrow to collapse. {%- endcomment -%}
-    <span class="icon-expand">{% include icon.html name="menu" class="w-7 h-7" %}</span>
-    <span class="icon-collapse">{% include icon.html name="chevron-left" class="w-7 h-7" %}</span>
+  {%- comment -%} The avatar IS the menu button: large when expanded, animates to
+  a small corner badge when collapsed (and back). {%- endcomment -%}
+  <button id="app-toggle" class="app-avatar" aria-label="Toggle navigation" aria-controls="app-sidebar">
+    {%- if site.avatar -%}
+    <img src="{{ site.avatar | relative_url }}" alt="{{ site.title }}">
+    {%- else -%}
+    <span class="app-avatar-fallback">AB</span>
+    {%- endif -%}
   </button>
 
   <script>

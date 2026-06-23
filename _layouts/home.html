@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-<section class="max-w-[840px]">
+<section>
   <h1 class="text-2xl xs:text-3xl desk:text-[2.5rem] font-bold leading-snug break-words">{{ page.heading | default: site.title }}</h1>
   <div class="rich mt-10 text-lg desk:text-xl leading-relaxed">{{ content }}</div>
 </section>
@@ -10,7 +10,7 @@ layout: default
 {%- if featured.size == 0 -%}{%- assign featured = site.posts -%}{%- endif -%}
 {%- if featured.size > 0 -%}
 <section class="mt-16">
-  <div class="flex items-baseline justify-between gap-4 max-w-[1120px]">
+  <div class="flex items-baseline justify-between gap-4">
     <h2 class="text-2xl desk:text-3xl font-bold">Featured posts</h2>
     <a href="{{ '/posts' | relative_url }}" class="hover:opacity-70">View all</a>
   </div>
