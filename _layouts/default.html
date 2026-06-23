@@ -1,24 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-nav="closed">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
   {% if page.description or site.description %}
-  <meta name="description" content="{{ page.description | default: site.description }}">
+  <meta name="description" content="{{ page.description | default: site.description | strip_newlines }}">
   {% endif %}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400&display=swap">
   <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
   {%- feed_meta -%}
+  <script>
+    /* Set initial nav state before paint to avoid flash: remembered choice,
+       else open on desktop / closed on mobile. */
+    (function () {
+      var saved = localStorage.getItem("nav");
+      var open = saved ? saved === "open" : window.matchMedia("(min-width: 1024px)").matches;
+      document.documentElement.setAttribute("data-nav", open ? "open" : "closed");
+    })();
+  </script>
 </head>
 <body class="bg-panel text-ink font-mono antialiased">
-  <div class="min-h-screen desk:grid desk:grid-cols-[360px_1fr]">
-    {% include sidebar.html %}
-    <main class="px-6 py-10 desk:px-12 desk:py-16">
-      {{ content }}
-    </main>
-  </div>
+  {% include sidebar.html %}
+
+  <button id="app-toggle" class="app-toggle" aria-label="Toggle navigation" aria-controls="app-sidebar">
+    <span class="nav-icon-open">{% include icon.html name="menu" class="w-7 h-7" %}</span>
+    <span class="nav-icon-close">{% include icon.html name="x" class="w-7 h-7" %}</span>
+  </button>
+
+  <div id="app-overlay" class="app-overlay"></div>
+
+  <main class="app-main px-6 pt-20 pb-12 desk:px-16 desk:py-16">
+    {{ content }}
+  </main>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      function set(state) { root.setAttribute("data-nav", state); localStorage.setItem("nav", state); }
+      document.getElementById("app-toggle").addEventListener("click", function () {
+        set(root.getAttribute("data-nav") === "open" ? "closed" : "open");
+      });
+      document.getElementById("app-overlay").addEventListener("click", function () { set("closed"); });
+    })();
+  </script>
 </body>
 </html>
