@@ -21,11 +21,15 @@
 title: Akshay Bhalotia
 email: contact@axy.one
 description: >- # this means to ignore newlines until "baseurl:"
-  Personal blog - musings and experiences
+  Personal site — musings, work, and posts.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://axy.one" # base hostname & protocol (used for absolute feed/SEO URLs)
+author:
+  name: Akshay Bhalotia
+  email: contact@axy.one
 twitter_username: akshay_bhalotia
 github_username:  akshaybhalotia
+# avatar: /assets/img/avatar.png   # set once the avatar file is added
 
 # Build settings
 plugins:
