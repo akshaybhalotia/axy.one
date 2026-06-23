@@ -12,6 +12,9 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400&display=swap">
   <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
   {%- feed_meta -%}
+  {%- comment -%} feed_meta only advertises the posts feed; advertise the work feed too. {%- endcomment -%}
+  <link rel="alternate" type="application/atom+xml" href="{{ '/work/feed.xml' | absolute_url }}" title="{{ site.title }} | Work">
+
   <script>
     /* Set initial nav state before paint to avoid flash: remembered choice,
        else open on desktop / closed on mobile. */
