@@ -1,16 +1,9 @@
 <aside id="app-sidebar" class="app-sidebar">
+  {%- comment -%} The avatar lives in default.html as the toggle button and floats
+  over this top-left area, so the inner reserves space at the top for it. {%- endcomment -%}
   <div class="app-sidebar-inner flex flex-col p-8 desk:p-10">
-  {%- comment -%} Avatar / logo (right-aligned like the Figma logo) {%- endcomment -%}
-  <div class="flex justify-end">
-    {%- if site.avatar -%}
-    <img src="{{ site.avatar | relative_url }}" alt="{{ site.title }}" class="size-32 rounded-full object-cover">
-    {%- else -%}
-    <div class="size-32 rounded-full bg-ink/15 grid place-items-center text-3xl font-bold" title="Placeholder — set `avatar:` in _config.yml">AB</div>
-    {%- endif -%}
-  </div>
-
   {%- comment -%} Nav — right-aligned, bold (Ubuntu Mono Bold 20px) {%- endcomment -%}
-  <nav class="mt-14 flex flex-col items-end gap-3 text-xl">
+  <nav class="mt-28 flex flex-col items-end gap-3 text-xl">
     {%- for item in site.data.nav -%}
     <a class="nav-link" href="{{ item.url | relative_url }}"{% if item.new_tab %} target="_blank" rel="noopener"{% endif %}>{{ item.label }}</a>
     {%- endfor -%}
