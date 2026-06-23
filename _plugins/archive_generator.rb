@@ -71,17 +71,19 @@ module AxyArchives
     end
 
     def validate_heroes!(coll_name, docs)
-      missing = docs.select { |d| d.data["hero"].to_s.strip.empty? }
-      return if missing.empty?
-      paths = missing.map(&:relative_path).join(", ")
-      raise "axy archives: #{coll_name} item(s) missing required `hero`: #{paths}"
+      require_field!(coll_name, docs, "hero") { |d| d.data["hero"].to_s.strip.empty? }
     end
 
     def validate_dates!(coll_name, docs)
-      missing = docs.reject { |d| d.data["date"].respond_to?(:strftime) }
+      require_field!(coll_name, docs, "date") { |d| !d.data["date"].respond_to?(:strftime) }
+    end
+
+    # Fail the build if any doc is "missing" the field per the given predicate.
+    def require_field!(coll_name, docs, field)
+      missing = docs.select { |d| yield d }
       return if missing.empty?
       paths = missing.map(&:relative_path).join(", ")
-      raise "axy archives: #{coll_name} item(s) missing required `date`: #{paths}"
+      raise "axy archives: #{coll_name} item(s) missing required `#{field}`: #{paths}"
     end
 
     def validate_collisions!(coll_name, slugs, categories, dates)
