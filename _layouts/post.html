@@ -1,8 +1,29 @@
 ---
 layout: default
 ---
-{%- comment -%} Stub — fleshed out in step 4. {%- endcomment -%}
-<article class="prose max-w-none">
-  <h1 class="text-3xl font-bold">{{ page.title }}</h1>
-  {{ content }}
+<article class="max-w-[820px]">
+  {%- assign img = page.hero | default: page.image -%}
+  {%- if img -%}
+  <img src="{{ img | relative_url }}" alt="" class="w-full h-56 desk:h-80 object-cover rounded-card">
+  {%- endif -%}
+
+  <h1 class="mt-8 text-3xl desk:text-[2.5rem] font-bold leading-snug">{{ page.title }}</h1>
+  {%- if page.subtitle -%}<p class="mt-2 text-xl text-ink/70">{{ page.subtitle }}</p>{%- endif -%}
+
+  <div class="mt-4 flex items-center justify-between gap-4 text-sm text-ink/70">
+    <span>{{ page.author | default: site.title }}</span>
+    <span>{{ page.date | date: "%Y-%m-%d" }}</span>
+  </div>
+
+  {%- if page.categories and page.categories.size > 0 -%}
+  <div class="mt-4 flex flex-wrap gap-2">
+    {%- for cat in page.categories -%}
+      {%- assign cslug = cat | slugify -%}
+      {%- assign curl = "/posts/" | append: cslug -%}
+      {%- include category-chip.html label=cat url=curl index=forloop.index0 -%}
+    {%- endfor -%}
+  </div>
+  {%- endif -%}
+
+  <div class="rich mt-8 text-lg leading-relaxed">{{ content }}</div>
 </article>
