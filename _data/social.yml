@@ -26,3 +26,13 @@
   icon: stackoverflow
   bg: "#F58025"
   fg: "#ffffff"
+- name: Telegram
+  url: /telegram
+  icon: telegram
+  bg: "#26A5E4"
+  fg: "#ffffff"
+- name: Steam
+  url: /steam
+  icon: steam
+  bg: "#ffffff"
+  fg: "#171a21"
