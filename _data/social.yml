@@ -1,0 +1,8 @@
+# Social links shown in the sidebar. icon = name in _includes/icon.html.
+# URLs use the existing Netlify redirects (/linkedin, /github).
+- name: LinkedIn
+  url: /linkedin
+  icon: linkedin
+- name: GitHub
+  url: /github
+  icon: github

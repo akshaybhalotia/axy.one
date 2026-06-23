@@ -1,8 +1,30 @@
-{%- comment -%} Stub — fleshed out in step 3 (logo, nav, social, collapse). {%- endcomment -%}
-<aside class="bg-sidebar text-ink p-6 desk:min-h-screen">
-  <nav class="flex flex-col gap-2">
+<aside id="app-sidebar" class="app-sidebar flex flex-col p-8 desk:p-10">
+  {%- comment -%} Avatar / logo (right-aligned like the Figma logo) {%- endcomment -%}
+  <div class="flex justify-end">
+    {%- if site.avatar -%}
+    <img src="{{ site.avatar | relative_url }}" alt="{{ site.title }}" class="size-32 rounded-full object-cover">
+    {%- else -%}
+    <div class="size-32 rounded-full bg-ink/15 grid place-items-center text-3xl font-bold" title="Placeholder — set `avatar:` in _config.yml">AB</div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Nav — right-aligned, bold (Ubuntu Mono Bold 20px) {%- endcomment -%}
+  <nav class="mt-14 flex flex-col items-end gap-3 text-xl">
     {%- for item in site.data.nav -%}
-      <a class="nav-link" href="{{ item.url | relative_url }}"{% if item.new_tab %} target="_blank" rel="noopener"{% endif %}>{{ item.label }}</a>
+    <a class="nav-link" href="{{ item.url | relative_url }}"{% if item.new_tab %} target="_blank" rel="noopener"{% endif %}>{{ item.label }}</a>
     {%- endfor -%}
   </nav>
+
+  {%- comment -%} Social — bottom, left-aligned grid of 40px icons {%- endcomment -%}
+  {%- if site.data.social and site.data.social.size > 0 -%}
+  <ul class="mt-auto pt-12 grid grid-cols-4 gap-4 justify-items-start">
+    {%- for s in site.data.social -%}
+    <li>
+      <a href="{{ s.url | relative_url }}" aria-label="{{ s.name }}" class="block size-10 text-ink hover:opacity-70">
+        {%- include icon.html name=s.icon class="w-full h-full" -%}
+      </a>
+    </li>
+    {%- endfor -%}
+  </ul>
+  {%- endif -%}
 </aside>
