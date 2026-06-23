@@ -11,3 +11,18 @@
   icon: github
   bg: "#ffffff"
   fg: "#181717"
+- name: Twitter
+  url: /twitter
+  icon: twitter
+  bg: "#1DA1F2"
+  fg: "#ffffff"
+- name: Instagram
+  url: /instagram
+  icon: instagram
+  bg: "#E4405F"
+  fg: "#ffffff"
+- name: Stack Overflow
+  url: /stackoverflow
+  icon: stackoverflow
+  bg: "#F58025"
+  fg: "#ffffff"
