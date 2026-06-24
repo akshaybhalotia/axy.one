@@ -1,0 +1,33 @@
+name: Build
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    name: Jekyll production build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4.9" # keep in sync with .ruby-version / netlify.toml
+          bundler-cache: true
+
+      # The Tailwind v4 standalone binary is downloaded by _plugins/tailwind.rb
+      # at build time and cached at bin/tailwindcss (gitignored). Cache it across
+      # runs, keyed on the pinned Tailwind version, to skip the re-download.
+      - name: Cache Tailwind binary
+        uses: actions/cache@v4
+        with:
+          path: bin/tailwindcss
+          key: tailwindcss-v4.3.1-linux-x64
+
+      - name: Build site
+        run: JEKYLL_ENV=production bundle exec jekyll build
