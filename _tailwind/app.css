@@ -23,15 +23,18 @@
   --color-card-ink: #000000; /* card title/body text */
   --color-card-muted: #555555; /* card subtitle/secondary */
 
-  /* Category pill palette (exact hex, 8 colors, cycled by index) */
-  --color-cat-1: #9300d9;
-  --color-cat-2: #008e1f;
-  --color-cat-3: #008b94;
-  --color-cat-4: #c00000;
-  --color-cat-5: #7eaa00;
-  --color-cat-6: #d85b00;
-  --color-cat-7: #00b071;
-  --color-cat-8: #d1007e;
+  /* Category pill palette (8 colors, cycled by index). White chip label text must
+     meet WCAG AA (>=4.5:1 for normal text); the olive/green/teal/orange hues from
+     the Figma palette failed, so they are darkened just enough to pass while keeping
+     the same hue. Passing originals (cat-1/4/8) are left untouched. */
+  --color-cat-1: #9300d9; /* 6.48:1 */
+  --color-cat-2: #00881e; /* was #008e1f (4.30) -> 4.63:1 */
+  --color-cat-3: #00838b; /* was #008b94 (4.10) -> 4.55:1 */
+  --color-cat-4: #c00000; /* 6.48:1 */
+  --color-cat-5: #608100; /* was #7eaa00 (2.75) -> 4.53:1 */
+  --color-cat-6: #c25200; /* was #d85b00 (3.88) -> 4.67:1 */
+  --color-cat-7: #008656; /* was #00b071 (2.82) -> 4.62:1 */
+  --color-cat-8: #d1007e; /* 5.23:1 */
 
   /* Radii & shadow */
   --radius-pill: 8px; /* category pills */
@@ -44,14 +47,45 @@
 }
 
 @layer components {
-  /* Category pill — bg color applied per-instance via .cat-N (see below) */
+  /* Category pill — bg color applied per-instance via .cat-N (see below).
+     min-h keeps the tap target >=24px even for short labels. */
   .chip {
-    @apply inline-flex items-center justify-center rounded-pill px-4 py-1.5 text-white;
+    @apply inline-flex items-center justify-center rounded-pill px-4 py-1.5 min-h-[2rem] text-white;
   }
-  /* Sidebar nav link — right-aligned, bold (Ubuntu Mono Bold 20px in design) */
+  /* Sidebar nav link — right-aligned, bold (Ubuntu Mono Bold 20px in design).
+     py keeps a comfortable >=44px tap target. */
   .nav-link {
-    @apply block text-right font-bold tracking-wide hover:opacity-70;
+    @apply block py-1.5 text-right font-bold tracking-wide hover:opacity-70;
   }
+}
+
+/* Visible-on-focus skip link: hidden off-screen until focused, then pinned to the
+   top-left corner above everything so keyboard users can jump to the content. */
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 60;
+  transform: translateY(-150%);
+  padding: 0.5rem 1rem;
+  background-color: #fff;
+  color: #000;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  transition: transform 0.2s ease;
+}
+.skip-link:focus { transform: translateY(0); outline: 2px solid #000; outline-offset: 2px; }
+
+/* Consistent, visible focus indicator for every interactive control. */
+.nav-link:focus-visible,
+.chip:focus-visible,
+.app-social-link:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+.rich a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 
 /* ---- Article / markdown body (no typography plugin) ---------------------- */
@@ -93,9 +127,17 @@
   overflow-y: auto;
   background-color: var(--color-sidebar);
   transform: translateY(-100%);
-  transition: transform 0.35s ease;
+  /* visibility:hidden when collapsed removes the off-screen nav links from the tab
+     order and the accessibility tree. It is delayed by the slide duration so the
+     close animation still plays; opening flips it to visible immediately. */
+  visibility: hidden;
+  transition: transform 0.35s ease, visibility 0s linear 0.35s;
 }
-#nav-toggle:checked ~ .app-shell .app-sidebar { transform: translateY(0); }
+#nav-toggle:checked ~ .app-shell .app-sidebar {
+  transform: translateY(0);
+  visibility: visible;
+  transition: transform 0.35s ease, visibility 0s linear 0s;
+}
 
 /* Dim backdrop behind the open mobile menu (a <label> that closes on tap). */
 .app-scrim {
@@ -172,9 +214,18 @@
     width: 360px;
     overflow: hidden;
     flex-shrink: 0;
-    transition: width 0.35s ease;
+    /* Desktop default is open -> visible; delay re-hiding until the collapse
+       animation finishes (see checked rule). */
+    visibility: visible;
+    transition: width 0.35s ease, visibility 0s linear 0s;
   }
-  #nav-toggle:checked ~ .app-shell .app-sidebar { width: 0; transform: none; }
+  #nav-toggle:checked ~ .app-shell .app-sidebar {
+    width: 0;
+    transform: none;
+    /* Collapsed: pull the nav links out of the tab order / a11y tree once hidden. */
+    visibility: hidden;
+    transition: width 0.35s ease, visibility 0s linear 0.35s;
+  }
   .app-sidebar-inner {
     width: 360px;
     height: 100%;
@@ -205,3 +256,15 @@
 .cat-6 { background-color: var(--color-cat-6); }
 .cat-7 { background-color: var(--color-cat-7); }
 .cat-8 { background-color: var(--color-cat-8); }
+
+/* Respect users who ask for less motion: drop the sidebar slide / avatar resize /
+   scrim fade transitions. Visibility still toggles instantly (kept here so the
+   collapsed nav stays out of the a11y tree), and the menu snaps open/closed. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

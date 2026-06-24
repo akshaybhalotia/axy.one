@@ -16,13 +16,18 @@
   <link rel="alternate" type="application/atom+xml" href="{{ '/work/feed.xml' | absolute_url }}" title="{{ site.title }} | Work">
 </head>
 <body class="bg-panel text-ink font-mono antialiased">
+  {%- comment -%} Visible-on-focus skip link so keyboard users can jump past the
+  nav toggle straight to the page content. {%- endcomment -%}
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
   {%- comment -%} Pure-CSS collapse: the hidden checkbox holds the state and the
   avatar <label> toggles it — no JavaScript required. Defaults come from CSS
-  (desktop open, mobile collapsed). {%- endcomment -%}
-  <input type="checkbox" id="nav-toggle" class="sr-only" aria-label="Toggle navigation">
-  <label for="nav-toggle" class="app-avatar" title="Toggle navigation">
+  (desktop open, mobile collapsed). The checkbox is the real control, so it carries
+  the accessible name and the expanded/collapsed state announcement. {%- endcomment -%}
+  <input type="checkbox" id="nav-toggle" class="sr-only" aria-label="Navigation menu" aria-controls="app-sidebar">
+  <label for="nav-toggle" class="app-avatar" aria-hidden="true">
     {%- if site.avatar -%}
-    <img src="{{ site.avatar | relative_url }}" alt="{{ site.title }}">
+    <img src="{{ site.avatar | relative_url }}" alt="">
     {%- else -%}
     <span class="app-avatar-fallback">AB</span>
     {%- endif -%}
@@ -32,7 +37,7 @@
 
   <div class="app-shell">
     {% include sidebar.html %}
-    <main class="app-main px-6 pt-24 pb-12 desk:px-16 desk:py-16">
+    <main id="main-content" class="app-main px-6 pt-24 pb-12 desk:px-16 desk:py-16">
       <div class="app-main-inner">
         {{ content }}
       </div>
