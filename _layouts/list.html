@@ -42,7 +42,7 @@ page.filter_value    = the category slug or ISO date (optional)
   {%- assign cats = site.data.category_index[page.collection_name] -%}
   {%- if cats and cats.size > 0 -%}
   <div class="mt-6 flex flex-wrap gap-3">
-    <a href="{{ base | relative_url }}" class="chip bg-white/15{% unless page.filter_type %} ring-2 ring-white{% endunless %}">All</a>
+    <a href="{{ base | relative_url }}" class="chip chip-all{% unless page.filter_type %} chip-active{% endunless %}">All</a>
     {%- for cat in cats -%}
       {%- assign active = false -%}
       {%- if page.filter_type == "category" and page.filter_value == cat.slug -%}{%- assign active = true -%}{%- endif -%}

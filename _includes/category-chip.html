@@ -2,4 +2,4 @@
 Category pill. Params: label, url, index (0-based, for color), active (bool).
 {%- endcomment -%}
 {%- assign i = include.index | default: 0 | modulo: 8 | plus: 1 -%}
-<a href="{{ include.url | relative_url }}" class="chip cat-{{ i }}{% if include.active %} ring-2 ring-white{% endif %}">{{ include.label }}</a>
+<a href="{{ include.url | relative_url }}" class="chip cat-{{ i }}{% if include.active %} chip-active{% endif %}">{{ include.label }}</a>

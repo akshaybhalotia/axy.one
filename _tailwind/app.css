@@ -36,6 +36,19 @@
   --color-cat-7: #008656; /* was #00b071 (2.82) -> 4.62:1 */
   --color-cat-8: #d1007e; /* 5.23:1 */
 
+  /* Chrome / accent colors that aren't surfaces. These previously appeared as
+     hardcoded #fff / rgba whites scattered through the component CSS; promoting them
+     to theme vars lets the light theme flip them in one place (see the
+     html:has(#theme-toggle:checked) block below). All AA-checked in both themes. */
+  --color-focus: #ffffff; /* focus-visible outline on dark surfaces */
+  --color-avatar-border: rgb(255 255 255 / 0.6); /* avatar badge ring */
+  --color-avatar-border-hover: #ffffff;
+  --color-scrim: rgb(0 0 0 / 0.5); /* mobile menu backdrop dim */
+  --color-chip-active-ring: #ffffff; /* active category pill ring */
+  --color-all-pill-bg: rgb(255 255 255 / 0.15); /* "All" pill background */
+  --color-all-pill-ink: #ffffff; /* "All" pill label */
+  --color-social-border: transparent; /* badge border (light theme reveals it) */
+
   /* Radii & shadow */
   --radius-pill: 8px; /* category pills */
   --radius-card: 20px; /* post/list cards */
@@ -68,19 +81,22 @@
   z-index: 60;
   transform: translateY(-150%);
   padding: 0.5rem 1rem;
-  background-color: #fff;
-  color: #000;
+  /* Inverted vs the surface so it pops in both themes: dark-on-light in dark mode,
+     light-on-dark in light mode (the ink/sidebar vars already invert per theme). */
+  background-color: var(--color-ink);
+  color: var(--color-sidebar);
   font-weight: 700;
   border-radius: 0.5rem;
   transition: transform 0.2s ease;
 }
-.skip-link:focus { transform: translateY(0); outline: 2px solid #000; outline-offset: 2px; }
+.skip-link:focus { transform: translateY(0); outline: 2px solid var(--color-sidebar); outline-offset: 2px; }
 
 /* Consistent, visible focus indicator for every interactive control. */
 .nav-link:focus-visible,
 .chip:focus-visible,
-.app-social-link:focus-visible {
-  outline: 2px solid #fff;
+.app-social-link:focus-visible,
+.app-theme-toggle:focus-within {
+  outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
 .rich a:focus-visible {
@@ -144,7 +160,7 @@
   position: fixed;
   inset: 0;
   z-index: 30;
-  background-color: rgb(0 0 0 / 0.5);
+  background-color: var(--color-scrim);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.35s ease;
@@ -173,15 +189,15 @@
   width: 2.75rem;
   height: 2.75rem;
   padding: 0;
-  border: 2px solid rgb(255 255 255 / 0.6);
+  border: 2px solid var(--color-avatar-border);
   border-radius: 9999px;
   overflow: hidden;
   cursor: pointer;
   background-color: var(--color-sidebar);
   transition: width 0.35s ease, height 0.35s ease, top 0.35s ease, left 0.35s ease, border-color 0.2s ease;
 }
-.app-avatar:hover { border-color: #fff; }
-#nav-toggle:focus-visible ~ .app-avatar { outline: 2px solid #fff; outline-offset: 2px; }
+.app-avatar:hover { border-color: var(--color-avatar-border-hover); }
+#nav-toggle:focus-visible ~ .app-avatar { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 .app-avatar img,
 .app-avatar-fallback {
   width: 100%;
@@ -190,8 +206,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgb(255 255 255 / 0.15);
-  color: #fff;
+  background-color: var(--color-all-pill-bg);
+  color: var(--color-ink);
   font-weight: 700;
 }
 #nav-toggle:checked ~ .app-avatar {
@@ -256,6 +272,110 @@
 .cat-6 { background-color: var(--color-cat-6); }
 .cat-7 { background-color: var(--color-cat-7); }
 .cat-8 { background-color: var(--color-cat-8); }
+
+/* ---- Category pill active state + "All" pill ----------------------------- */
+/* Replaces the old hardcoded `ring-white` / `bg-white/15` utilities so the active
+   ring and the neutral "All" pill follow the theme vars (the white ring is invisible
+   on a white card in light mode). */
+.chip-active {
+  outline: 2px solid var(--color-chip-active-ring);
+  outline-offset: 2px;
+}
+.chip-all {
+  background-color: var(--color-all-pill-bg);
+  color: var(--color-all-pill-ink);
+}
+
+/* ---- Social / email badges ----------------------------------------------- */
+/* Brand-colored circle badges keep their hues. In light mode the white-circle ones
+   (GitHub / Steam / Email) would vanish against the near-white sidebar, so a subtle
+   border is revealed via --color-social-border (transparent in dark mode). */
+.app-social-link {
+  border: 1px solid var(--color-social-border);
+}
+
+/* ---- CSS-only theme switch ----------------------------------------------- */
+/* A fixed pill button pinned just to the right of the avatar badge, in both nav
+   states (collapsed corner badge and expanded large badge) and both breakpoints.
+   The hidden #theme-toggle checkbox holds the state; this <label> flips it. */
+.app-theme-toggle {
+  position: fixed;
+  z-index: 51;
+  top: 1.375rem; /* vertically centers against the 2.75rem collapsed avatar */
+  left: 4.25rem; /* just right of the 1rem + 2.75rem collapsed avatar */
+  width: 2.25rem;
+  height: 2.25rem;
+  display: grid;
+  place-items: center;
+  border-radius: 9999px;
+  cursor: pointer;
+  color: var(--color-ink);
+  background-color: var(--color-sidebar);
+  border: 2px solid var(--color-avatar-border);
+  transition: top 0.35s ease, left 0.35s ease, border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+.app-theme-toggle:hover { border-color: var(--color-avatar-border-hover); }
+
+/* Expanded mobile menu: the avatar grows to 7rem at (2rem,2rem); move the toggle to
+   sit just to its right and vertically centered against it. */
+#nav-toggle:checked ~ .app-theme-toggle {
+  top: 5.375rem; /* 2rem top + (7rem-2.25rem)/2 */
+  left: 9.5rem;  /* 2rem left + 7rem + 0.5rem gap */
+}
+
+/* Sun shows in dark mode (action: go light); moon shows in light mode. Render both,
+   toggle visibility on :checked. */
+.app-theme-icon { width: 1.25rem; height: 1.25rem; grid-area: 1 / 1; }
+.app-theme-icon--moon { display: none; }
+html:has(#theme-toggle:checked) .app-theme-icon--sun { display: none; }
+html:has(#theme-toggle:checked) .app-theme-icon--moon { display: block; }
+
+@media (min-width: 1024px) {
+  /* Desktop default = open (avatar large at 2rem,2rem). Toggle sits to its right. */
+  .app-theme-toggle {
+    top: 5.375rem;
+    left: 9.5rem;
+  }
+  /* Collapsed: avatar shrinks to the small corner badge; follow it back. */
+  #nav-toggle:checked ~ .app-theme-toggle {
+    top: 1.375rem;
+    left: 4.25rem;
+  }
+}
+
+/* ---- LIGHT THEME ---------------------------------------------------------- */
+/* CSS-only flip: when #theme-toggle is checked we override the theme vars on <html>.
+   A sibling combinator (~) can't reach :root, but :has() can, and it's widely
+   supported. Overriding the variables restyles every surface utility (bg-panel,
+   text-ink, bg-card, etc.) at once; the chrome vars above cover the bits that were
+   hardcoded white. The default
+   (unchecked) theme stays exactly as the original dark design. Caveat: because the
+   state lives only in the DOM checkbox, the choice does NOT persist across page
+   loads — inherent to a no-JS toggle. */
+html:has(#theme-toggle:checked) {
+  --color-sidebar: #f4f4f5;       /* near-white sidebar */
+  --color-panel: #e7e7ea;         /* light grey panel */
+  --color-ink: #1a1a1a;           /* near-black primary text (14.2:1 on panel) */
+  --color-card: #ffffff;          /* white cards */
+  --color-card-ink: #1a1a1a;      /* dark card text (17.4:1 on card) */
+  --color-card-muted: #595959;    /* muted card text (7.0:1 on card) */
+
+  /* Chrome: focus rings, avatar ring, scrim and pills go dark so they stay visible. */
+  --color-focus: #1a1a1a;
+  --color-avatar-border: rgb(0 0 0 / 0.5);
+  --color-avatar-border-hover: #000000;
+  --color-scrim: rgb(0 0 0 / 0.45);
+  --color-chip-active-ring: #1a1a1a;
+  --color-all-pill-bg: rgb(0 0 0 / 0.08); /* visible grey pill on the light panel */
+  --color-all-pill-ink: #1a1a1a;          /* 12:1 on the resolved pill bg */
+  --color-social-border: rgb(0 0 0 / 0.18); /* reveals the white-circle badges */
+}
+
+/* Cards carry a hairline border in light mode so white cards read against the light
+   panel (in dark mode the var is unset -> no border). */
+html:has(#theme-toggle:checked) .bg-card {
+  border: 1px solid rgb(0 0 0 / 0.08);
+}
 
 /* Respect users who ask for less motion: drop the sidebar slide / avatar resize /
    scrim fade transitions. Visibility still toggles instantly (kept here so the
