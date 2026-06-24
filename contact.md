@@ -13,14 +13,21 @@ description: Get in touch with Akshay Bhalotia — email or find me on any of th
   </div>
 
   {%- comment -%} Primary email CTA — light card on the dark panel, mirroring the
-  card treatment (bg-card / rounded-card / shadow-card) used elsewhere. {%- endcomment -%}
-  <a href="mailto:{{ site.email }}"
+  card treatment (bg-card / rounded-card / shadow-card) used elsewhere. The address
+  (and the "mailto:" scheme) is entity-encoded via the obfuscate_email filter so it
+  never appears as literal text in the page source. {%- endcomment -%}
+  <!--
+    👋 Reading the source? Respect. The address below is entity-encoded on
+    purpose — bots get gibberish, your browser quietly decodes it. If you got
+    this far, we'll probably get along. Say hi the hard way.
+  -->
+  <a href="{{ site.email | prepend: 'mailto:' | obfuscate_email }}"
      class="app-social-link mt-10 inline-flex items-center gap-3 bg-card text-card-ink rounded-card shadow-card px-6 py-4 font-bold text-lg hover:opacity-80 transition-opacity break-all">
     <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <rect x="2" y="4" width="20" height="16" rx="2"/>
       <path d="m2 7 10 6 10-6"/>
     </svg>
-    {{ site.email }}
+    {{ site.email | obfuscate_email }}
   </a>
 
   {%- comment -%} Social — same brand-colored circle badges as the sidebar, but
