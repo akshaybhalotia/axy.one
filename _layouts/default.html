@@ -25,12 +25,25 @@
   (desktop open, mobile collapsed). The checkbox is the real control, so it carries
   the accessible name and the expanded/collapsed state announcement. {%- endcomment -%}
   <input type="checkbox" id="nav-toggle" class="sr-only" aria-label="Navigation menu" aria-controls="app-sidebar">
+  {%- comment -%} CSS-only light/dark theme switch, mirroring the nav-toggle pattern:
+  a visually-hidden checkbox holds the state and the labelled button flips it. The
+  whole site restyles via `html:has(#theme-toggle:checked)` in CSS — no JavaScript.
+  The checkbox carries the accessible name; the choice does not persist across page
+  loads (inherent to a CSS-only toggle). {%- endcomment -%}
+  <input type="checkbox" id="theme-toggle" class="sr-only" aria-label="Switch to light theme">
   <label for="nav-toggle" class="app-avatar" aria-hidden="true">
     {%- if site.avatar -%}
     <img src="{{ site.avatar | relative_url }}" alt="">
     {%- else -%}
     <span class="app-avatar-fallback">AB</span>
     {%- endif -%}
+  </label>
+  {%- comment -%} Theme switch button, pinned next to the avatar badge. The sun glyph
+  shows in dark mode (tap to go light); the moon shows in light mode (tap to go dark).
+  Both glyphs are rendered; CSS swaps them on :checked. {%- endcomment -%}
+  <label for="theme-toggle" class="app-theme-toggle">
+    {%- include icon.html name="sun" class="app-theme-icon app-theme-icon--sun" -%}
+    {%- include icon.html name="moon" class="app-theme-icon app-theme-icon--moon" -%}
   </label>
   {%- comment -%} Backdrop behind the open mobile menu; tapping it closes (no JS). {%- endcomment -%}
   <label for="nav-toggle" class="app-scrim" aria-hidden="true"></label>
