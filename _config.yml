@@ -26,7 +26,8 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://axy.one" # base hostname & protocol (used for absolute feed/SEO URLs)
 author:
   name: Akshay Bhalotia
-  email: contact@axy.one
+  # email intentionally omitted: keeps the plain address out of the RSS/Atom feed.
+  # The contact page uses the top-level `email` above, obfuscated via obfuscate_email.
 twitter_username: akshay_bhalotia
 github_username:  akshaybhalotia
 avatar: /assets/img/avatar.png
