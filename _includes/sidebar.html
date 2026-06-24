@@ -9,10 +9,17 @@
     {%- endfor -%}
   </nav>
 
-  {%- comment -%} Social — bottom, left-aligned grid of 40px icons {%- endcomment -%}
-  {%- if site.data.social and site.data.social.size > 0 -%}
+  {%- comment -%} Social — bottom grid: email (obfuscated mailto) + brand links {%- endcomment -%}
+  {%- if site.email or site.data.social.size > 0 -%}
   <nav aria-label="Social" class="mt-auto pt-12">
   <ul class="grid grid-cols-4 gap-4 justify-items-start">
+    {%- if site.email -%}
+    <li>
+      <a href="{{ site.email | prepend: 'mailto:' | obfuscate_email }}" aria-label="Email" class="app-social-link grid place-items-center size-10 rounded-full hover:opacity-80 transition-opacity" style="background-color: #ffffff; color: #000000">
+        {%- include icon.html name="email" class="w-5 h-5" -%}
+      </a>
+    </li>
+    {%- endif -%}
     {%- for s in site.data.social -%}
     <li>
       <a href="{{ s.url | relative_url }}" aria-label="{{ s.name }}" target="_blank" rel="noopener" class="app-social-link grid place-items-center size-10 rounded-full hover:opacity-80 transition-opacity" style="background-color: {{ s.bg | default: '#ffffff' }}; color: {{ s.fg | default: '#000000' }}">
