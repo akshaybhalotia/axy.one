@@ -3,23 +3,25 @@
   over this top-left area, so the inner reserves space at the top for it. {%- endcomment -%}
   <div class="app-sidebar-inner flex flex-col p-8 desk:p-10">
   {%- comment -%} Nav — right-aligned, bold (Ubuntu Mono Bold 20px) {%- endcomment -%}
-  <nav class="mt-28 flex flex-col items-end gap-3 text-xl">
+  <nav class="mt-28 flex flex-col items-end gap-3 text-xl" aria-label="Primary">
     {%- for item in site.data.nav -%}
-    <a class="nav-link" href="{{ item.url | relative_url }}"{% if item.new_tab %} target="_blank" rel="noopener"{% endif %}>{{ item.label }}</a>
+    <a class="nav-link" href="{{ item.url | relative_url }}"{% if item.new_tab %} target="_blank" rel="noopener"{% endif %}>{{ item.label }}{% if item.new_tab %}<span class="sr-only"> (opens in a new tab)</span>{% endif %}</a>
     {%- endfor -%}
   </nav>
 
   {%- comment -%} Social — bottom, left-aligned grid of 40px icons {%- endcomment -%}
   {%- if site.data.social and site.data.social.size > 0 -%}
-  <ul class="mt-auto pt-12 grid grid-cols-4 gap-4 justify-items-start">
+  <nav aria-label="Social" class="mt-auto pt-12">
+  <ul class="grid grid-cols-4 gap-4 justify-items-start">
     {%- for s in site.data.social -%}
     <li>
-      <a href="{{ s.url | relative_url }}" aria-label="{{ s.name }}" class="grid place-items-center size-10 rounded-full hover:opacity-80 transition-opacity" style="background-color: {{ s.bg | default: '#ffffff' }}; color: {{ s.fg | default: '#000000' }}">
+      <a href="{{ s.url | relative_url }}" aria-label="{{ s.name }}" target="_blank" rel="noopener" class="app-social-link grid place-items-center size-10 rounded-full hover:opacity-80 transition-opacity" style="background-color: {{ s.bg | default: '#ffffff' }}; color: {{ s.fg | default: '#000000' }}">
         {%- include icon.html name=s.icon class="w-5 h-5" -%}
       </a>
     </li>
     {%- endfor -%}
   </ul>
+  </nav>
   {%- endif -%}
   </div>
 </aside>
