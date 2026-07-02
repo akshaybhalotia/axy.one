@@ -58,8 +58,9 @@
     {%- else -%}
     <span class="app-avatar-fallback">AB</span>
     {%- endif -%}
-    {%- comment -%} Affordance that the avatar is the menu toggle (desktop). {%- endcomment -%}
-    <span class="app-avatar-caret" aria-hidden="true">{%- include icon.html name="chevron" class="w-full h-full" -%}</span>
+    {%- comment -%} Persistent hamburger badge (desktop) so it's clearly the menu
+    toggle in both states; animates to an X when the menu is open. {%- endcomment -%}
+    <span class="app-menu-badge" aria-hidden="true"><span class="app-menu-bars"></span></span>
   </label>
   {%- comment -%} Theme switch button, pinned next to the avatar badge. The sun glyph
   shows in dark mode (tap to go light); the moon shows in light mode (tap to go dark).
