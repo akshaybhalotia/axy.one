@@ -1,6 +1,7 @@
-# Social links shown in the sidebar as brand-colored circle badges.
+# Social links. Full set renders on the Contact page (brand-colored badges);
+# the sidebar shows only a couple of monochrome essentials (email + GitHub).
 # icon = name in _includes/icon.html. bg = circle color, fg = glyph color.
-# URLs use the existing Netlify redirects (/linkedin, /github).
+# URLs use the existing Netlify redirects. Order: professional -> social -> gaming.
 - name: LinkedIn
   url: /linkedin
   icon: linkedin
@@ -11,6 +12,11 @@
   icon: github
   bg: "#ffffff"
   fg: "#181717"
+- name: Stack Overflow
+  url: /stackoverflow
+  icon: stackoverflow
+  bg: "#F58025"
+  fg: "#ffffff"
 - name: Twitter
   url: /twitter
   icon: twitter
@@ -20,11 +26,6 @@
   url: /instagram
   icon: instagram
   bg: "#E4405F"
-  fg: "#ffffff"
-- name: Stack Overflow
-  url: /stackoverflow
-  icon: stackoverflow
-  bg: "#F58025"
   fg: "#ffffff"
 - name: Telegram
   url: /telegram
