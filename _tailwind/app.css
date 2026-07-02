@@ -248,17 +248,16 @@
   height: 7rem;
 }
 
-/* Toggle affordance: a bold dropdown-style caret badge overhanging the avatar's
-   bottom edge, so it clearly reads as the clickable menu control. Desktop only
-   (mobile is left as-is); shown on the expanded avatar, hidden on the small
-   collapsed badge (which is obviously a button on its own). */
-.app-avatar-caret { display: none; }
+/* Persistent menu-toggle badge on the avatar: an animated hamburger that morphs
+   to an X when the menu is open, so the avatar clearly reads as the menu control
+   in BOTH the expanded and collapsed states. Desktop only (mobile left as-is).
+   Desktop default = menu open -> X; collapsed (checked) = hamburger. */
+.app-menu-badge { display: none; }
 @media (min-width: 1024px) {
-  .app-avatar-caret {
+  .app-menu-badge {
     position: absolute;
-    left: 50%;
-    bottom: -0.5rem;
-    transform: translateX(-50%);
+    right: -0.35rem;
+    bottom: -0.35rem;
     width: 1.5rem;
     height: 1.5rem;
     display: grid;
@@ -268,9 +267,36 @@
     color: var(--color-sidebar);
     border: 2px solid var(--color-sidebar);
     pointer-events: none;
+    transition: transform 0.2s ease;
   }
-  .app-avatar-caret svg { width: 62%; height: 62%; }
-  #nav-toggle:checked ~ .app-avatar .app-avatar-caret { display: none; }
+  .app-avatar:hover .app-menu-badge { transform: scale(1.12); }
+
+  /* Three lines = the middle bar (.app-menu-bars) plus its ::before/::after. */
+  .app-menu-bars,
+  .app-menu-bars::before,
+  .app-menu-bars::after {
+    content: "";
+    display: block;
+    width: 0.72rem;
+    height: 2px;
+    border-radius: 2px;
+    background-color: currentColor;
+    transition: transform 0.3s ease, background-color 0.2s ease;
+  }
+  .app-menu-bars { position: relative; }
+  .app-menu-bars::before,
+  .app-menu-bars::after { position: absolute; left: 0; top: 0; }
+
+  /* Default (desktop, sidebar open) = X. Hide only the middle bar's own fill
+     (not the element, so its ::before/::after strokes stay visible). */
+  .app-menu-bars { background-color: transparent; }
+  .app-menu-bars::before { transform: rotate(45deg); }
+  .app-menu-bars::after { transform: rotate(-45deg); }
+
+  /* Collapsed (sidebar closed) animates back to a hamburger. */
+  #nav-toggle:checked ~ .app-avatar .app-menu-bars { background-color: currentColor; }
+  #nav-toggle:checked ~ .app-avatar .app-menu-bars::before { transform: translateY(-0.28rem); }
+  #nav-toggle:checked ~ .app-avatar .app-menu-bars::after { transform: translateY(0.28rem); }
 }
 
 /* Desktop: horizontal collapse via width. Default open; checked collapses.
