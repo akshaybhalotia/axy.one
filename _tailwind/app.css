@@ -266,7 +266,7 @@
     background-color: var(--color-ink);
     color: var(--color-sidebar);
     border: 2px solid var(--color-sidebar);
-    pointer-events: none;
+    cursor: pointer; /* clickable — it's part of the avatar toggle label */
     transition: transform 0.2s ease;
   }
   .app-avatar:hover .app-menu-badge { transform: scale(1.12); }
@@ -345,8 +345,8 @@
     top: 1rem;
     left: 1rem;
     right: auto;
-    width: 2.75rem;
-    height: 2.75rem;
+    width: 4rem;
+    height: 4rem;
   }
 }
 
