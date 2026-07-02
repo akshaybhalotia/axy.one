@@ -15,13 +15,15 @@
   --font-mono: "Ubuntu Mono", ui-monospace, "SF Mono", monospace;
   --default-font-family: var(--font-mono);
 
-  /* Surfaces (exact from Figma get_design_context) */
-  --color-sidebar: #000000; /* sidebar frame */
-  --color-panel: #555555; /* main frame bg-[#555] */
-  --color-ink: #ffffff; /* primary text on panel/sidebar */
-  --color-card: #dddddd; /* post/list card bg-[#ddd] */
-  --color-card-ink: #000000; /* card title/body text */
-  --color-card-muted: #555555; /* card subtitle/secondary */
+  /* Surfaces — warm near-neutrals (not flat pure black/grey) for a richer feel.
+     Contrast verified AA/AAA: ink/panel 7.9:1, nav 17.3:1, card text 13.7:1,
+     muted-on-card 6.6:1, ink/70 meta ~4.9:1. */
+  --color-sidebar: #14120f; /* warm near-black sidebar */
+  --color-panel: #4f4c47; /* warm dark grey panel */
+  --color-ink: #f7f6f4; /* soft off-white text */
+  --color-card: #e4e1db; /* warm light card */
+  --color-card-ink: #1a1713; /* warm near-black card text */
+  --color-card-muted: #4f4c47; /* card subtitle/secondary */
 
   /* Category pill palette (8 colors, cycled by index). White chip label text must
      meet WCAG AA (>=4.5:1 for normal text); the olive/green/teal/orange hues from
@@ -68,7 +70,7 @@
   /* Sidebar nav link — right-aligned, bold (Ubuntu Mono Bold 20px in design).
      py keeps a comfortable >=44px tap target. */
   .nav-link {
-    @apply block py-1.5 text-right font-bold tracking-wide hover:opacity-70;
+    @apply relative block py-1.5 text-right font-bold tracking-wide hover:underline hover:decoration-2 underline-offset-4;
   }
 }
 
@@ -109,7 +111,34 @@
 .rich h2 { font-size: 1.5rem; font-weight: 700; margin-top: 1.5em; }
 .rich h3 { font-size: 1.25rem; font-weight: 700; margin-top: 1.25em; }
 .rich a { text-decoration: underline; text-underline-offset: 2px; }
-.rich a:hover { opacity: 0.7; }
+.rich a:hover { text-decoration-thickness: 2px; }
+
+/* "Opens off-site" arrow for new-tab nav items: sits in the right margin (absolutely
+   positioned) so the nav text stays right-edge aligned; dotted diagonal, no box,
+   sized to the text. */
+.nav-external {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 0.4em;
+  width: 0.9em;
+  height: 0.9em;
+  opacity: 0.7;
+}
+
+/* Sidebar social essentials: monochrome circle badges (the brand-colored set lives
+   on the Contact page). Neutral grey reads on both light and dark sidebars. */
+.app-social .app-social-link {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background-color: rgb(128 128 128 / 0.2);
+  transition: background-color 0.2s ease;
+}
+.app-social .app-social-link:hover { background-color: rgb(128 128 128 / 0.34); }
 .rich ul { list-style: disc; padding-left: 1.5em; }
 .rich ol { list-style: decimal; padding-left: 1.5em; }
 .rich li + li { margin-top: 0.25em; }
@@ -171,10 +200,11 @@
   flex: 1 1 auto;
   min-width: 0;
 }
-/* Centered content column so the panel isn't lopsided when the sidebar collapses. */
+/* Centered content column — one comfortable reading measure (~10 words/line in
+   Ubuntu Mono at 18px), centered in both nav states. */
 .app-main-inner {
   width: 100%;
-  max-width: 56rem;
+  max-width: 42rem;
   margin-inline: auto;
 }
 
@@ -191,7 +221,7 @@
   padding: 0;
   border: 2px solid var(--color-avatar-border);
   border-radius: 9999px;
-  overflow: hidden;
+  overflow: visible; /* let the toggle caret badge overhang the bottom edge */
   cursor: pointer;
   background-color: var(--color-sidebar);
   transition: width 0.35s ease, height 0.35s ease, top 0.35s ease, left 0.35s ease, border-color 0.2s ease;
@@ -203,6 +233,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 9999px; /* round the image itself now that the avatar isn't clipping */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -215,6 +246,57 @@
   left: 2rem;
   width: 7rem;
   height: 7rem;
+}
+
+/* Persistent menu-toggle badge on the avatar: an animated hamburger that morphs
+   to an X when the menu is open, so the avatar clearly reads as the menu control
+   in BOTH the expanded and collapsed states. Desktop only (mobile left as-is).
+   Desktop default = menu open -> X; collapsed (checked) = hamburger. */
+.app-menu-badge { display: none; }
+@media (min-width: 1024px) {
+  .app-menu-badge {
+    position: absolute;
+    right: -0.35rem;
+    bottom: -0.35rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: grid;
+    place-items: center;
+    border-radius: 9999px;
+    background-color: var(--color-ink);
+    color: var(--color-sidebar);
+    border: 2px solid var(--color-sidebar);
+    cursor: pointer; /* clickable — it's part of the avatar toggle label */
+    transition: transform 0.2s ease;
+  }
+  .app-avatar:hover .app-menu-badge { transform: scale(1.12); }
+
+  /* Three lines = the middle bar (.app-menu-bars) plus its ::before/::after. */
+  .app-menu-bars,
+  .app-menu-bars::before,
+  .app-menu-bars::after {
+    content: "";
+    display: block;
+    width: 0.72rem;
+    height: 2px;
+    border-radius: 2px;
+    background-color: currentColor;
+    transition: transform 0.3s ease, background-color 0.2s ease;
+  }
+  .app-menu-bars { position: relative; }
+  .app-menu-bars::before,
+  .app-menu-bars::after { position: absolute; left: 0; top: 0; }
+
+  /* Default (desktop, sidebar open) = X. Hide only the middle bar's own fill
+     (not the element, so its ::before/::after strokes stay visible). */
+  .app-menu-bars { background-color: transparent; }
+  .app-menu-bars::before { transform: rotate(45deg); }
+  .app-menu-bars::after { transform: rotate(-45deg); }
+
+  /* Collapsed (sidebar closed) animates back to a hamburger. */
+  #nav-toggle:checked ~ .app-avatar .app-menu-bars { background-color: currentColor; }
+  #nav-toggle:checked ~ .app-avatar .app-menu-bars::before { transform: translateY(-0.28rem); }
+  #nav-toggle:checked ~ .app-avatar .app-menu-bars::after { transform: translateY(0.28rem); }
 }
 
 /* Desktop: horizontal collapse via width. Default open; checked collapses.
@@ -247,19 +329,24 @@
     height: 100%;
   }
   .app-scrim { display: none; }
+  /* Right-align the sidebar socials to match the nav (desktop only). */
+  .app-social { justify-content: flex-end; }
 
-  /* Avatar large by default (open); small when collapsed. */
+  /* Avatar stays at the top-LEFT in both states (no left/right jump); large when
+     open, small when collapsed. The theme toggle owns the top-right. */
   .app-avatar {
     top: 2rem;
     left: 2rem;
+    right: auto;
     width: 7rem;
     height: 7rem;
   }
   #nav-toggle:checked ~ .app-avatar {
     top: 1rem;
     left: 1rem;
-    width: 2.75rem;
-    height: 2.75rem;
+    right: auto;
+    width: 4rem;
+    height: 4rem;
   }
 }
 
@@ -326,20 +413,8 @@ html[data-theme="light"] .app-theme-icon--sun { display: none; }
 html:has(#theme-toggle:checked) .app-theme-icon--moon,
 html[data-theme="light"] .app-theme-icon--moon { display: block; }
 
-@media (min-width: 1024px) {
-  /* Desktop default (sidebar open): top-right of the 360px menu bar. */
-  .app-theme-toggle {
-    top: 1.5rem;
-    left: calc(360px - 1rem - 2.25rem);
-    right: auto;
-  }
-  /* Sidebar collapsed: no menu bar, so sit at the top-right of the viewport. */
-  #nav-toggle:checked ~ .app-theme-toggle {
-    top: 1.5rem;
-    left: auto;
-    right: 1rem;
-  }
-}
+/* Desktop keeps the theme toggle at the top-right of the viewport (same as mobile
+   and the base rule) — consistent in both nav states, no left/right jump. */
 
 /* ---- LIGHT THEME ---------------------------------------------------------- */
 /* CSS-only flip: when #theme-toggle is checked we override the theme vars on <html>.
