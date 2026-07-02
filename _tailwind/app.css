@@ -70,7 +70,7 @@
   /* Sidebar nav link — right-aligned, bold (Ubuntu Mono Bold 20px in design).
      py keeps a comfortable >=44px tap target. */
   .nav-link {
-    @apply block py-1.5 text-right font-bold tracking-wide hover:underline hover:decoration-2 underline-offset-4;
+    @apply relative block py-1.5 text-right font-bold tracking-wide hover:underline hover:decoration-2 underline-offset-4;
   }
 }
 
@@ -113,15 +113,32 @@
 .rich a { text-decoration: underline; text-underline-offset: 2px; }
 .rich a:hover { text-decoration-thickness: 2px; }
 
-/* Small inline "opens off-site" glyph for new-tab / external links. */
-.external-icon {
-  display: inline-block;
-  width: 0.7em;
-  height: 0.7em;
-  margin-left: 0.2em;
-  vertical-align: 0.04em;
-  opacity: 0.75;
+/* "Opens off-site" arrow for new-tab nav items: sits in the right margin (absolutely
+   positioned) so the nav text stays right-edge aligned; dotted diagonal, no box,
+   sized to the text. */
+.nav-external {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 0.4em;
+  width: 0.8em;
+  height: 0.8em;
+  opacity: 0.7;
 }
+
+/* Sidebar social essentials: monochrome circle badges (the brand-colored set lives
+   on the Contact page). Neutral grey reads on both light and dark sidebars. */
+.app-social .app-social-link {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background-color: rgb(128 128 128 / 0.2);
+  transition: background-color 0.2s ease;
+}
+.app-social .app-social-link:hover { background-color: rgb(128 128 128 / 0.34); }
 .rich ul { list-style: disc; padding-left: 1.5em; }
 .rich ol { list-style: decimal; padding-left: 1.5em; }
 .rich li + li { margin-top: 0.25em; }
@@ -204,7 +221,7 @@
   padding: 0;
   border: 2px solid var(--color-avatar-border);
   border-radius: 9999px;
-  overflow: hidden;
+  overflow: visible; /* let the toggle caret badge overhang the bottom edge */
   cursor: pointer;
   background-color: var(--color-sidebar);
   transition: width 0.35s ease, height 0.35s ease, top 0.35s ease, left 0.35s ease, border-color 0.2s ease;
@@ -216,6 +233,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 9999px; /* round the image itself now that the avatar isn't clipping */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -230,31 +248,29 @@
   height: 7rem;
 }
 
-/* Toggle affordance: a subtle chevron bar across the bottom of the avatar so it
-   reads as a clickable menu control. Desktop only (mobile is left as-is); flips
-   with the open/collapsed state. Stays inside the avatar's circular clip. */
+/* Toggle affordance: a bold dropdown-style caret badge overhanging the avatar's
+   bottom edge, so it clearly reads as the clickable menu control. Desktop only
+   (mobile is left as-is); shown on the expanded avatar, hidden on the small
+   collapsed badge (which is obviously a button on its own). */
 .app-avatar-caret { display: none; }
 @media (min-width: 1024px) {
   .app-avatar-caret {
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 34%;
+    left: 50%;
+    bottom: -0.5rem;
+    transform: translateX(-50%);
+    width: 1.5rem;
+    height: 1.5rem;
     display: grid;
-    place-items: end center;
-    padding-bottom: 6%;
-    color: #fff;
-    background: linear-gradient(to top, rgb(0 0 0 / 0.55), transparent);
+    place-items: center;
+    border-radius: 9999px;
+    background-color: var(--color-ink);
+    color: var(--color-sidebar);
+    border: 2px solid var(--color-sidebar);
     pointer-events: none;
   }
-  .app-avatar-caret svg {
-    width: 42%;
-    height: 42%;
-    transition: transform 0.3s ease;
-  }
-  /* Expanded shows chevron-down (click to collapse); collapsed flips it up. */
-  #nav-toggle:checked ~ .app-avatar .app-avatar-caret svg { transform: rotate(180deg); }
+  .app-avatar-caret svg { width: 62%; height: 62%; }
+  #nav-toggle:checked ~ .app-avatar .app-avatar-caret { display: none; }
 }
 
 /* Desktop: horizontal collapse via width. Default open; checked collapses.
@@ -290,19 +306,19 @@
   /* Right-align the sidebar socials to match the nav (desktop only). */
   .app-social { justify-content: flex-end; }
 
-  /* Avatar at the top-RIGHT of the menu bar (open); when collapsed the sidebar is
-     gone, so it tucks to the top-right of the viewport. */
+  /* Avatar stays at the top-LEFT in both states (no left/right jump); large when
+     open, small when collapsed. The theme toggle owns the top-right. */
   .app-avatar {
     top: 2rem;
-    left: calc(360px - 9rem); /* 2rem margin + 7rem avatar from the sidebar's right edge */
+    left: 2rem;
     right: auto;
     width: 7rem;
     height: 7rem;
   }
   #nav-toggle:checked ~ .app-avatar {
-    top: 1.5rem;
-    left: auto;
-    right: 1rem;
+    top: 1rem;
+    left: 1rem;
+    right: auto;
     width: 2.75rem;
     height: 2.75rem;
   }
@@ -371,19 +387,8 @@ html[data-theme="light"] .app-theme-icon--sun { display: none; }
 html:has(#theme-toggle:checked) .app-theme-icon--moon,
 html[data-theme="light"] .app-theme-icon--moon { display: block; }
 
-@media (min-width: 1024px) {
-  /* Desktop: theme toggle at the top-LEFT (the avatar owns the top-right now). */
-  .app-theme-toggle {
-    top: 1.5rem;
-    left: 1.5rem;
-    right: auto;
-  }
-  #nav-toggle:checked ~ .app-theme-toggle {
-    top: 1.5rem;
-    left: 1rem;
-    right: auto;
-  }
-}
+/* Desktop keeps the theme toggle at the top-right of the viewport (same as mobile
+   and the base rule) — consistent in both nav states, no left/right jump. */
 
 /* ---- LIGHT THEME ---------------------------------------------------------- */
 /* CSS-only flip: when #theme-toggle is checked we override the theme vars on <html>.
