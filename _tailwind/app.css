@@ -302,37 +302,35 @@
 /* Desktop: horizontal collapse via width. Default open; checked collapses.
    Inner keeps a fixed width and is clipped, so content doesn't reflow mid-animation. */
 @media (min-width: 1024px) {
-  /* The sidebar is pinned to the viewport and never scrolls: the shell is exactly
-     one viewport tall and clips, so only the main column scrolls (internally). */
   .app-shell {
     /* Fluid sidebar width so it stays in proportion across desktop sizes
        (~16rem at 1024, capped at 24rem on wide screens). Shared by the sidebar
-       and its inner panel so they can't drift during the collapse animation. */
+       and the main offset so they can't drift during the collapse animation. */
     --sidebar-w: clamp(16rem, 20vw, 24rem);
     flex-direction: row;
+  }
+  /* The sidebar is pinned to the viewport (fixed) so it never scrolls; the page
+     scrolls normally via the single browser scrollbar and the sidebar stays put.
+     The main column flows in the document, offset by the sidebar's width. */
+  .app-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
     height: 100vh;
     height: 100dvh;
-    overflow: hidden;
-  }
-  .app-main {
-    height: 100%;
-    min-height: 0;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-  }
-  /* Reset the mobile fixed-panel behaviour: sidebar is an in-flow left column. */
-  .app-sidebar {
-    position: static;
     transform: none;
     max-height: none;
     display: block;
     width: var(--sidebar-w);
     overflow: hidden;
-    flex-shrink: 0;
     /* Desktop default is open -> visible; delay re-hiding until the collapse
        animation finishes (see checked rule). */
     visibility: visible;
     transition: width 0.35s ease, visibility 0s linear 0s;
+  }
+  .app-main {
+    margin-left: var(--sidebar-w);
+    transition: margin-left 0.35s ease;
   }
   #nav-toggle:checked ~ .app-shell .app-sidebar {
     width: 0;
@@ -341,6 +339,7 @@
     visibility: hidden;
     transition: width 0.35s ease, visibility 0s linear 0.35s;
   }
+  #nav-toggle:checked ~ .app-shell .app-main { margin-left: 0; }
   .app-sidebar-inner {
     position: relative;
     width: var(--sidebar-w);
