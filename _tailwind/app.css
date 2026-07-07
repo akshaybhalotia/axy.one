@@ -305,6 +305,10 @@
   /* The sidebar is pinned to the viewport and never scrolls: the shell is exactly
      one viewport tall and clips, so only the main column scrolls (internally). */
   .app-shell {
+    /* Fluid sidebar width so it stays in proportion across desktop sizes
+       (~16rem at 1024, capped at 24rem on wide screens). Shared by the sidebar
+       and its inner panel so they can't drift during the collapse animation. */
+    --sidebar-w: clamp(16rem, 20vw, 24rem);
     flex-direction: row;
     height: 100vh;
     height: 100dvh;
@@ -322,7 +326,7 @@
     transform: none;
     max-height: none;
     display: block;
-    width: 360px;
+    width: var(--sidebar-w);
     overflow: hidden;
     flex-shrink: 0;
     /* Desktop default is open -> visible; delay re-hiding until the collapse
@@ -339,7 +343,7 @@
   }
   .app-sidebar-inner {
     position: relative;
-    width: 360px;
+    width: var(--sidebar-w);
     height: 100%;
   }
   .app-scrim { display: none; }
@@ -363,8 +367,9 @@
     top: 2rem;
     left: 2rem;
     right: auto;
-    width: 7rem;
-    height: 7rem;
+    /* Scale with the sidebar (~0.3 of its width) so proportions hold. */
+    width: clamp(5rem, 6vw, 7rem);
+    height: clamp(5rem, 6vw, 7rem);
   }
   #nav-toggle:checked ~ .app-avatar {
     top: 1rem;
