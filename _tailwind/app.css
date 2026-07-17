@@ -346,19 +346,21 @@
     height: 100%;
   }
   .app-scrim { display: none; }
-  /* Socials pinned to the bottom-right, out of flow, so they don't offset the
+  /* Socials pinned to the bottom-left, out of flow, so they don't offset the
      nav's centering. */
   .app-social {
     position: absolute;
-    right: 2.5rem;
+    left: 2.5rem;
+    right: auto;
     bottom: 2.5rem;
     padding-top: 0;
-    justify-content: flex-end;
+    justify-content: flex-start;
   }
-  /* Center the nav block in the full viewport height (flex-based): with the
-     socials out of flow, the nav fills the inner and centers its items.
-     Overrides the mobile mt-28 top spacing. */
-  .app-nav { margin-top: 0; flex: 1 1 auto; justify-content: center; }
+  /* Center the nav block in the full viewport height (flex-based); left-align the
+     items so the whole column matches the top-left avatar.
+     Overrides the mobile mt-28 top spacing and right alignment. */
+  .app-nav { margin-top: 0; flex: 1 1 auto; justify-content: center; align-items: flex-start; }
+  .app-nav .nav-link { text-align: left; }
 
   /* Avatar stays at the top-LEFT in both states (no left/right jump); large when
      open, small when collapsed. The theme toggle owns the top-right. */
