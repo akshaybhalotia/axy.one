@@ -263,13 +263,20 @@
     display: grid;
     place-items: center;
     border-radius: 9999px;
-    background-color: var(--color-ink);
-    color: var(--color-sidebar);
-    border: 2px solid var(--color-sidebar);
+    /* Low-attention affordance: a soft translucent disc (theme-agnostic grey works
+       in light + dark) that only firms up on hover/focus. */
+    background-color: rgb(128 128 128 / 0.28);
+    color: var(--color-ink);
+    opacity: 0.55;
     cursor: pointer; /* clickable — it's part of the avatar toggle label */
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
   }
-  .app-avatar:hover .app-menu-badge { transform: scale(1.12); }
+  .app-avatar:hover .app-menu-badge,
+  .app-avatar:focus-within .app-menu-badge {
+    opacity: 1;
+    background-color: rgb(128 128 128 / 0.5);
+    transform: scale(1.12);
+  }
 
   /* Three lines = the middle bar (.app-menu-bars) plus its ::before/::after. */
   .app-menu-bars,
@@ -287,16 +294,16 @@
   .app-menu-bars::before,
   .app-menu-bars::after { position: absolute; left: 0; top: 0; }
 
-  /* Default (desktop, sidebar open) = X. Hide only the middle bar's own fill
-     (not the element, so its ::before/::after strokes stay visible). */
-  .app-menu-bars { background-color: transparent; }
-  .app-menu-bars::before { transform: rotate(45deg); }
-  .app-menu-bars::after { transform: rotate(-45deg); }
+  /* Default (menu collapsed) = hamburger. */
+  .app-menu-bars { background-color: currentColor; }
+  .app-menu-bars::before { transform: translateY(-0.28rem); }
+  .app-menu-bars::after { transform: translateY(0.28rem); }
 
-  /* Collapsed (sidebar closed) animates back to a hamburger. */
-  #nav-toggle:checked ~ .app-avatar .app-menu-bars { background-color: currentColor; }
-  #nav-toggle:checked ~ .app-avatar .app-menu-bars::before { transform: translateY(-0.28rem); }
-  #nav-toggle:checked ~ .app-avatar .app-menu-bars::after { transform: translateY(0.28rem); }
+  /* Menu open (checked) animates to an X. Hide only the middle bar's own fill
+     (not the element, so its ::before/::after strokes stay visible). */
+  #nav-toggle:checked ~ .app-avatar .app-menu-bars { background-color: transparent; }
+  #nav-toggle:checked ~ .app-avatar .app-menu-bars::before { transform: rotate(45deg); }
+  #nav-toggle:checked ~ .app-avatar .app-menu-bars::after { transform: rotate(-45deg); }
 }
 
 /* Desktop: horizontal collapse via width. Default open; checked collapses.
@@ -321,25 +328,25 @@
     transform: none;
     max-height: none;
     display: block;
-    width: var(--sidebar-w);
-    overflow: hidden;
-    /* Desktop default is open -> visible; delay re-hiding until the collapse
-       animation finishes (see checked rule). */
-    visibility: visible;
-    transition: width 0.35s ease, visibility 0s linear 0s;
-  }
-  .app-main {
-    margin-left: var(--sidebar-w);
-    transition: margin-left 0.35s ease;
-  }
-  #nav-toggle:checked ~ .app-shell .app-sidebar {
+    /* Collapsed by default on first load; opening it checks the toggle. */
     width: 0;
-    transform: none;
-    /* Collapsed: pull the nav links out of the tab order / a11y tree once hidden. */
+    overflow: hidden;
+    /* Collapsed -> hidden (out of tab order / a11y tree); delay so the close
+       animation still plays. Opening flips it visible immediately. */
     visibility: hidden;
     transition: width 0.35s ease, visibility 0s linear 0.35s;
   }
-  #nav-toggle:checked ~ .app-shell .app-main { margin-left: 0; }
+  .app-main {
+    margin-left: 0;
+    transition: margin-left 0.35s ease;
+  }
+  #nav-toggle:checked ~ .app-shell .app-sidebar {
+    width: var(--sidebar-w);
+    transform: none;
+    visibility: visible;
+    transition: width 0.35s ease, visibility 0s linear 0s;
+  }
+  #nav-toggle:checked ~ .app-shell .app-main { margin-left: var(--sidebar-w); }
   .app-sidebar-inner {
     position: relative;
     width: var(--sidebar-w);
@@ -362,22 +369,22 @@
   .app-nav { margin-top: 0; flex: 1 1 auto; justify-content: center; align-items: flex-start; }
   .app-nav .nav-link { text-align: left; }
 
-  /* Avatar stays at the top-LEFT in both states (no left/right jump); large when
-     open, small when collapsed. The theme toggle owns the top-right. */
+  /* Avatar top-LEFT in both states (no jump); small (collapsed) by default, grows
+     when the menu is opened. The theme toggle owns the top-right. */
   .app-avatar {
+    top: 1rem;
+    left: 1rem;
+    right: auto;
+    width: 4rem;
+    height: 4rem;
+  }
+  #nav-toggle:checked ~ .app-avatar {
     top: 2rem;
     left: 2rem;
     right: auto;
     /* Scale with the sidebar (~0.3 of its width) so proportions hold. */
     width: clamp(5rem, 6vw, 7rem);
     height: clamp(5rem, 6vw, 7rem);
-  }
-  #nav-toggle:checked ~ .app-avatar {
-    top: 1rem;
-    left: 1rem;
-    right: auto;
-    width: 4rem;
-    height: 4rem;
   }
 }
 
