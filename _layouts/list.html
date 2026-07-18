@@ -46,7 +46,7 @@ page.filter_value    = the category slug or ISO date (optional)
     {%- for cat in cats -%}
       {%- assign active = false -%}
       {%- if page.filter_type == "category" and page.filter_value == cat.slug -%}{%- assign active = true -%}{%- endif -%}
-      {%- include category-chip.html label=cat.label url=cat.url index=forloop.index0 active=active -%}
+      {%- include category-chip.html label=cat.label url=cat.url active=active -%}
     {%- endfor -%}
   </div>
   {%- endif -%}
