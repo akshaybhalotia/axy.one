@@ -3,6 +3,26 @@ layout: default
 ---
 <section>
   <h1 class="hero-caret font-head text-2xl xs:text-3xl desk:text-[2.5rem] font-bold leading-snug break-words">{{ page.heading | default: site.title }}</h1>
+  {%- comment -%} Progressive enhancement: type the headline in. No-JS (and reduced
+  motion) leaves the full headline + blinking cursor untouched. Runs inline right
+  after the h1 so it clears the text before paint (no flash). {%- endcomment -%}
+  <script>
+    (function () {
+      var h = document.currentScript.previousElementSibling;
+      if (!h || !h.classList.contains("hero-caret")) return;
+      var full = h.textContent;
+      h.setAttribute("aria-label", full); // screen readers get the whole heading, not char-by-char
+      try { if (matchMedia("(prefers-reduced-motion: reduce)").matches) return; } catch (e) { return; }
+      h.classList.add("typing");
+      h.textContent = "";
+      var i = 0;
+      (function step() {
+        h.textContent = full.slice(0, i);
+        if (i++ < full.length) { setTimeout(step, 62); }
+        else { h.classList.remove("typing"); }
+      })();
+    })();
+  </script>
   <div class="rich mt-10 text-lg leading-relaxed">{{ content }}</div>
 </section>
 

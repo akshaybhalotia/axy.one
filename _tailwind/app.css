@@ -169,6 +169,8 @@
 }
 @keyframes hero-caret-blink { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .hero-caret::after { animation: none; } }
+/* While the JS typewriter is running, hold the cursor solid (it blinks once done). */
+.hero-caret.typing::after { animation: none; opacity: 1; }
 .rich blockquote { border-left: 3px solid rgb(255 255 255 / 0.3); padding-left: 1rem; opacity: 0.85; }
 .rich img { border-radius: var(--radius-card); }
 
