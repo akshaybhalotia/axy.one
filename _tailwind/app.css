@@ -225,14 +225,27 @@
 .app-main {
   flex: 1 1 auto;
   min-width: 0;
+  /* Column so the footer can pin to the bottom, anchoring short pages. */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
-/* Centered content column — one comfortable reading measure (~10 words/line in
-   Ubuntu Mono at 18px), centered in both nav states. */
+/* Centered content column — one comfortable reading measure, centered in both
+   nav states. Shared by the content and the footer. */
 .app-main-inner {
   width: 100%;
   max-width: 42rem;
   margin-inline: auto;
 }
+/* Colophon/footer: quiet closing edge on every page; pushed to the bottom on
+   short pages via margin-top:auto, sits just below content on long ones. */
+.app-footer {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-ink) 15%, transparent);
+}
+.app-footer a:hover { text-decoration: underline; text-underline-offset: 4px; }
 
 /* The avatar doubles as the menu/collapse toggle (a <label>). Collapsed = small
    corner badge; expanded = large. Position + size animate between the two.
