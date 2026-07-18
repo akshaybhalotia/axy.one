@@ -78,6 +78,16 @@
       <div class="app-main-inner">
         {{ content }}
       </div>
+      <footer class="app-footer app-main-inner text-sm text-ink/70">
+        <p>Built with <span aria-hidden="true">❤️ 🚬</span> · Jekyll + Tailwind · set in Monaspace</p>
+        <div class="mt-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+          <span>{{ site.author.name | default: site.title }} · © {{ site.time | date: "%Y" }} · Last built {{ site.time | date: "%Y-%m-%d" }}</span>
+          <span class="flex gap-4">
+            <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+            <a href="https://github.com/akshaybhalotia/axy.one" target="_blank" rel="noopener">Source <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+          </span>
+        </div>
+      </footer>
     </main>
   </div>
 </body>
