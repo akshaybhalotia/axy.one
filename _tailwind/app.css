@@ -10,9 +10,20 @@
 @source "../work/**/*.html";
 @source "../posts/**/*.html";
 
+/* Monaspace superfamily (self-hosted, SIL OFL). Each face loads from fontsource's
+   CDN first (@latest) and falls back to the pinned local copy if that URL errors.
+   Neon = body/code (neo-grotesque); a second style = display (set via --font-head). */
+@font-face { font-family: "Monaspace Neon"; font-weight: 400; font-style: normal; font-display: swap;
+  src: url("https://cdn.jsdelivr.net/npm/@fontsource/monaspace-neon/files/monaspace-neon-latin-400-normal.woff2") format("woff2"), url("../fonts/monaspace-neon-400.woff2") format("woff2"); }
+@font-face { font-family: "Monaspace Neon"; font-weight: 700; font-style: normal; font-display: swap;
+  src: url("https://cdn.jsdelivr.net/npm/@fontsource/monaspace-neon/files/monaspace-neon-latin-700-normal.woff2") format("woff2"), url("../fonts/monaspace-neon-700.woff2") format("woff2"); }
+@font-face { font-family: "Monaspace Radon"; font-weight: 700; font-style: normal; font-display: swap;
+  src: url("https://cdn.jsdelivr.net/npm/@fontsource/monaspace-radon/files/monaspace-radon-latin-700-normal.woff2") format("woff2"), url("../fonts/monaspace-radon-700.woff2") format("woff2"); }
+
 @theme {
-  /* Type — Ubuntu Mono (Regular 400 / Bold 700) */
-  --font-mono: "Ubuntu Mono", ui-monospace, "SF Mono", monospace;
+  /* Type — Monaspace Neon body/code + a display face for headings (--font-head). */
+  --font-mono: "Monaspace Neon", ui-monospace, "SF Mono", monospace;
+  --font-head: "Monaspace Radon", "Monaspace Neon", ui-monospace, monospace;
   --default-font-family: var(--font-mono);
 
   /* Surfaces — warm near-neutrals (not flat pure black/grey) for a richer feel.
@@ -132,9 +143,16 @@
 .rich ul { list-style: disc; padding-left: 1.5em; }
 .rich ol { list-style: decimal; padding-left: 1.5em; }
 .rich li + li { margin-top: 0.25em; }
+/* Texture healing (calt) everywhere; coding ligatures only inside code, where the
+   == => != -> operators actually mean something (kept out of prose). */
+:root { font-feature-settings: "calt" 1; }
+.rich code, .rich pre { font-feature-settings: "calt" 1, "liga" 1, "ss01" 1, "ss02" 1, "ss03" 1, "ss04" 1, "ss05" 1, "ss06" 1, "ss07" 1, "ss08" 1; }
 .rich code { background-color: rgb(0 0 0 / 0.3); padding: 0.1em 0.35em; border-radius: 0.25rem; font-size: 0.9em; }
 .rich pre { background-color: rgb(0 0 0 / 0.35); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; }
 .rich pre code { background: none; padding: 0; }
+
+/* Display headings use the paired Monaspace style with slightly tighter tracking. */
+.font-head { letter-spacing: -0.01em; }
 .rich blockquote { border-left: 3px solid rgb(255 255 255 / 0.3); padding-left: 1rem; opacity: 0.85; }
 .rich img { border-radius: var(--radius-card); }
 

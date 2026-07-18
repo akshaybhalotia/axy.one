@@ -5,7 +5,7 @@ permalink: /contact/
 description: Get in touch with Akshay Bhalotia — email or find me on any of these.
 ---
 <section>
-  <h1 class="text-2xl xs:text-3xl desk:text-[2.5rem] font-bold leading-snug break-words">Get in touch</h1>
+  <h1 class="font-head text-2xl xs:text-3xl desk:text-[2.5rem] font-bold leading-snug break-words">Get in touch</h1>
 
   <div class="rich mt-10 text-lg desk:text-xl leading-relaxed">
     <p>I like getting to know people — personally and professionally. Catch me for a conversation, and let's see how we can help each other!</p>
@@ -34,7 +34,7 @@ description: Get in touch with Akshay Bhalotia — email or find me on any of th
   labelled here. Reuses .app-social-link so they inherit the focus-visible ring,
   and _data/social.yml + icon.html so the set stays in sync with the sidebar. {%- endcomment -%}
   {%- if site.data.social and site.data.social.size > 0 -%}
-  <h2 class="mt-16 text-2xl desk:text-3xl font-bold">Find me elsewhere</h2>
+  <h2 class="font-head mt-16 text-2xl desk:text-3xl font-bold">Find me elsewhere</h2>
   <ul class="mt-6 grid grid-cols-1 xs:grid-cols-2 gap-4">
     {%- for s in site.data.social -%}
     <li>
