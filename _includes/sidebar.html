@@ -6,7 +6,7 @@
   get a diagonal ↗ so it's clear they leave the site. {%- endcomment -%}
   <nav class="app-nav mt-28 flex flex-col items-end gap-3 text-xl" aria-label="Primary">
     {%- for item in site.data.nav -%}
-    <a class="nav-link" href="{{ item.url | relative_url }}"{% if item.new_tab %} target="_blank" rel="noopener"{% endif %}>{{ item.label }}{% if item.new_tab %}<svg class="nav-external" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="0.01 1.8" aria-hidden="true"><path d="M1 9 9 1"/><path d="M4 1h5v5"/></svg><span class="sr-only"> (opens in a new tab)</span>{% endif %}</a>
+    <a class="nav-link" href="{{ item.url | relative_url }}"{% if item.new_tab %} target="_blank" rel="noopener"{% endif %}>{{ item.label }}{% if item.new_tab %}<svg class="ext-arrow" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="0.01 1.8" aria-hidden="true"><path d="M1 9 9 1"/><path d="M4 1h5v5"/></svg><span class="sr-only"> (opens in a new tab)</span>{% endif %}</a>
     {%- endfor -%}
   </nav>
 

@@ -114,17 +114,15 @@
 .rich a { text-decoration: underline; text-underline-offset: 2px; }
 .rich a:hover { text-decoration-thickness: 2px; }
 
-/* "Opens off-site" arrow for new-tab nav items: sits in the right margin (absolutely
-   positioned) so the nav text stays right-edge aligned; dotted diagonal, no box,
-   sized to the text. */
-.nav-external {
-  position: absolute;
-  left: 100%;
-  top: 50%;
-  transform: translateY(-50%);
-  margin-left: 0.4em;
-  width: 0.9em;
-  height: 0.9em;
+/* Canonical "opens in a new tab" arrow (dotted diagonal). Reused on every external
+   link — the nav's new-tab items and the ext-link include — as an inline glyph
+   sized to the text, currentColor so it adapts to theme. */
+.ext-arrow {
+  display: inline-block;
+  width: 0.82em;
+  height: 0.82em;
+  margin-left: 0.15em;
+  vertical-align: 0.02em;
   opacity: 0.7;
 }
 
@@ -237,6 +235,9 @@
   width: 100%;
   max-width: 42rem;
   margin-inline: auto;
+  /* Keep the footer separator clear of the content, even on long pages where the
+     footer's margin-top:auto collapses to 0. */
+  margin-bottom: 3.5rem;
 }
 /* Colophon/footer: quiet closing edge on every page; pushed to the bottom on
    short pages via margin-top:auto, sits just below content on long ones. */
