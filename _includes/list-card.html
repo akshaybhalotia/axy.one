@@ -4,8 +4,9 @@
 <a href="{{ item.url | relative_url }}" class="flex rounded-card bg-card text-card-ink shadow-card overflow-hidden hover:opacity-95">
   <div class="flex-1 min-w-0 p-6 flex flex-col min-h-[11rem]">
     <h2 class="text-lg desk:text-xl font-bold leading-snug">{{ item.title }}</h2>
-    {%- if item.subtitle -%}
-    <p class="mt-2 text-sm text-card-muted line-clamp-2">{{ item.subtitle }}</p>
+    {%- assign blurb = item.subtitle | default: item.excerpt -%}
+    {%- if blurb -%}
+    <p class="mt-2 text-sm text-card-muted line-clamp-2">{{ blurb | strip_html }}</p>
     {%- endif -%}
     <div class="mt-auto pt-6 flex items-end justify-between gap-4 text-sm">
       <span>{{ item.author | default: site.title }}</span>
