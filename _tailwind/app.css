@@ -329,25 +329,25 @@
     transform: none;
     max-height: none;
     display: block;
-    /* Collapsed by default on first load; opening it checks the toggle. */
-    width: 0;
-    overflow: hidden;
-    /* Collapsed -> hidden (out of tab order / a11y tree); delay so the close
-       animation still plays. Opening flips it visible immediately. */
-    visibility: hidden;
-    transition: width 0.35s ease, visibility 0s linear 0.35s;
-  }
-  .app-main {
-    margin-left: 0;
-    transition: margin-left 0.35s ease;
-  }
-  #nav-toggle:checked ~ .app-shell .app-sidebar {
+    /* Open by default on desktop (the nav is wayfinding); the toggle collapses it. */
     width: var(--sidebar-w);
-    transform: none;
+    overflow: hidden;
     visibility: visible;
     transition: width 0.35s ease, visibility 0s linear 0s;
   }
-  #nav-toggle:checked ~ .app-shell .app-main { margin-left: var(--sidebar-w); }
+  .app-main {
+    margin-left: var(--sidebar-w);
+    transition: margin-left 0.35s ease;
+  }
+  #nav-toggle:checked ~ .app-shell .app-sidebar {
+    width: 0;
+    transform: none;
+    /* Collapsed -> hidden (out of tab order / a11y tree); delay so the close
+       animation still plays. */
+    visibility: hidden;
+    transition: width 0.35s ease, visibility 0s linear 0.35s;
+  }
+  #nav-toggle:checked ~ .app-shell .app-main { margin-left: 0; }
   .app-sidebar-inner {
     position: relative;
     width: var(--sidebar-w);
@@ -370,16 +370,9 @@
   .app-nav { margin-top: 0; flex: 1 1 auto; justify-content: center; align-items: flex-start; }
   .app-nav .nav-link { text-align: left; }
 
-  /* Avatar top-LEFT in both states (no jump); small (collapsed) by default, grows
-     when the menu is opened. The theme toggle owns the top-right. */
+  /* Avatar top-LEFT in both states (no jump); large when open (default), small
+     when collapsed. The theme toggle owns the top-right. */
   .app-avatar {
-    top: 1rem;
-    left: 1rem;
-    right: auto;
-    width: 4rem;
-    height: 4rem;
-  }
-  #nav-toggle:checked ~ .app-avatar {
     top: 2rem;
     left: 2rem;
     right: auto;
@@ -387,6 +380,22 @@
     width: clamp(5rem, 6vw, 7rem);
     height: clamp(5rem, 6vw, 7rem);
   }
+  #nav-toggle:checked ~ .app-avatar {
+    top: 1rem;
+    left: 1rem;
+    right: auto;
+    width: 4rem;
+    height: 4rem;
+  }
+
+  /* Desktop defaults to open, so the badge is inverted vs mobile: X when open
+     (default), hamburger when collapsed (checked). */
+  .app-menu-bars { background-color: transparent; }
+  .app-menu-bars::before { transform: rotate(45deg); }
+  .app-menu-bars::after { transform: rotate(-45deg); }
+  #nav-toggle:checked ~ .app-avatar .app-menu-bars { background-color: currentColor; }
+  #nav-toggle:checked ~ .app-avatar .app-menu-bars::before { transform: translateY(-0.26rem); }
+  #nav-toggle:checked ~ .app-avatar .app-menu-bars::after { transform: translateY(0.26rem); }
 }
 
 /* ---- Category pill: "#" prefix, hover, and inverted active state --------- */
