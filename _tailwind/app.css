@@ -255,8 +255,8 @@
    on hover/keyboard focus. */
 .app-menu-badge {
   position: absolute;
-  right: -0.3rem;
-  bottom: -0.3rem;
+  right: -0.5rem;
+  bottom: -0.5rem;
   width: 1.4rem;
   height: 1.4rem;
   display: grid;
