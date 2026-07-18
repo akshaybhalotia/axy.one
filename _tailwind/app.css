@@ -26,19 +26,6 @@
   --color-card-muted: #4f4c47; /* card subtitle/secondary */
   --color-toggle: #57534d; /* avatar menu-badge disc — muted, visible on near-black */
 
-  /* Category pill palette (8 colors, cycled by index). White chip label text must
-     meet WCAG AA (>=4.5:1 for normal text); the olive/green/teal/orange hues from
-     the Figma palette failed, so they are darkened just enough to pass while keeping
-     the same hue. Passing originals (cat-1/4/8) are left untouched. */
-  --color-cat-1: #9300d9; /* 6.48:1 */
-  --color-cat-2: #00881e; /* was #008e1f (4.30) -> 4.63:1 */
-  --color-cat-3: #00838b; /* was #008b94 (4.10) -> 4.55:1 */
-  --color-cat-4: #c00000; /* 6.48:1 */
-  --color-cat-5: #608100; /* was #7eaa00 (2.75) -> 4.53:1 */
-  --color-cat-6: #c25200; /* was #d85b00 (3.88) -> 4.67:1 */
-  --color-cat-7: #008656; /* was #00b071 (2.82) -> 4.62:1 */
-  --color-cat-8: #d1007e; /* 5.23:1 */
-
   /* Chrome / accent colors that aren't surfaces. These previously appeared as
      hardcoded #fff / rgba whites scattered through the component CSS; promoting them
      to theme vars lets the light theme flip them in one place (see the
@@ -47,9 +34,7 @@
   --color-avatar-border: rgb(255 255 255 / 0.6); /* avatar badge ring */
   --color-avatar-border-hover: #ffffff;
   --color-scrim: rgb(0 0 0 / 0.5); /* mobile menu backdrop dim */
-  --color-chip-active-ring: #ffffff; /* active category pill ring */
-  --color-all-pill-bg: rgb(255 255 255 / 0.15); /* "All" pill background */
-  --color-all-pill-ink: #ffffff; /* "All" pill label */
+  --color-all-pill-bg: rgb(255 255 255 / 0.15); /* avatar "AB" fallback bg */
   --color-social-border: transparent; /* badge border (light theme reveals it) */
 
   /* Radii & shadow */
@@ -63,10 +48,14 @@
 }
 
 @layer components {
-  /* Category pill — bg color applied per-instance via .cat-N (see below).
-     min-h keeps the tap target >=24px even for short labels. */
+  /* Category pill — monochrome outline that stays on the warm palette. A muted "#"
+     prefix (see .chip::before) reads it as a tag; the active/"All"-selected pill
+     inverts to a solid fill. min-h keeps the tap target >=24px for short labels. */
   .chip {
-    @apply inline-flex items-center justify-center rounded-pill px-4 py-1.5 min-h-[2rem] text-white;
+    @apply inline-flex items-center justify-center rounded-pill px-3.5 py-1.5 min-h-[2rem];
+    border: 1px solid color-mix(in srgb, var(--color-ink) 30%, transparent);
+    color: var(--color-ink);
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
   }
   /* Sidebar nav link — right-aligned, bold (Ubuntu Mono Bold 20px in design).
      py keeps a comfortable >=44px tap target. */
@@ -382,27 +371,22 @@
   }
 }
 
-/* Category color helpers, cycled 1..8 by the chip include */
-.cat-1 { background-color: var(--color-cat-1); }
-.cat-2 { background-color: var(--color-cat-2); }
-.cat-3 { background-color: var(--color-cat-3); }
-.cat-4 { background-color: var(--color-cat-4); }
-.cat-5 { background-color: var(--color-cat-5); }
-.cat-6 { background-color: var(--color-cat-6); }
-.cat-7 { background-color: var(--color-cat-7); }
-.cat-8 { background-color: var(--color-cat-8); }
+/* ---- Category pill: "#" prefix, hover, and inverted active state --------- */
+/* A muted hash marks each tag; the "All" scope pill has no hash. */
+.chip::before { content: "#"; margin-right: 0.05em; opacity: 0.5; }
+.chip-all::before { content: none; }
 
-/* ---- Category pill active state + "All" pill ----------------------------- */
-/* Replaces the old hardcoded `ring-white` / `bg-white/15` utilities so the active
-   ring and the neutral "All" pill follow the theme vars (the white ring is invisible
-   on a white card in light mode). */
-.chip-active {
-  outline: 2px solid var(--color-chip-active-ring);
-  outline-offset: 2px;
+.chip:not(.chip-active):hover {
+  border-color: color-mix(in srgb, var(--color-ink) 55%, transparent);
+  background-color: color-mix(in srgb, var(--color-ink) 8%, transparent);
 }
-.chip-all {
-  background-color: var(--color-all-pill-bg);
-  color: var(--color-all-pill-ink);
+
+/* Active filter (a category page, or "All" on the unfiltered list) inverts to a
+   solid ink fill — built from theme vars so it flips correctly in both modes. */
+.chip-active {
+  background-color: var(--color-ink);
+  color: var(--color-panel);
+  border-color: var(--color-ink);
 }
 
 /* ---- Social / email badges ----------------------------------------------- */
@@ -477,9 +461,7 @@ html[data-theme="light"] {
   --color-avatar-border: rgb(0 0 0 / 0.5);
   --color-avatar-border-hover: #000000;
   --color-scrim: rgb(0 0 0 / 0.45);
-  --color-chip-active-ring: #1a1a1a;
-  --color-all-pill-bg: rgb(0 0 0 / 0.08); /* visible grey pill on the light panel */
-  --color-all-pill-ink: #1a1a1a;          /* 12:1 on the resolved pill bg */
+  --color-all-pill-bg: rgb(0 0 0 / 0.08); /* avatar "AB" fallback bg on the light panel */
   --color-social-border: rgb(0 0 0 / 0.18); /* reveals the white-circle badges */
 }
 

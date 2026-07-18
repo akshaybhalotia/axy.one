@@ -4,5 +4,5 @@ Row of category pills (no active state). Params: categories (array), base (e.g. 
 {%- for cat in include.categories -%}
   {%- assign cslug = cat | slugify -%}
   {%- assign curl = include.base | append: "/" | append: cslug -%}
-  {%- include category-chip.html label=cat url=curl index=forloop.index0 -%}
+  {%- include category-chip.html label=cat url=curl -%}
 {%- endfor -%}
