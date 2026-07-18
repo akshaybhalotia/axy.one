@@ -78,15 +78,9 @@
       <div class="app-main-inner">
         {{ content }}
       </div>
-      <footer class="app-footer app-main-inner text-sm text-ink/70">
-        <p>Built with <span aria-hidden="true">❤️ 🚬</span> · Jekyll + Tailwind · set in Monaspace</p>
-        <div class="mt-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
-          <span>{{ site.author.name | default: site.title }} · © {{ site.time | date: "%Y" }} · Last built {{ site.time | date: "%Y-%m-%d" }}</span>
-          <span class="flex gap-4">
-            <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
-            <a href="https://github.com/akshaybhalotia/axy.one" target="_blank" rel="noopener">Source <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
-          </span>
-        </div>
+      {%- assign feed_url = '/feed.xml' | relative_url -%}
+      <footer class="app-footer text-xs text-ink/70">
+        <p>Built with {% include ext-link.html href="https://jekyllrb.com/" label="Jekyll" %} + {% include ext-link.html href="https://tailwindcss.com/" label="Tailwind" %} + <span aria-hidden="true">❤️</span> + <span aria-hidden="true">🚬</span> · set in {% include ext-link.html href="https://monaspace.githubnext.com/" label="Monaspace" %} · {% include ext-link.html href="https://creativecommons.org/licenses/by-nc-sa/4.0/" label="CC BY-NC-SA 4.0" %} · {% include ext-link.html href=feed_url label="RSS" %} · {% include ext-link.html href="https://github.com/akshaybhalotia/axy.one" label="Source" %} · Last built {{ site.time | date: "%Y-%m-%d" }}</p>
       </footer>
     </main>
   </div>
