@@ -20,6 +20,9 @@
 
 <div align="center">
 
+[![Build](https://github.com/akshaybhalotia/axy.one/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/akshaybhalotia/axy.one/actions/workflows/build.yml)
+[![Release](https://github.com/akshaybhalotia/axy.one/actions/workflows/release-please.yml/badge.svg?branch=main)](https://github.com/akshaybhalotia/axy.one/actions/workflows/release-please.yml)
+[![Link check](https://github.com/akshaybhalotia/axy.one/actions/workflows/link-check.yml/badge.svg)](https://github.com/akshaybhalotia/axy.one/actions/workflows/link-check.yml)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/c513a722-6826-4a47-b022-c4a8b987ee00/deploy-status)](https://app.netlify.com/sites/peaceful-jepsen-c4fa03/deploys)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
