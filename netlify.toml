@@ -1,8 +1,9 @@
 [build]
-  command = "JEKYLL_ENV=production bundle exec jekyll build"
+  # `npm run build` = vendor fonts/icons from npm + compile Tailwind + jekyll build.
+  # Netlify auto-installs both npm (package.json) and Bundler (Gemfile) deps first.
+  command = "JEKYLL_ENV=production npm run build"
   publish = "_site"
 
 [build.environment]
-  # Match .ruby-version; the Tailwind standalone binary (linux-x64) is fetched
-  # by _plugins/tailwind.rb at build time, so no Node toolchain is needed.
-  RUBY_VERSION = "3.4.9"
+  RUBY_VERSION = "3.4.9" # keep in sync with .ruby-version
+  NODE_VERSION = "22"    # keep in sync with .nvmrc / package.json engines
