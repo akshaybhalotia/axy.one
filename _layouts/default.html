@@ -1,75 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
-  {% if page.description or site.description %}
-  <meta name="description" content="{{ page.description | default: site.description | strip_newlines }}">
-  {% endif %}
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="{{ '/assets/fonts/monaspace-neon-400.woff2' | relative_url }}">
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="{{ '/assets/fonts/monaspace-radon-700.woff2' | relative_url }}">
-  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
-  {%- feed_meta -%}
-  {%- comment -%} feed_meta only advertises the posts feed; advertise the work feed too. {%- endcomment -%}
-  <link rel="alternate" type="application/atom+xml" href="{{ '/work/feed.xml' | absolute_url }}" title="{{ site.title }} | Work">
-  <script>
-    /* Progressive enhancement (the theme also works without JS via the checkbox).
-       Resolve the initial theme before paint — saved choice, else OS preference —
-       so there's no flash. The checkbox is synced to this in the body. */
-    try {
-      var t = localStorage.getItem("theme")
-           || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
-      if (t === "light") document.documentElement.dataset.theme = "light";
-    } catch (e) {}
-  </script>
+  {%- include head.html -%}
 </head>
 <body class="bg-panel text-ink font-mono antialiased">
-  {%- comment -%} Visible-on-focus skip link so keyboard users can jump past the
-  nav toggle straight to the page content. {%- endcomment -%}
-  <a href="#main-content" class="skip-link">Skip to content</a>
-
-  {%- comment -%} Pure-CSS collapse: the hidden checkbox holds the state and the
-  avatar <label> toggles it — no JavaScript required. Defaults come from CSS
-  (desktop open, mobile collapsed). The checkbox is the real control, so it carries
-  the accessible name and the expanded/collapsed state announcement. {%- endcomment -%}
-  <input type="checkbox" id="nav-toggle" class="sr-only" aria-label="Navigation menu" aria-controls="app-sidebar">
-  {%- comment -%} Light/dark theme switch, mirroring the nav-toggle pattern: a
-  visually-hidden checkbox holds the state and the labelled button flips it. Baseline
-  is CSS-only (`html:has(#theme-toggle:checked)`) so it works with JS disabled. The
-  script below is progressive enhancement: it syncs the checkbox to the resolved
-  theme (saved choice / OS default, set in <head>) and persists the user's choice. {%- endcomment -%}
-  <input type="checkbox" id="theme-toggle" class="sr-only" aria-label="Switch to light theme">
-  <script>
-    (function () {
-      var box = document.getElementById("theme-toggle");
-      box.checked = document.documentElement.dataset.theme === "light";
-      box.addEventListener("change", function () {
-        var light = box.checked;
-        document.documentElement.dataset.theme = light ? "light" : "dark";
-        try { localStorage.setItem("theme", light ? "light" : "dark"); } catch (e) {}
-      });
-    })();
-  </script>
-  <label for="nav-toggle" class="app-avatar" aria-hidden="true">
-    {%- if site.avatar -%}
-    <img src="{{ site.avatar | relative_url }}" alt="">
-    {%- else -%}
-    <span class="app-avatar-fallback">AB</span>
-    {%- endif -%}
-    {%- comment -%} Persistent hamburger badge (desktop) so it's clearly the menu
-    toggle in both states; animates to an X when the menu is open. {%- endcomment -%}
-    <span class="app-menu-badge" aria-hidden="true"><span class="app-menu-bars"></span></span>
-  </label>
-  {%- comment -%} Theme switch button, pinned next to the avatar badge. The sun glyph
-  shows in dark mode (tap to go light); the moon shows in light mode (tap to go dark).
-  Both glyphs are rendered; CSS swaps them on :checked. {%- endcomment -%}
-  <label for="theme-toggle" class="app-theme-toggle">
-    {%- include icon.html name="sun" class="app-theme-icon app-theme-icon--sun" -%}
-    {%- include icon.html name="moon" class="app-theme-icon app-theme-icon--moon" -%}
-  </label>
-  {%- comment -%} Backdrop behind the open mobile menu; tapping it closes (no JS). {%- endcomment -%}
-  <label for="nav-toggle" class="app-scrim" aria-hidden="true"></label>
+  {%- include app-chrome.html -%}
 
   <div class="app-shell">
     {% include sidebar.html %}
@@ -77,10 +12,7 @@
       <div class="app-main-inner">
         {{ content }}
       </div>
-      {%- assign feed_url = '/feed.xml' | relative_url -%}
-      <footer class="app-footer text-xs text-ink/70">
-        <p>Built with {% include ext-link.html href="https://jekyllrb.com/" label="Jekyll" %} + {% include ext-link.html href="https://tailwindcss.com/" label="Tailwind" %} + <span aria-hidden="true">❤️</span> + <span aria-hidden="true">🚬</span> · set in {% include ext-link.html href="https://monaspace.githubnext.com/" label="Monaspace" %} · {% include ext-link.html href="https://creativecommons.org/licenses/by-nc-sa/4.0/" label="CC BY-NC-SA 4.0" %} · {% include ext-link.html href=feed_url label="RSS" %} · {% include ext-link.html href=site.repo_url label="Source" %} · Last built {{ site.time | date: "%Y-%m-%d" }}</p>
-      </footer>
+      {%- include footer.html -%}
     </main>
   </div>
 </body>

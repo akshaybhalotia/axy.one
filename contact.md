@@ -34,15 +34,7 @@ description: Get in touch with Akshay Bhalotia — email or find me on any of th
   <h2 class="section-title mt-16">Find me elsewhere</h2>
   <ul class="mt-6 grid grid-cols-1 xs:grid-cols-2 gap-4">
     {%- for s in site.data.social -%}
-    <li>
-      <a href="{{ s.url | relative_url }}" target="_blank" rel="noopener"
-         class="app-social-link group flex items-center gap-4 rounded-card px-2 py-2 -mx-2 hover:opacity-80 transition-opacity">
-        <span class="grid place-items-center size-10 rounded-full shrink-0" style="background-color: {{ s.bg | default: '#ffffff' }}; color: {{ s.fg | default: '#000000' }}">
-          {%- include icon.html name=s.icon class="w-5 h-5" -%}
-        </span>
-        <span class="text-lg font-bold">{{ s.name }}<span class="sr-only"> (opens in a new tab)</span></span>
-      </a>
-    </li>
+    <li>{%- include social-link.html item=s -%}</li>
     {%- endfor -%}
   </ul>
   {%- endif -%}
