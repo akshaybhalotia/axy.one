@@ -36,7 +36,7 @@ page.filter_value    = the category slug or ISO date (optional)
 {%- endif -%}
 
 <header>
-  <h1 class="font-head text-2xl xs:text-3xl desk:text-[2.5rem] font-bold break-words">{{ page.title }}</h1>
+  <h1 class="page-title">{{ page.title }}</h1>
 
   {%- comment -%} Category pills, pre-derived per collection by the archive generator. {%- endcomment -%}
   {%- assign cats = site.data.category_index[page.collection_name] -%}

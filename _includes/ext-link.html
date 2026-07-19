@@ -1,5 +1,5 @@
 {%- comment -%}
-External / new-tab link with the canonical dotted arrow + screen-reader hint.
-Params: href, label, class (optional extra classes).
+External / new-tab link. Params: href, label, class (optional extra classes).
+The arrow + SR hint come from the shared ext-arrow partial.
 {%- endcomment -%}
-<a href="{{ include.href }}" target="_blank" rel="noopener"{% if include.class %} class="{{ include.class }}"{% endif %}>{{ include.label }}<svg class="ext-arrow" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="0.01 1.8" aria-hidden="true"><path d="M1 9 9 1"/><path d="M4 1h5v5"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
+<a href="{{ include.href }}" target="_blank" rel="noopener"{% if include.class %} class="{{ include.class }}"{% endif %}>{{ include.label }}{% include ext-arrow.html %}</a>
