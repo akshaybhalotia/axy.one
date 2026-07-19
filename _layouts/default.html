@@ -4,10 +4,12 @@
   {%- include head.html -%}
 </head>
 <body class="bg-panel text-ink font-mono antialiased">
+  {%- comment -%} Order matters: app-chrome must precede .app-shell so the no-JS
+  nav/theme toggles reach it via CSS `#nav-toggle:checked ~ .app-shell` etc. {%- endcomment -%}
   {%- include app-chrome.html -%}
 
   <div class="app-shell">
-    {% include sidebar.html %}
+    {%- include sidebar.html -%}
     <main id="main-content" class="app-main px-6 pt-24 pb-12 desk:px-16 desk:py-16">
       <div class="app-main-inner">
         {{ content }}
