@@ -81,8 +81,9 @@ The site is **no-JS-first**: the nav and theme toggles are CSS checkboxes (`#nav
 
 ## Deployment & CI
 
-- **Netlify** (`netlify.toml`): build command `JEKYLL_ENV=production npm run build`, `publish = "_site"`, `RUBY_VERSION = "3.4.9"` + `NODE_VERSION = "26"`. Netlify auto-installs both Bundler and npm deps before the command. Deploy previews run on PRs.
-- **CI** (`.github/workflows/build.yml`): sets up Ruby + Node, `npm ci`, then `npm run build` on PRs/pushes to `main`. GitHub only activates a workflow once it exists on the **default branch**.
+- **Netlify** (`netlify.toml`): build command `JEKYLL_ENV=production npm run build`, `publish = "_site"`. Netlify auto-installs both Bundler and npm deps before the command. Deploy previews run on PRs.
+- **Node/Ruby versions are single-sourced**: `.nvmrc` (Node 26) and `.ruby-version` (Ruby 3.4.9) drive local, CI, **and** Netlify — Netlify reads both files directly, so `netlify.toml` deliberately sets **no** `NODE_VERSION`/`RUBY_VERSION` (they'd override and silently drift). CI reads `.nvmrc` via `node-version-file`. Bump the version by editing the dotfile only.
+- **CI** (`.github/workflows/build.yml`): sets up Ruby + Node (Node from `.nvmrc`), `npm ci`, then `npm run build` on PRs/pushes to `main`. GitHub only activates a workflow once it exists on the **default branch**.
 - **`main` is protected** (ruleset: PR required, linear history) — land changes via PRs, don't push to `main` directly.
 
 ## Conventions & gotchas
