@@ -31,22 +31,23 @@ const SRC = {
     join(root, "node_modules/@fortawesome/fontawesome-free/svgs/brands", `${slug}.svg`),
 };
 
-function normalize(svg, set) {
+function normalize(svg) {
   const s = svg
     .replace(/<\?xml[^>]*\?>/g, "")
     .replace(/<!--[\s\S]*?-->/g, "")
     .replace(/<title>[\s\S]*?<\/title>/g, "")
     .replace(/\s+/g, " ")
     .trim();
-  // Rewrite ONLY the opening <svg> tag (strip its width/height/role/class so it's
-  // sized via a class; add aria-hidden; give fill-less brand logos currentColor).
-  // Inner-element geometry (e.g. a <rect>'s width/height) is left untouched.
+  // Rewrite ONLY the opening <svg> tag: strip its width/height/role/class (sized
+  // via a class instead), mark it decorative, and give a fill-less logo its color
+  // via currentColor. Stroke icons (lucide) already carry fill="none", so they're
+  // left alone; inner-element geometry (e.g. a <rect>'s width/height) is untouched.
   return s.replace(/<svg\b[^>]*>/, (open) => {
-    let o = open.replace(/\s(width|height|role|class)="[^"]*"/g, "");
-    if (set === "fontawesome" && !/\sfill=/.test(o)) {
-      o = o.replace("<svg", '<svg fill="currentColor"');
-    }
-    return o.replace("<svg", '<svg aria-hidden="true"');
+    const stripped = open.replace(/\s(width|height|role|class)="[^"]*"/g, "");
+    const attrs = /\sfill=/.test(stripped)
+      ? 'aria-hidden="true"'
+      : 'aria-hidden="true" fill="currentColor"';
+    return stripped.replace("<svg", `<svg ${attrs}`);
   });
 }
 
@@ -62,6 +63,6 @@ for (const { name, set, slug } of ICONS) {
   } catch {
     throw new Error(`icons: "${name}" not found in ${set} (expected ${slug || name}.svg)`);
   }
-  writeFileSync(join(OUT, `${name}.svg`), normalize(svg, set) + "\n");
+  writeFileSync(join(OUT, `${name}.svg`), normalize(svg) + "\n");
 }
 console.log(`icons: vendored ${ICONS.length} into _includes/icons/`);

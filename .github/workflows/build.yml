@@ -17,7 +17,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.4.9" # keep in sync with .ruby-version / netlify.toml
+          # ruby-version omitted → setup-ruby reads .ruby-version (single source, shared with Netlify + local)
           bundler-cache: true
 
       - name: Set up Node
