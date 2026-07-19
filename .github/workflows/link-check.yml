@@ -18,18 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: ".nvmrc"
-          cache: npm
-
-      - run: npm ci
-      - run: JEKYLL_ENV=production npm run build
+      - uses: ./.github/actions/build-site
 
       - name: Check links
         id: lychee

@@ -14,21 +14,5 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          # ruby-version omitted → setup-ruby reads .ruby-version (single source, shared with Netlify + local)
-          bundler-cache: true
-
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: ".nvmrc"
-          cache: npm
-
-      - name: Install npm deps
-        run: npm ci
-
-      # npm run build = vendor fonts/icons from npm + Tailwind CLI + jekyll build.
-      - name: Build site
-        run: JEKYLL_ENV=production npm run build
+      - name: Build the site
+        uses: ./.github/actions/build-site

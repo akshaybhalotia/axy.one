@@ -1,0 +1,31 @@
+# Shared build recipe used by every workflow that needs a built site
+# (build / lighthouse / link-check). Assumes the repo is already checked out.
+# Keeping it in one place means the non-obvious bits — production env var,
+# `npm ci` (not install), and the .ruby-version/.nvmrc single-sourcing — can't
+# drift between workflows.
+name: Build site
+description: Set up Ruby + Node from their pinned versions, install deps, and build the production site into _site/.
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        # ruby-version omitted → setup-ruby reads .ruby-version (single source, shared with Netlify + local)
+        bundler-cache: true
+
+    - name: Set up Node
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: ".nvmrc"
+        cache: npm
+
+    - name: Install npm deps
+      shell: bash
+      run: npm ci
+
+    # npm run build = vendor fonts/icons from npm + Tailwind CLI + jekyll build.
+    - name: Build site
+      shell: bash
+      run: JEKYLL_ENV=production npm run build
