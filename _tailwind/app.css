@@ -251,7 +251,7 @@
    nav states. Shared by the content and the footer. */
 .app-main-inner {
   width: 100%;
-  max-width: 42rem;
+  max-width: 48rem;
   margin-inline: auto;
   /* Keep the footer separator clear of the content, even on long pages where the
      footer's margin-top:auto collapses to 0. */
