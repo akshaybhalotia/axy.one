@@ -2,24 +2,9 @@
 permalink: /404.html
 layout: default
 ---
-
-<style type="text/css" media="screen">
-  .container {
-    margin: 10px auto;
-    max-width: 600px;
-    text-align: center;
-  }
-  h1 {
-    margin: 30px 0;
-    font-size: 4em;
-    line-height: 1;
-    letter-spacing: -1px;
-  }
-</style>
-
-<div class="container">
-  <h1>404</h1>
-
-  <p><strong>Page not found :(</strong></p>
-  <p>The requested page could not be found.</p>
-</div>
+<section class="text-center">
+  <h1 class="font-head text-6xl desk:text-8xl leading-none">404</h1>
+  <p class="mt-6 text-xl font-bold">Page not found :(</p>
+  <p class="mt-2 text-ink/70">The page you're after has moved or never existed.</p>
+  <a href="{{ '/' | relative_url }}" class="mt-8 inline-block font-bold hover:underline hover:decoration-2 underline-offset-4">Back home</a>
+</section>

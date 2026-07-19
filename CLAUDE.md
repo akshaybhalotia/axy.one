@@ -59,8 +59,8 @@ Top-level pages are Markdown/HTML at the repo root (`index.markdown`, `contact.m
 
 ## Layouts, includes & data
 
-- **`_layouts/`**: `default.html` (shell: sidebar + main + footer, theme/nav toggles, head), `home.html`, `list.html` (shared by `/work`, `/posts`, and generated category/date pages via `page.filter_type`/`page.filter_value`), `post.html`, `project.html`.
-- **`_includes/`**: `sidebar.html`, `icon.html` (wrapper that inlines the vendored `_includes/icons/*.svg` and injects the size class), `category-chip.html`, `category-list.html`, `list-card.html`, `featured-card.html`, `ext-link.html` + `ext-arrow.html` (canonical external/new-tab link — see DESIGN.md §5).
+- **`_layouts/`**: `default.html` (thin shell skeleton that just composes the includes below: `head.html` + `app-chrome.html` + `sidebar.html` + main/`content` + `footer.html`), `home.html`, `list.html` (shared by `/work`, `/posts`, and generated category/date pages via `page.filter_type`/`page.filter_value`), `post.html`, `project.html`.
+- **`_includes/`**: shell partials — `head.html` (`<head>`: meta, font preloads, feed links, no-flash theme script), `app-chrome.html` (skip link, no-JS nav/theme toggles + theme-sync script, avatar menu button, scrim), `sidebar.html`, `footer.html` (colophon). Components — `icon.html` (wrapper that inlines the vendored `_includes/icons/*.svg` and injects the size class), `category-chip.html`, `category-list.html`, `list-card.html`, `featured-card.html`, `social-link.html` (labelled brand social badge on Contact), `ext-link.html` + `ext-arrow.html` (canonical external/new-tab link — see DESIGN.md §5).
 - **`_data/`**: `nav.yml` (nav items; `new_tab: true` for off-site), `social.yml` (full brand-colored set for the Contact page; sidebar shows only email + GitHub, monochrome).
 
 ## Fonts

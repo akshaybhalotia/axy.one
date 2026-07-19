@@ -1,0 +1,6 @@
+{%- comment -%} Site colophon: build credits + license + feeds + source, one line,
+pinned to the bottom of the main column. All links are external (ext-link). {%- endcomment -%}
+{%- assign feed_url = '/feed.xml' | relative_url -%}
+<footer class="app-footer text-xs text-ink/70">
+  <p>Built with {% include ext-link.html href="https://jekyllrb.com/" label="Jekyll" %} + {% include ext-link.html href="https://tailwindcss.com/" label="Tailwind" %} + <span aria-hidden="true">❤️</span> + <span aria-hidden="true">🚬</span> · set in {% include ext-link.html href="https://monaspace.githubnext.com/" label="Monaspace" %} · {% include ext-link.html href="https://creativecommons.org/licenses/by-nc-sa/4.0/" label="CC BY-NC-SA 4.0" %} · {% include ext-link.html href=feed_url label="RSS" %} · {% include ext-link.html href=site.repo_url label="Source" %} · Last built {{ site.time | date: "%Y-%m-%d" }}</p>
+</footer>

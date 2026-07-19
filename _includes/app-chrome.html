@@ -1,0 +1,48 @@
+{%- comment -%} App chrome that floats over the shell: the skip link, the no-JS
+nav/theme toggles (hidden checkboxes + labelled controls), the avatar menu button,
+and the mobile backdrop. Pulled out of default.html so the body reads as a skeleton. {%- endcomment -%}
+{%- comment -%} Visible-on-focus skip link so keyboard users can jump past the
+nav toggle straight to the page content. {%- endcomment -%}
+<a href="#main-content" class="skip-link">Skip to content</a>
+
+{%- comment -%} Pure-CSS collapse: the hidden checkbox holds the state and the
+avatar <label> toggles it — no JavaScript required. Defaults come from CSS
+(desktop open, mobile collapsed). The checkbox is the real control, so it carries
+the accessible name and the expanded/collapsed state announcement. {%- endcomment -%}
+<input type="checkbox" id="nav-toggle" class="sr-only" aria-label="Navigation menu" aria-controls="app-sidebar">
+{%- comment -%} Light/dark theme switch, mirroring the nav-toggle pattern: a
+visually-hidden checkbox holds the state and the labelled button flips it. Baseline
+is CSS-only (`html:has(#theme-toggle:checked)`) so it works with JS disabled. The
+script below is progressive enhancement: it syncs the checkbox to the resolved
+theme (saved choice / OS default, set in <head>) and persists the user's choice. {%- endcomment -%}
+<input type="checkbox" id="theme-toggle" class="sr-only" aria-label="Switch to light theme">
+<script>
+  (function () {
+    var box = document.getElementById("theme-toggle");
+    box.checked = document.documentElement.dataset.theme === "light";
+    box.addEventListener("change", function () {
+      var light = box.checked;
+      document.documentElement.dataset.theme = light ? "light" : "dark";
+      try { localStorage.setItem("theme", light ? "light" : "dark"); } catch (e) {}
+    });
+  })();
+</script>
+<label for="nav-toggle" class="app-avatar" aria-hidden="true">
+  {%- if site.avatar -%}
+  <img src="{{ site.avatar | relative_url }}" alt="">
+  {%- else -%}
+  <span class="app-avatar-fallback">AB</span>
+  {%- endif -%}
+  {%- comment -%} Persistent hamburger badge (desktop) so it's clearly the menu
+  toggle in both states; animates to an X when the menu is open. {%- endcomment -%}
+  <span class="app-menu-badge" aria-hidden="true"><span class="app-menu-bars"></span></span>
+</label>
+{%- comment -%} Theme switch button, pinned next to the avatar badge. The sun glyph
+shows in dark mode (tap to go light); the moon shows in light mode (tap to go dark).
+Both glyphs are rendered; CSS swaps them on :checked. {%- endcomment -%}
+<label for="theme-toggle" class="app-theme-toggle">
+  {%- include icon.html name="sun" class="app-theme-icon app-theme-icon--sun" -%}
+  {%- include icon.html name="moon" class="app-theme-icon app-theme-icon--moon" -%}
+</label>
+{%- comment -%} Backdrop behind the open mobile menu; tapping it closes (no JS). {%- endcomment -%}
+<label for="nav-toggle" class="app-scrim" aria-hidden="true"></label>
