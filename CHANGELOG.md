@@ -7,6 +7,13 @@ to a pull request merged into `main` and is tagged on the repository. The next
 milestone, **1.0.0**, lands after the current [roadmap](./README.md#roadmap)
 (syntax highlighting + SEO) ships.
 
+## [0.10.0](https://github.com/akshaybhalotia/axy.one/compare/0.9.0...0.10.0) (2026-07-19)
+
+
+### Documentation
+
+* project documentation, licensing, and repo automation ([#20](https://github.com/akshaybhalotia/axy.one/issues/20)) ([4310302](https://github.com/akshaybhalotia/axy.one/commit/431030267f1076655e033aa9513ed23f958f09ef))
+
 ## 0.9.0 — Documentation & licensing ([#20])
 
 - Add `README.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, and this `CHANGELOG.md`, based on [readme-template](https://github.com/akshaybhalotia/readme-template).
