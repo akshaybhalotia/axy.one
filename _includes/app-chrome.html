@@ -1,6 +1,7 @@
-{%- comment -%} App chrome that floats over the shell: the skip link, the no-JS
-nav/theme toggles (hidden checkboxes + labelled controls), the avatar menu button,
-and the mobile backdrop. Pulled out of default.html so the body reads as a skeleton. {%- endcomment -%}
+{%- comment -%} Body-level chrome that floats over the shell (fixed/absolute). It must
+render as a sibling BEFORE .app-shell: the no-JS toggles work via the CSS sibling
+combinator — `#nav-toggle:checked ~ .app-shell` (and ~ .app-avatar / ~ .app-scrim),
+`#theme-toggle:checked ~ …`. See each element's comment below for the specifics. {%- endcomment -%}
 {%- comment -%} Visible-on-focus skip link so keyboard users can jump past the
 nav toggle straight to the page content. {%- endcomment -%}
 <a href="#main-content" class="skip-link">Skip to content</a>
