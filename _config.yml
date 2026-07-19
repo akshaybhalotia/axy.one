@@ -24,6 +24,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   Home page for Akshay Bhalotia — musings, work, and posts.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://axy.one" # base hostname & protocol (used for absolute feed/SEO URLs)
+repo_url: "https://github.com/akshaybhalotia/axy.one" # footer "Source" link
 author:
   name: Akshay Bhalotia
   # email intentionally omitted: keeps the plain address out of the RSS/Atom feed.

@@ -2,7 +2,7 @@
 layout: default
 ---
 <section>
-  <h1 class="hero-caret font-head text-2xl xs:text-3xl desk:text-[2.5rem] font-bold leading-snug break-words">{{ page.heading | default: site.title }}</h1>
+  <h1 class="hero-caret page-title">{{ page.heading | default: site.title }}</h1>
   {%- comment -%} Progressive enhancement: type the headline in. No-JS (and reduced
   motion) leaves the full headline + blinking cursor untouched. Runs inline right
   after the h1 so it clears the text before paint (no flash). {%- endcomment -%}
@@ -31,7 +31,7 @@ layout: default
 {%- if featured.size > 0 -%}
 <section class="mt-16">
   <div class="flex items-baseline justify-between gap-4">
-    <h2 class="font-head text-2xl desk:text-3xl font-bold">Featured posts</h2>
+    <h2 class="section-title">Featured posts</h2>
     <a href="{{ '/posts' | relative_url }}" class="hover:underline hover:decoration-2 underline-offset-4">View all</a>
   </div>
   <div class="mt-6 flex gap-6 overflow-x-auto pb-4">

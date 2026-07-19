@@ -37,6 +37,7 @@
   --color-card-muted: #4f4c47; /* card subtitle/secondary */
   --color-toggle: #57534d; /* avatar menu-badge disc — muted, visible on near-black */
   --color-code-bg: #14120f; /* code surface — near-black terminal box (ink text ~17:1) */
+  --color-card-border: transparent; /* card hairline — none in dark, set in light */
 
   /* Chrome / accent colors that aren't surfaces. These previously appeared as
      hardcoded #fff / rgba whites scattered through the component CSS; promoting them
@@ -69,10 +70,23 @@
     color: var(--color-ink);
     transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
   }
-  /* Sidebar nav link — right-aligned, bold (Ubuntu Mono Bold 20px in design).
-     py keeps a comfortable >=44px tap target. */
+  /* Bold nav link; py keeps a comfortable >=44px tap target. Right-aligned on
+     mobile, left-aligned on desktop (see `.app-nav .nav-link`). */
   .nav-link {
-    @apply relative block py-1.5 text-right font-bold tracking-wide hover:underline hover:decoration-2 underline-offset-4;
+    @apply block py-1.5 text-right font-bold tracking-wide hover:underline hover:decoration-2 underline-offset-4;
+  }
+  /* Display-face headings, shared across every layout so the scale can't drift. */
+  .page-title {
+    @apply font-head text-2xl xs:text-3xl desk:text-[2.5rem] font-bold leading-snug break-words;
+  }
+  .section-title {
+    @apply font-head text-2xl desk:text-3xl font-bold;
+  }
+  /* Card surface (list / featured / contact CTA); call sites add layout utilities.
+     Border is a token: transparent in dark, a hairline in light. */
+  .card {
+    @apply rounded-card bg-card text-card-ink shadow-card;
+    border: 1px solid var(--color-card-border);
   }
 }
 
@@ -332,8 +346,7 @@
 .app-menu-bars::before,
 .app-menu-bars::after { position: absolute; left: 0; top: 0; }
 
-/* Default (menu collapsed) = hamburger. */
-.app-menu-bars { background-color: currentColor; }
+/* Default (menu collapsed) = hamburger (middle bar already filled by the rule above). */
 .app-menu-bars::before { transform: translateY(-0.26rem); }
 .app-menu-bars::after { transform: translateY(0.26rem); }
 
@@ -492,9 +505,6 @@ html[data-theme="light"] .app-theme-icon--sun { display: none; }
 html:has(#theme-toggle:checked) .app-theme-icon--moon,
 html[data-theme="light"] .app-theme-icon--moon { display: block; }
 
-/* Desktop keeps the theme toggle at the top-right of the viewport (same as mobile
-   and the base rule) — consistent in both nav states, no left/right jump. */
-
 /* ---- LIGHT THEME ---------------------------------------------------------- */
 /* CSS-only flip: when #theme-toggle is checked we override the theme vars on <html>.
    A sibling combinator (~) can't reach :root, but :has() can, and it's widely
@@ -521,6 +531,7 @@ html[data-theme="light"] {
   --color-card-muted: #5b544a;    /* muted warm card text */
   --color-toggle: #d3cdc0;        /* menu-badge disc — muted, visible on the warm off-white */
   --color-code-bg: #f4efe3;       /* code surface — warm near-white box (ink text ~15:1) */
+  --color-card-border: rgb(28 26 22 / 0.12); /* hairline so white cards read on the light panel */
 
   /* Chrome: focus rings, avatar ring, scrim and pills go dark so they stay visible. */
   --color-focus: #1a1a1a;
@@ -531,12 +542,6 @@ html[data-theme="light"] {
   --color-social-border: rgb(0 0 0 / 0.18); /* reveals the white-circle badges */
 }
 
-/* Cards carry a hairline border in light mode so white cards read against the light
-   panel (in dark mode the var is unset -> no border). */
-html:has(#theme-toggle:checked) .bg-card,
-html[data-theme="light"] .bg-card {
-  border: 1px solid rgb(28 26 22 / 0.12);
-}
 
 /* Respect users who ask for less motion: drop the sidebar slide / avatar resize /
    scrim fade transitions. Visibility still toggles instantly (kept here so the

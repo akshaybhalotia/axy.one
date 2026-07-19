@@ -1,7 +1,7 @@
 {%- comment -%} Wide list card: text block + square image (List page). {%- endcomment -%}
 {%- assign item = include.item -%}
 {%- assign img = item.hero | default: item.image -%}
-<a href="{{ item.url | relative_url }}" class="flex rounded-card bg-card text-card-ink shadow-card overflow-hidden hover:opacity-95">
+<a href="{{ item.url | relative_url }}" class="card flex overflow-hidden hover:opacity-95">
   <div class="flex-1 min-w-0 p-6 flex flex-col min-h-[11rem]">
     <h2 class="text-lg desk:text-xl font-bold leading-snug">{{ item.title }}</h2>
     {%- assign blurb = item.subtitle | default: item.excerpt -%}

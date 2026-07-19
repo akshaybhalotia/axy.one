@@ -7,7 +7,7 @@ layout: default
   <img src="{{ img | relative_url }}" alt="" class="w-full h-56 desk:h-80 object-cover rounded-card">
   {%- endif -%}
 
-  <h1 class="font-head mt-8 text-2xl xs:text-3xl desk:text-[2.5rem] font-bold leading-snug break-words">{{ page.title }}</h1>
+  <h1 class="page-title mt-8">{{ page.title }}</h1>
   {%- if page.subtitle -%}<p class="mt-2 text-xl text-ink/70">{{ page.subtitle }}</p>{%- endif -%}
 
   <div class="mt-4 flex items-center justify-between gap-4 text-sm text-ink/70">

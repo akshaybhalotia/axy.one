@@ -5,7 +5,7 @@ permalink: /contact/
 description: Get in touch with Akshay Bhalotia — email or find me on any of these.
 ---
 <section>
-  <h1 class="font-head text-2xl xs:text-3xl desk:text-[2.5rem] font-bold leading-snug break-words">Get in touch</h1>
+  <h1 class="page-title">Get in touch</h1>
 
   <div class="rich mt-10 text-lg desk:text-xl leading-relaxed">
     <p>I like getting to know people — personally and professionally. Catch me for a conversation, and let's see how we can help each other!</p>
@@ -22,11 +22,8 @@ description: Get in touch with Akshay Bhalotia — email or find me on any of th
     this far, we'll probably get along. Say hi the hard way.
   -->
   <a href="{{ site.email | prepend: 'mailto:' | obfuscate_email }}"
-     class="app-social-link mt-10 inline-flex items-center gap-3 bg-card text-card-ink rounded-card shadow-card px-6 py-4 font-bold text-lg hover:opacity-80 transition-opacity break-all">
-    <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <rect x="2" y="4" width="20" height="16" rx="2"/>
-      <path d="m2 7 10 6 10-6"/>
-    </svg>
+     class="card app-social-link mt-10 inline-flex items-center gap-3 px-6 py-4 font-bold text-lg hover:opacity-80 transition-opacity break-all">
+    {%- include icon.html name="email" class="w-6 h-6 shrink-0" -%}
     {{ site.email | obfuscate_email }}
   </a>
 
@@ -34,7 +31,7 @@ description: Get in touch with Akshay Bhalotia — email or find me on any of th
   labelled here. Reuses .app-social-link so they inherit the focus-visible ring,
   and _data/social.yml + icon.html so the set stays in sync with the sidebar. {%- endcomment -%}
   {%- if site.data.social and site.data.social.size > 0 -%}
-  <h2 class="font-head mt-16 text-2xl desk:text-3xl font-bold">Find me elsewhere</h2>
+  <h2 class="section-title mt-16">Find me elsewhere</h2>
   <ul class="mt-6 grid grid-cols-1 xs:grid-cols-2 gap-4">
     {%- for s in site.data.social -%}
     <li>
