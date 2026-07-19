@@ -1,10 +1,13 @@
-# Lighthouse CI on every PR — guards accessibility (a DESIGN.md first-class value)
-# and tracks SEO/best-practices/performance (SEO is on the 1.0 roadmap). Builds
-# the site and audits the key pages from the static _site output.
-# Accessibility is a hard gate (error); the rest report as warnings for now.
+# Lighthouse CI on every PR and after each merge to main — guards accessibility
+# (a DESIGN.md first-class value) and tracks SEO/best-practices/performance (SEO
+# is on the 1.0 roadmap). Builds the site and audits the key pages from the static
+# _site output. Accessibility is a hard gate (error); the rest report as warnings.
+# The push-to-main run is what populates the README status badge.
 name: Lighthouse
 
 on:
+  push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
