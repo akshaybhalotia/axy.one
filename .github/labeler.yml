@@ -1,0 +1,24 @@
+# Path-based PR labels (actions/labeler v5 syntax).
+"area: layouts":
+  - changed-files:
+      - any-glob-to-any-file: ["_layouts/**", "_includes/**"]
+
+"area: styling":
+  - changed-files:
+      - any-glob-to-any-file: ["_tailwind/**", "assets/css/**"]
+
+"area: content":
+  - changed-files:
+      - any-glob-to-any-file: ["_posts/**", "_work/**", "contact.md", "index.markdown", "404.html"]
+
+"area: build":
+  - changed-files:
+      - any-glob-to-any-file: ["package.json", "package-lock.json", "Gemfile", "Gemfile.lock", "scripts/**", "netlify.toml", "_config.yml"]
+
+"area: ci":
+  - changed-files:
+      - any-glob-to-any-file: [".github/**"]
+
+"area: docs":
+  - changed-files:
+      - any-glob-to-any-file: ["README.md", "CONTRIBUTING.md", "CODE_OF_CONDUCT.md", "CHANGELOG.md", "CLAUDE.md", "DESIGN.md"]

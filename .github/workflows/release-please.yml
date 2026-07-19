@@ -1,0 +1,24 @@
+# Release automation. On every push to main, release-please maintains a standing
+# "release PR" that bumps the version in .release-please-manifest.json and
+# prepends the generated notes to CHANGELOG.md. Merging that PR creates the git
+# tag (e.g. 0.10.0 — no "v" prefix, matching the existing tags) and a GitHub
+# Release. Works through PRs, so it never fights branch protection on main.
+name: release-please
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: .github/release-please-config.json
+          manifest-file: .github/.release-please-manifest.json
