@@ -20,7 +20,7 @@ npm run dev                                    # vendor + Tailwind --watch + jek
 JEKYLL_ENV=production npm run build            # full build into _site/ (what Netlify/CI run)
 ```
 
-- **Ruby 3.4.9** (`.ruby-version`, via `rvm`; on an OpenSSL failure rebuild with `--with-openssl-dir=$(brew --prefix openssl@3)`) **and Node ≥20** (`.nvmrc`).
+- **Ruby 3.4.9** (`.ruby-version`, via `rvm`; on an OpenSSL failure rebuild with `--with-openssl-dir=$(brew --prefix openssl@3)`) **and Node 26** (`.nvmrc`; `nvm use` reads it — install via [nvm](https://github.com/nvm-sh/nvm)).
 - `npm run build` = `vendor` (fonts + icons from npm) → `build:css` (Tailwind CLI) → `bundle exec jekyll build`. A bare `jekyll build` uses **stale/missing** generated assets — always go through npm.
 - `_config.yml` is **NOT reloaded** on `jekyll serve` — restart after editing it.
 
@@ -81,7 +81,7 @@ The site is **no-JS-first**: the nav and theme toggles are CSS checkboxes (`#nav
 
 ## Deployment & CI
 
-- **Netlify** (`netlify.toml`): build command `JEKYLL_ENV=production npm run build`, `publish = "_site"`, `RUBY_VERSION = "3.4.9"` + `NODE_VERSION = "22"`. Netlify auto-installs both Bundler and npm deps before the command. Deploy previews run on PRs.
+- **Netlify** (`netlify.toml`): build command `JEKYLL_ENV=production npm run build`, `publish = "_site"`, `RUBY_VERSION = "3.4.9"` + `NODE_VERSION = "26"`. Netlify auto-installs both Bundler and npm deps before the command. Deploy previews run on PRs.
 - **CI** (`.github/workflows/build.yml`): sets up Ruby + Node, `npm ci`, then `npm run build` on PRs/pushes to `main`. GitHub only activates a workflow once it exists on the **default branch**.
 - **`main` is protected** (ruleset: PR required, linear history) — land changes via PRs, don't push to `main` directly.
 

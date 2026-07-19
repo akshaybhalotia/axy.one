@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Build tooling for axy.one (icons, fonts, Tailwind). Content/site is Jekyll — see CLAUDE.md.",
   "engines": {
-    "node": ">=20"
+    "node": ">=26"
   },
   "scripts": {
     "vendor:fonts": "node scripts/fonts.mjs",
