@@ -2,12 +2,6 @@
   "ci": {
     "collect": {
       "staticDistDir": "./_site",
-      "url": [
-        "http://localhost/index.html",
-        "http://localhost/posts/index.html",
-        "http://localhost/work/index.html",
-        "http://localhost/contact/index.html"
-      ],
       "numberOfRuns": 1
     },
     "assert": {

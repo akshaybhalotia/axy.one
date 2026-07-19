@@ -1,8 +1,9 @@
 # Lighthouse CI on every PR and after each merge to main — guards accessibility
 # (a DESIGN.md first-class value) and tracks SEO/best-practices/performance (SEO
-# is on the 1.0 roadmap). Builds the site and audits the key pages from the static
-# _site output. Accessibility is a hard gate (error); the rest report as warnings.
-# The push-to-main run is what populates the README status badge.
+# is on the 1.0 roadmap). Builds the site; lighthouserc.json has no url list, so
+# LHCI auto-discovers and audits every page in _site — new posts/projects/layouts
+# are covered with no config change. Accessibility is a hard gate (error); the
+# rest report as warnings. The push-to-main run populates the README status badge.
 name: Lighthouse
 
 on:
