@@ -90,8 +90,13 @@ exclude:
   - vendor
   - Gemfile
   - Gemfile.lock
+  # repo docs (GitHub-facing, not site pages)
   - README.md
   - readme.md
+  - CONTRIBUTING.md
+  - CODE_OF_CONDUCT.md
+  - CHANGELOG.md
+  - LICENSE
   # restore Jekyll defaults that an explicit `exclude:` would otherwise drop
   - node_modules
   - gemfiles
