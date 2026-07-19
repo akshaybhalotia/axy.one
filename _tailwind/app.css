@@ -10,15 +10,15 @@
 @source "../work/**/*.html";
 @source "../posts/**/*.html";
 
-/* Monaspace superfamily (self-hosted, SIL OFL). Each face loads from fontsource's
-   CDN first (@latest) and falls back to the pinned local copy if that URL errors.
-   Neon = body/code (neo-grotesque); a second style = display (set via --font-head). */
+/* Monaspace superfamily (SIL OFL). The woff2 are copied from the @fontsource npm
+   packages into assets/fonts/ by scripts/fonts.mjs (npm run vendor:fonts).
+   Neon = body/code (neo-grotesque); Radon = display (set via --font-head). */
 @font-face { font-family: "Monaspace Neon"; font-weight: 400; font-style: normal; font-display: swap;
-  src: url("https://cdn.jsdelivr.net/npm/@fontsource/monaspace-neon/files/monaspace-neon-latin-400-normal.woff2") format("woff2"), url("../fonts/monaspace-neon-400.woff2") format("woff2"); }
+  src: url("../fonts/monaspace-neon-400.woff2") format("woff2"); }
 @font-face { font-family: "Monaspace Neon"; font-weight: 700; font-style: normal; font-display: swap;
-  src: url("https://cdn.jsdelivr.net/npm/@fontsource/monaspace-neon/files/monaspace-neon-latin-700-normal.woff2") format("woff2"), url("../fonts/monaspace-neon-700.woff2") format("woff2"); }
+  src: url("../fonts/monaspace-neon-700.woff2") format("woff2"); }
 @font-face { font-family: "Monaspace Radon"; font-weight: 700; font-style: normal; font-display: swap;
-  src: url("https://cdn.jsdelivr.net/npm/@fontsource/monaspace-radon/files/monaspace-radon-latin-700-normal.woff2") format("woff2"), url("../fonts/monaspace-radon-700.woff2") format("woff2"); }
+  src: url("../fonts/monaspace-radon-700.woff2") format("woff2"); }
 
 @theme {
   /* Type — Monaspace Neon body/code + a display face for headings (--font-head). */

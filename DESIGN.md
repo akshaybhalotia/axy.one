@@ -79,8 +79,8 @@ Body/UI text must meet **4.5:1**; large text **3:1**. Re-check any surface/ink c
 
 ## 3. Typography
 
-Two roles from GitHub's **Monaspace** superfamily (SIL OFL, self-hosted +
-`fontsource` CDN):
+Two roles from GitHub's **Monaspace** superfamily (SIL OFL, self-hosted from the
+`@fontsource` npm packages):
 
 | Role | Family | Token | Weights |
 |---|---|---|---|
@@ -94,13 +94,13 @@ in-body markdown headings (those stay Neon).
 
 ### Loading
 
-- **CDN-primary, self-hosted fallback**, both in each `@font-face` `src` list:
-  `fontsource` (`cdn.jsdelivr.net/npm/@fontsource/...`, **@latest**) first, then the
-  pinned local copy in `assets/fonts/*.woff2`. The browser only falls back on a hard
-  CDN failure (404/network), not on version drift. See memory: asset-loading-preference.
-- `<head>` has a `preconnect` to jsDelivr and `preload`s the two above-the-fold faces
-  (Neon 400, Radon 700). All faces use `font-display: swap`.
-- Self-hosted files are latin-only woff2: `monaspace-neon-400`, `monaspace-neon-700`,
+- **Self-hosted from npm.** `scripts/fonts.mjs` (`npm run vendor:fonts`) copies the
+  woff2 out of the `@fontsource/monaspace-*` packages into `assets/fonts/`
+  (gitignored, generated); `@font-face` in `_tailwind/app.css` points at those local
+  files. Versioned via `package.json`, no runtime CDN.
+- `<head>` `preload`s the two above-the-fold faces (Neon 400, Radon 700); all faces
+  use `font-display: swap`.
+- Vendored files are latin-only woff2: `monaspace-neon-400`, `monaspace-neon-700`,
   `monaspace-radon-700`.
 
 ### OpenType
@@ -249,9 +249,12 @@ a 2px `--color-focus` outline on `:focus-visible`.
   rel="noopener"` + sr-only). Don't hand-roll a new arrow.
 - **Add a nav item:** edit `_data/nav.yml` (`new_tab: true` for off-site).
 - **Add a category:** nothing to style — chips are monochrome and derived automatically.
-- **Change a typeface:** update the `@font-face` blocks (CDN + local fallback) and the
-  `--font-mono` / `--font-head` tokens; add the woff2 to `assets/fonts/` and preload
-  above-the-fold faces.
+- **Add an icon:** add it to the MANIFEST in `scripts/icons.mjs` (set `lucide` for UI
+  or `fontawesome` for brands), then `npm run vendor:icons`. Never hand-edit
+  `_includes/icons/`. Use it via `{% include icon.html name="…" class="…" %}`.
+- **Change a typeface:** swap the `@fontsource/*` package (+ `scripts/fonts.mjs`
+  filenames), update the `@font-face` blocks + `--font-mono` / `--font-head` tokens,
+  and preload the above-the-fold faces.
 - **New surface/box:** reuse an existing surface token; if it needs its own, add a
   paired dark/light token like `--color-code-bg` rather than an overlay (overlays go
   muddy on one theme).

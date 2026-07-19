@@ -3,10 +3,13 @@ _site
 .jekyll-cache
 .jekyll-metadata
 vendor
+node_modules
 
-# Build artifacts (Tailwind binary + compiled CSS are fetched/generated at build)
-bin/tailwindcss
+# Generated at build time (npm run build): compiled CSS, plus the fonts + icons
+# vendored from npm packages by scripts/fonts.mjs and scripts/icons.mjs.
 assets/css/main.css
+assets/fonts/
+_includes/icons/
 
 # Local Claude Code artifacts (agents, worktrees, settings)
 .claude/
