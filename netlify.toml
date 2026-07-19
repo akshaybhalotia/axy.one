@@ -4,6 +4,7 @@
   command = "JEKYLL_ENV=production npm run build"
   publish = "_site"
 
-[build.environment]
-  RUBY_VERSION = "3.4.9" # keep in sync with .ruby-version
-  NODE_VERSION = "26"    # keep in sync with .nvmrc / package.json engines
+# Node and Ruby versions are intentionally NOT pinned here: Netlify reads `.nvmrc`
+# and `.ruby-version` directly, so those files are the single source of truth
+# (shared with CI + local). Setting NODE_VERSION/RUBY_VERSION here would override
+# and silently drift from them.
