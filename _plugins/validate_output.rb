@@ -15,15 +15,15 @@ require "nokogiri"
 Jekyll::Hooks.register :site, :post_write do |site|
   errors = []
 
-  # Identify the default share card the same way seo_image.rb and the templates
-  # do — by site.default_image — so renaming it can't make the #27 guard below
-  # silently pass. Its absence is itself a misconfiguration (head.html relies on it).
-  default_image = site.config["default_image"]
-  default_card = File.basename(default_image) if default_image
-  errors << "_config.yml: no default_image (the #27 guard needs it)" if default_card.nil?
+  # Identify the default share card by its full path (site.default_image) — the
+  # same source seo_image.rb and the templates use — so renaming it can't make
+  # the #27 guard below silently pass, and a bare-filename collision can't trip
+  # it. Its absence (nil or "") is itself a misconfiguration (head.html needs it).
+  default_image = site.config["default_image"].to_s
+  errors << "_config.yml: no default_image (the #27 guard needs it)" if default_image.empty?
 
   Dir.glob(File.join(site.dest, "**", "*.html")).each do |file|
-    page = file.sub(%r{\A#{Regexp.escape(site.dest)}/?}, "/")
+    page = file.delete_prefix(site.dest)
     doc  = Nokogiri::HTML(File.read(file))
 
     # SEO meta is present and singular.
@@ -38,8 +38,8 @@ Jekyll::Hooks.register :site, :post_write do |site|
 
     # #27 regression guard: the default share card is og:image-only and must
     # NEVER be rendered as a visible <img> (post hero, card, etc.).
-    if default_card && doc.css("img").any? { |img| img["src"].to_s.include?(default_card) }
-      errors << "#{page}: default share card (#{default_card}) rendered as an <img> (should be og:image only)"
+    if !default_image.empty? && doc.css("img").any? { |img| img["src"].to_s.include?(default_image) }
+      errors << "#{page}: default share card (#{default_image}) rendered as an <img> (should be og:image only)"
     end
   end
 

@@ -25,8 +25,13 @@ group :jekyll_plugins do
   gem "jekyll-sitemap", "~> 1.4"
 end
 
-# CI build-output checks: html-proofer (links/images/HTML) + nokogiri, which
-# .github/scripts/check-output.rb also uses. Not needed at runtime.
+# Parses the rendered HTML at build time in _plugins/validate_output.rb (the
+# :post_write output guard). Declared explicitly — not leaned on via html-proofer's
+# :test tree — because that plugin runs in the production build too, where the
+# :test group may not be installed.
+gem "nokogiri", "~> 1.13"
+
+# CI-only: html-proofer validates links/images/HTML over the built _site.
 group :test do
   gem "html-proofer", "~> 5.0"
 end
