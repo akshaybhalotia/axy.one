@@ -7,6 +7,18 @@ to a pull request merged into `main` and is tagged on the repository. The next
 milestone, **1.0.0**, lands after the current [roadmap](./README.md#roadmap)
 (syntax highlighting + SEO) ships.
 
+## [1.0.0](https://github.com/akshaybhalotia/axy.one/compare/0.10.0...1.0.0) (2026-07-20)
+
+
+### Features
+
+* SEO — meta tags, sitemap, robots, and social share cards ([#27](https://github.com/akshaybhalotia/axy.one/issues/27)) ([4a5ca81](https://github.com/akshaybhalotia/axy.one/commit/4a5ca81a803077654fd91fba860976832c0b337b))
+
+
+### Documentation
+
+* note the Release-As squash caveat (and force the 1.0.0 release) ([f110171](https://github.com/akshaybhalotia/axy.one/commit/f110171caed49e85eb24a824d7f48a1dc204cf49))
+
 ## [0.10.0](https://github.com/akshaybhalotia/axy.one/compare/0.9.0...0.10.0) (2026-07-20)
 
 
