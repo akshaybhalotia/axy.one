@@ -41,6 +41,23 @@ avatar: /assets/img/avatar.png
 # Build settings
 plugins:
   - jekyll-feed
+  - jekyll-seo-tag   # canonical + Open Graph + Twitter Card + JSON-LD (the {% seo %} tag in head.html)
+  - jekyll-sitemap   # generates /sitemap.xml
+
+# SEO (jekyll-seo-tag). title/description/url/author come from the fields above.
+lang: en_US
+logo: /assets/img/avatar.png        # JSON-LD publisher logo
+default_image: /assets/img/og-default.png  # og:image fallback; per-page hero/image wins (see _plugins/seo_image.rb)
+twitter:
+  username: akshay_bhalotia
+  card: summary_large_image
+social:
+  name: Akshay Bhalotia
+  links:                            # JSON-LD sameAs — canonical profile URLs
+    - https://github.com/akshaybhalotia
+    - https://www.linkedin.com/in/akshaybhalotia
+    - https://twitter.com/akshay_bhalotia
+    - https://t.me/akshaybhalotia
 
 # Content collections. Posts use the built-in collection; work is custom.
 collections:

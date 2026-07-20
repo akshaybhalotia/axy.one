@@ -1,0 +1,12 @@
+---
+# Front matter makes Jekyll render the Liquid below; keep this file out of the sitemap.
+sitemap: false
+---
+User-agent: *
+Allow: /
+
+# Raw project docs shipped alongside the site — not meant for search results.
+Disallow: /CLAUDE.md
+Disallow: /DESIGN.md
+
+Sitemap: {{ '/sitemap.xml' | absolute_url }}
