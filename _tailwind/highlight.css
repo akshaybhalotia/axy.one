@@ -87,16 +87,17 @@ html[data-theme="light"] {
 
 /* Line-number gutter: a sticky left column so it stays put while the code scrolls
    horizontally. aria-hidden, non-selectable, so copy/readers get only the code. */
-.rich figure.highlight.has-lines pre { display: flex; }
-.rich figure.highlight.has-lines pre > code { flex: 1 1 auto; }
+/* Move the <pre>'s padding onto the gutter and the code so the gutter sits flush
+   in the box WITHOUT a negative margin — on a flex item a negative margin-left
+   shrinks the item's footprint and drags the next item over it, which collapsed
+   the divider→code gap. Both children carry 1rem so their tops/bottoms align. */
+.rich figure.highlight.has-lines pre { display: flex; padding: 0; }
+.rich figure.highlight.has-lines pre > code { flex: 1 1 auto; padding: 1rem; }
 .code-lines {
   flex: 0 0 auto;
   position: sticky;
   left: 0;
-  /* Bleed to the <pre>'s 1rem padding edges, then re-pad so numbers line up with
-     the code's first line and the gutter fill covers the full block height. */
-  margin: -1rem 0.9rem -1rem -1rem;
-  padding: 1rem 0.6rem 1rem 1rem;
+  padding: 1rem 0.85rem 1rem 1rem; /* left aligns the numbers; right = numbers→divider gap */
   background-color: var(--color-code-bg);
   border-right: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent);
   color: color-mix(in srgb, var(--color-ink) 45%, transparent);
