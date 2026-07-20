@@ -47,9 +47,9 @@ plugins:
 # SEO (jekyll-seo-tag). title/description/url/author come from the fields above.
 lang: en_US
 logo: /assets/img/avatar.png        # JSON-LD publisher logo (same asset as `avatar`)
-default_image: /assets/img/og-default.png  # og:image fallback; per-page hero/image wins (see _plugins/seo_image.rb)
+default_image: /assets/img/og-default.png  # og:image-only fallback, applied in head.html for pages with no image (never displayed); a per-page hero/image wins
 twitter:
-  username: akshay_bhalotia         # twitter:site handle (seo-tag needs this key — no fallback to twitter_username); card type defaults to summary_large_image
+  username: akshay_bhalotia         # twitter:site handle (seo-tag needs this key; no fallback to twitter_username). Card defaults to summary_large_image since every page has a page.image (seo_image.rb).
 social:
   # JSON-LD sameAs — every social profile, mirroring the `/…` social redirects in
   # _redirects (and _data/social.yml). Keep in sync when adding/removing a profile.

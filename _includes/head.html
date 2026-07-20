@@ -6,7 +6,8 @@ before the body renders). {%- endcomment -%}
 <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
 {%- comment -%} jekyll-seo-tag emits description, canonical, Open Graph, Twitter Card,
 and JSON-LD. title=false keeps our custom "Page · Site" <title> above (the plugin's
-separator is "|"). og:image resolves per-page via _plugins/seo_image.rb. {%- endcomment -%}
+separator is "|"). og:image is page.image — set on every page (with the default share
+card as fallback) by _plugins/seo_image.rb; templates skip that default when displaying. {%- endcomment -%}
 {%- seo title=false -%}
 <link rel="preload" as="font" type="font/woff2" crossorigin href="{{ '/assets/fonts/monaspace-neon-400.woff2' | relative_url }}">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="{{ '/assets/fonts/monaspace-radon-700.woff2' | relative_url }}">
