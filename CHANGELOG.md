@@ -7,6 +7,14 @@ to a pull request merged into `main` and is tagged on the repository. The next
 milestone, **1.0.0**, lands after the current [roadmap](./README.md#roadmap)
 (syntax highlighting + SEO) ships.
 
+## [1.0.1](https://github.com/akshaybhalotia/axy.one/compare/1.0.0...1.0.1) (2026-07-20)
+
+
+### Refactors
+
+* enforce output invariants in a build plugin, not a CI script ([ee00bea](https://github.com/akshaybhalotia/axy.one/commit/ee00bea133e3ef50548cf6b87e2fc13aa1ed130c))
+* harden the output guard and fix nokogiri's dependency layer ([6d4323b](https://github.com/akshaybhalotia/axy.one/commit/6d4323b9c191a26c3f2637c85bc51f97b93966c5))
+
 ## [1.0.0](https://github.com/akshaybhalotia/axy.one/compare/0.10.0...1.0.0) (2026-07-20)
 
 
