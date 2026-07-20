@@ -17,5 +17,8 @@
       {%- include footer.html -%}
     </main>
   </div>
+  {%- comment -%} Progressive enhancement for code blocks (copy button + line numbers);
+  no-op on pages without code. Highlighting itself is build-time, needs no JS. {%- endcomment -%}
+  {%- include code-enhance.html -%}
 </body>
 </html>

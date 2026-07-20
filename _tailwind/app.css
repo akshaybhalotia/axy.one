@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./highlight.css"; /* Rouge/gruvbox syntax-highlight tokens + code-block chrome */
 
 /* Scan Jekyll templates/content for class names (generated archive pages reuse
    _layouts, so scanning layouts/includes covers them too). */
