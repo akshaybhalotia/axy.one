@@ -46,18 +46,21 @@ plugins:
 
 # SEO (jekyll-seo-tag). title/description/url/author come from the fields above.
 lang: en_US
-logo: /assets/img/avatar.png        # JSON-LD publisher logo
+logo: /assets/img/avatar.png        # JSON-LD publisher logo (same asset as `avatar`)
 default_image: /assets/img/og-default.png  # og:image fallback; per-page hero/image wins (see _plugins/seo_image.rb)
 twitter:
-  username: akshay_bhalotia
-  card: summary_large_image
+  username: akshay_bhalotia         # twitter:site handle (seo-tag needs this key — no fallback to twitter_username); card type defaults to summary_large_image
 social:
-  name: Akshay Bhalotia
-  links:                            # JSON-LD sameAs — canonical profile URLs
+  # JSON-LD sameAs — every social profile, mirroring the `/…` social redirects in
+  # _redirects (and _data/social.yml). Keep in sync when adding/removing a profile.
+  links:
+    - https://linkedin.com/in/akshaybhalotia
     - https://github.com/akshaybhalotia
-    - https://www.linkedin.com/in/akshaybhalotia
+    - https://stackoverflow.com/users/3332367/akshay-bhalotia
     - https://twitter.com/akshay_bhalotia
+    - https://instagram.com/akshay_bhalotia
     - https://t.me/akshaybhalotia
+    - https://steamcommunity.com/id/akshaybhalotia
 
 # Content collections. Posts use the built-in collection; work is custom.
 collections:
@@ -114,6 +117,8 @@ exclude:
   - CODE_OF_CONDUCT.md
   - CHANGELOG.md
   - LICENSE
+  - CLAUDE.md
+  - DESIGN.md
   # restore Jekyll defaults that an explicit `exclude:` would otherwise drop
   - node_modules
   - gemfiles
