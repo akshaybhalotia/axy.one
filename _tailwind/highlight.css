@@ -1,12 +1,8 @@
 /* ---- Syntax highlighting (Rouge · gruvbox) --------------------------------
-   kramdown + Rouge already emit token <span>s at build time inside
-   <figure class="highlight">, so highlighting is pure CSS: no JS, and a no-JS
-   visitor gets the fully-coloured code (identical to everyone else). Colours are
-   gruvbox — a deliberate, code-block-only exception to the otherwise monochrome
-   palette (DESIGN.md §1/§5). They're mapped to theme-aware --hl-* tokens so they
-   flip with the light/dark toggle (the same :has()/[data-theme] triggers the rest
-   of the theme uses), and every colour is AA-verified on --color-code-bg in both
-   modes. Base text, operators and punctuation inherit --color-ink (no rule). */
+   Rouge emits token <span>s at build time inside <figure class="highlight">, so
+   this is pure CSS (no JS). The gruvbox colour exception, theme-awareness, and AA
+   contrast notes are documented in DESIGN.md §5 — the single source, not repeated
+   here. Base text, operators and punctuation inherit --color-ink (no rule). */
 
 :root {
   --hl-comment: #928374; /* gruvbox gray   */
@@ -82,7 +78,7 @@ html[data-theme="light"] {
 }
 .rich figure.highlight:hover .code-copy,
 .code-copy:focus-visible { opacity: 1; }
-.code-copy:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+/* focus-visible outline is shared with the other controls in app.css */
 .code-copy.is-copied { color: var(--hl-string); }
 
 /* Line-number gutter: a sticky left column so it stays put while the code scrolls
@@ -90,14 +86,14 @@ html[data-theme="light"] {
 /* Move the <pre>'s padding onto the gutter and the code so the gutter sits flush
    in the box WITHOUT a negative margin — on a flex item a negative margin-left
    shrinks the item's footprint and drags the next item over it, which collapsed
-   the divider→code gap. Both children carry 1rem so their tops/bottoms align. */
+   the divider→code gap. Both children carry --code-pad so their tops/bottoms align. */
 .rich figure.highlight.has-lines pre { display: flex; padding: 0; }
-.rich figure.highlight.has-lines pre > code { flex: 1 1 auto; padding: 1rem; }
+.rich figure.highlight.has-lines pre > code { flex: 1 1 auto; padding: var(--code-pad); }
 .code-lines {
   flex: 0 0 auto;
   position: sticky;
   left: 0;
-  padding: 1rem 0.85rem 1rem 1rem; /* left aligns the numbers; right = numbers→divider gap */
+  padding: var(--code-pad) 0.85rem var(--code-pad) var(--code-pad); /* left aligns the numbers; right = numbers→divider gap */
   background-color: var(--color-code-bg);
   border-right: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent);
   color: color-mix(in srgb, var(--color-ink) 45%, transparent);

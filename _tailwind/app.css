@@ -38,6 +38,7 @@
   --color-card-muted: #4f4c47; /* card subtitle/secondary */
   --color-toggle: #57534d; /* avatar menu-badge disc — muted, visible on near-black */
   --color-code-bg: #14120f; /* code surface — near-black terminal box (ink text ~17:1) */
+  --code-pad: 1rem; /* code-block padding, shared by .rich pre and the line-number gutter */
   --color-card-border: transparent; /* card hairline — none in dark, set in light */
 
   /* Chrome / accent colors that aren't surfaces. These previously appeared as
@@ -114,6 +115,7 @@
 .nav-link:focus-visible,
 .chip:focus-visible,
 .app-social-link:focus-visible,
+.code-copy:focus-visible,
 .app-theme-toggle:focus-within {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
@@ -165,7 +167,7 @@
    hairline border, so both the box and the text read crisply in both themes —
    the old flat black overlay went muddy on the light surface. */
 .rich code { background-color: var(--color-code-bg); border: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent); padding: 0.1em 0.35em; border-radius: 0.25rem; font-size: 0.9em; }
-.rich pre { background-color: var(--color-code-bg); border: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent); padding: 1rem; border-radius: 0.5rem; overflow-x: auto; }
+.rich pre { background-color: var(--color-code-bg); border: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent); padding: var(--code-pad); border-radius: 0.5rem; overflow-x: auto; }
 .rich pre code { background: none; border: 0; padding: 0; }
 
 /* Display headings use the paired Monaspace style with slightly tighter tracking. */

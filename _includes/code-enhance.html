@@ -7,7 +7,7 @@ today's experience, never worse. Returns immediately on pages with no code. {%- 
     var blocks = document.querySelectorAll(".rich figure.highlight");
     if (!blocks.length) return;
     var canCopy = !!(navigator.clipboard && navigator.clipboard.writeText);
-    Array.prototype.forEach.call(blocks, function (fig) {
+    blocks.forEach(function (fig) {
       var pre = fig.querySelector("pre");
       var code = fig.querySelector("code");
       if (!pre || !code) return;
