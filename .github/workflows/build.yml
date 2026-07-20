@@ -17,13 +17,12 @@ jobs:
       - name: Build the site
         uses: ./.github/actions/build-site
 
-      # Guard the built output against "valid but wrong" regressions a green
-      # build + Lighthouse miss: SEO invariants + the #27 share-card leak
-      # (check-output.rb), then links/images/HTML (html-proofer).
-      - name: Check the output
+      # SEO invariants + the #27 share-card leak are enforced inside the build
+      # by _plugins/validate_output.rb (fails `npm run build` above). Here we
+      # add link/image/HTML validity over the built output via html-proofer.
+      - name: Check links, images & HTML (html-proofer)
         shell: bash
         run: |
-          bundle exec ruby .github/scripts/check-output.rb _site
           # Netlify redirect short-links (/github, /resume, …) resolve at the
           # edge and have no file in _site — ignore them so html-proofer doesn't
           # flag them as broken internal links. Derived from _redirects so the
