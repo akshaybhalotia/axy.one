@@ -75,6 +75,12 @@ Short links (`/linkedin`, `/github`, `/resume`, `/twitter`, …) live in **`_red
 
 `jekyll-feed` generates the posts feed at **`/feed.xml`** plus a work feed at **`/work/feed.xml`** (`feed.collections.work.path`). `{% feed_meta %}` in `<head>` enables autodiscovery; a visible RSS link is in the footer. RSS is a first-class requirement — keep feeds valid when touching content/config.
 
+## SEO
+
+- **`jekyll-seo-tag`** — `{% seo title=false %}` in `_includes/head.html` emits canonical, meta description, **Open Graph**, **Twitter Card** (`summary_large_image`), and **JSON-LD** (WebSite/Person/Organization). `title=false` keeps the custom `·` `<title>` (the plugin's separator is `|`); config is in `_config.yml` (`twitter`, `social` → JSON-LD `sameAs`, `logo`, `lang`).
+- **`og:image`** — `_plugins/seo_image.rb` (a `:post_init` hook) maps a work item's `hero` / a post's `image` onto `page.image` (the field seo-tag reads), falling back to **`default_image`** (`/assets/img/og-default.png`, a 1200×630 gruvbox-palette share card). A page's own `image` always wins. To regenerate the card, re-render `scripts`-style from an HTML source at 1200×630 (the current one was a headless-Chromium screenshot of a Monaspace/gruvbox card).
+- **`jekyll-sitemap`** → `/sitemap.xml`. **`robots.txt`** is front-matter'd (so the `Sitemap:` URL renders); it allows all and disallows the raw `/CLAUDE.md` + `/DESIGN.md` that ship verbatim.
+
 ## Theming & no-JS
 
 The site is **no-JS-first**: the nav and theme toggles are CSS checkboxes (`#nav-toggle`, `#theme-toggle`) driven by `:checked`, `:has()`, and `~`. JS only *enhances* — theme persistence (a no-flash `<head>` script using `localStorage` + `prefers-color-scheme`) and the hero typewriter. Everything degrades to a complete static experience. Details in DESIGN.md §6.
