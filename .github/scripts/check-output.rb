@@ -6,10 +6,20 @@
 # output" class of regression (e.g. the SEO default share card leaking into a
 # post body, #27). Run in CI after the build. Usage: ruby check-output.rb [_site]
 require "nokogiri"
+require "yaml"
 
 site = ARGV[0] || "_site"
 errors = []
 add = ->(where, msg) { errors << "#{where}: #{msg}" }
+
+# Identify the default share card the same way the templates and seo_image.rb do
+# — by site.default_image — instead of a hardcoded name, so renaming the card
+# can't make the #27 guard below silently pass. Resolve _config.yml relative to
+# this script so the working directory doesn't matter.
+config = YAML.safe_load_file(File.expand_path("../../_config.yml", __dir__),
+                             permitted_classes: [Date, Time], aliases: true)
+default_card = config["default_image"] or abort "check-output: _config.yml has no default_image"
+default_card = File.basename(default_card) # e.g. "og-default.png"
 
 pages = Dir.glob(File.join(site, "**", "*.html"))
 abort "check-output: no HTML found in #{site}/" if pages.empty?
@@ -30,19 +40,20 @@ pages.each do |file|
 
   # --- #27 regression guard: the default share card is og:image-only and must
   #     NEVER be rendered as a visible <img> (post hero, card, etc.). ---
-  if doc.css("img").any? { |img| img["src"].to_s.include?("og-default") }
-    add.call(page, "default share card rendered as an <img> (should be og:image only)")
+  if doc.css("img").any? { |img| img["src"].to_s.include?(default_card) }
+    add.call(page, "default share card (#{default_card}) rendered as an <img> (should be og:image only)")
   end
 end
 
-# --- site-level SEO artifacts ---
-sitemap = File.join(site, "sitemap.xml")
-add.call("sitemap.xml", "missing")            unless File.exist?(sitemap)
-add.call("sitemap.xml", "no <url> entries")   if File.exist?(sitemap) && !File.read(sitemap).include?("<url>")
-
-robots = File.join(site, "robots.txt")
-add.call("robots.txt", "missing")             unless File.exist?(robots)
-add.call("robots.txt", "no Sitemap: line")    if File.exist?(robots) && !File.read(robots).include?("Sitemap:")
+# --- site-level SEO artifacts: each file must exist and contain its marker ---
+{ "sitemap.xml" => "<url>", "robots.txt" => "Sitemap:" }.each do |name, needle|
+  path = File.join(site, name)
+  if !File.exist?(path)
+    add.call(name, "missing")
+  elsif !File.read(path).include?(needle)
+    add.call(name, "no #{needle.inspect} marker")
+  end
+end
 
 if errors.empty?
   puts "check-output: ✓ #{pages.size} pages passed"
