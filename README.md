@@ -179,8 +179,7 @@ See [CHANGELOG.md](./CHANGELOG.md).
 
 ## Roadmap
 
-The `1.0.0` roadmap — **syntax highlighting** and **SEO** — has shipped. See the
-[open issues](https://github.com/akshaybhalotia/axy.one/issues) for what's next.
+See the [open issues](https://github.com/akshaybhalotia/axy.one/issues) for what's planned.
 
 <!-- CONTRIBUTING -->
 
