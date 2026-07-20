@@ -221,7 +221,15 @@ so it stays put while the code scrolls.
 
 ### Sidebar socials vs Contact page
 Sidebar keeps two **monochrome** essentials (email + GitHub). The full, brand-colored,
-labelled set lives on the **Contact** page — the only place brand color appears.
+labelled set lives on the **Contact** page — the only place brand color appears in the
+UI chrome (code highlighting + the share card are the sanctioned content exception, §1).
+
+### Social share card (`assets/img/og-default.png`)
+The default `og:image` for link previews (SEO): a 1200×630 terminal card echoing the
+hero signature — the name in **Radon** with the block cursor on the dark
+`--color-code-bg`, plus a **gruvbox**-coloured shell prompt (the code-highlighting
+palette). A page's own `hero`/`image` overrides it. Regenerate by rendering an HTML
+source at 1200×630 with headless Chromium.
 
 ### Skip link & focus (`.skip-link`, `:focus-visible`)
 A visible-on-focus skip link jumps to `#main-content`. Every interactive control shows

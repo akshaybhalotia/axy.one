@@ -74,6 +74,7 @@ routing, conventions) and [`DESIGN.md`](./DESIGN.md) (the design system).
 - [Monaspace](https://monaspace.githubnext.com/) (Neon + Radon) via `@fontsource/*`
 - [lucide-static](https://lucide.dev/) + [Font Awesome](https://fontawesome.com/) — icons (inlined SVG)
 - [Netlify](https://www.netlify.com/) — hosting & deploy previews
+- Jekyll plugins: `jekyll-feed` (RSS), `jekyll-seo-tag` (meta/OG/JSON-LD), `jekyll-sitemap`
 - :heart: + :smoking:
 
 <!-- GETTING STARTED -->
@@ -137,7 +138,8 @@ npm run dev   # vendor + Tailwind --watch + jekyll serve → http://localhost:40
 ### Run tests
 
 There's no unit-test suite — this is a static site. CI runs the production build
-as a smoke check on every pull request; run the same check locally with:
+plus **Lighthouse** (accessibility is a hard gate; SEO tracked) on every pull
+request; run the build check locally with:
 
 ```sh
 JEKYLL_ENV=production npm run build
@@ -162,11 +164,12 @@ npx serve _site
 
 ## Versioning
 
-This project uses [SemVer](https://semver.org/) for versioning. Each release maps
-to a pull request merged into `main` and is tagged on the repository — the history
-runs from `0.1.0` (the original site) up to the current `0.9.x`, with the first
-stable release, `1.0.0`, following the [roadmap](#roadmap) below. For the versions
-available, see the [tags on this repository](https://github.com/akshaybhalotia/axy.one/tags).
+Versioning follows [SemVer](https://semver.org/) and is **automated by
+[release-please](https://github.com/googleapis/release-please)**: each `feat`/`fix`
+merged to `main` opens a release PR that bumps the version and updates the changelog,
+and merging it tags the release + publishes a GitHub Release. See the
+[tags](https://github.com/akshaybhalotia/axy.one/tags) and
+[releases](https://github.com/akshaybhalotia/axy.one/releases).
 
 ### Version History
 
@@ -176,13 +179,7 @@ See [CHANGELOG.md](./CHANGELOG.md).
 
 ## Roadmap
 
-Before the `1.0.0` release:
-
-- Improve syntax highlighting
-- SEO optimizations
-
-See the [open issues](https://github.com/akshaybhalotia/axy.one/issues) for the
-full list of proposed features (and known issues).
+See the [open issues](https://github.com/akshaybhalotia/axy.one/issues) for what's planned.
 
 <!-- CONTRIBUTING -->
 

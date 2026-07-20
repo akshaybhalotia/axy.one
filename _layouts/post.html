@@ -3,6 +3,8 @@ layout: default
 ---
 <article>
   {%- assign img = page.hero | default: page.image -%}
+  {%- comment -%} The SEO default share card (set on page.image by seo_image.rb) is og:image-only — never a displayed hero. {%- endcomment -%}
+  {%- if img == site.default_image -%}{%- assign img = false -%}{%- endif -%}
   {%- if img -%}
   <img src="{{ img | relative_url }}" alt="" class="w-full h-56 desk:h-80 object-cover rounded-card">
   {%- endif -%}

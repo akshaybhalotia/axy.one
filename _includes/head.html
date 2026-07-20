@@ -4,9 +4,11 @@ before the body renders). {%- endcomment -%}
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
-{% if page.description or site.description %}
-<meta name="description" content="{{ page.description | default: site.description | strip_newlines }}">
-{% endif %}
+{%- comment -%} jekyll-seo-tag emits description, canonical, Open Graph, Twitter Card,
+and JSON-LD. title=false keeps our custom "Page · Site" <title> above (the plugin's
+separator is "|"). og:image is page.image — set on every page (with the default share
+card as fallback) by _plugins/seo_image.rb; templates skip that default when displaying. {%- endcomment -%}
+{%- seo title=false -%}
 <link rel="preload" as="font" type="font/woff2" crossorigin href="{{ '/assets/fonts/monaspace-neon-400.woff2' | relative_url }}">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="{{ '/assets/fonts/monaspace-radon-700.woff2' | relative_url }}">
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
