@@ -40,6 +40,8 @@ docs: Description # if documentation is added
 lint: Description # if a lint issue is fixed
 ```
 
+> Because PRs are **squash-merged**, the **PR title** must be a valid Conventional Commit too — a `PR title` check enforces it, and the title becomes the commit on `main` that drives the automated release (see [Automation](#automation)). The lint also accepts `chore`, `ci`, `build`, `perf`, `test`, and `revert` for automation/maintenance commits.
+
 ### Issues
 
 ```bash
@@ -99,3 +101,11 @@ Others will give constructive feedback.
 This is a time for discussion and improvements,
 and making the necessary changes will be required before we can
 merge the contribution.
+
+## Automation
+
+A few things are handled for you — work with them, not against them:
+
+- **CI runs on every PR:** a production build, **Lighthouse** (accessibility is a hard gate), a **link check**, path-based **labels**, and the **Conventional-Commit PR-title** check noted above.
+- **Releases are automated** by [release-please](https://github.com/googleapis/release-please): merging your PR (squash) lets it maintain a release PR that bumps the version and rewrites `CHANGELOG.md`, and merging _that_ tags + publishes the GitHub Release. **So don't edit `CHANGELOG.md` or version numbers by hand** — the bump comes from your commit types (`feat` → minor, `fix` → patch).
+- **Dependencies** are kept up to date by Dependabot (npm, Bundler, GitHub Actions).

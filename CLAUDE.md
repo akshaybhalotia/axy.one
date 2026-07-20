@@ -56,6 +56,7 @@ Top-level pages are Markdown/HTML at the repo root (`index.markdown`, `contact.m
   - **validates and fails the build loudly** on: a `_work` item missing `hero`, an unparseable/missing `date`, or a slug that **collides** with a category or date within the same collection. On a collision, resolve the content — don't silence the guard.
 - **`normalize_categories.rb`** (`:documents, :post_init` hook): splits a string `categories:` into an array so templates can rely on a list.
 - **`obfuscate_email.rb`**: registers the `obfuscate_email` Liquid filter (hex HTML entities). The site email is deliberately kept **out of the RSS feed** (`author.email` omitted in `_config.yml`); the Contact page + sidebar use the obfuscated top-level `email`.
+- **`seo_image.rb`** (`:documents, :pages, :post_init` hook): maps a work item's `hero` / a post's `image` onto `page.image` so jekyll-seo-tag emits a per-page `og:image`, falling back to the default share card (`default_image`). See §SEO.
 
 ## Layouts, includes & data
 
@@ -79,7 +80,11 @@ Short links (`/linkedin`, `/github`, `/resume`, `/twitter`, …) live in **`_red
 
 - **`jekyll-seo-tag`** — `{% seo title=false %}` in `_includes/head.html` emits canonical, meta description, **Open Graph**, **Twitter Card** (`summary_large_image`), and **JSON-LD** (WebSite/Person/Organization). `title=false` keeps the custom `·` `<title>` (the plugin's separator is `|`); config is in `_config.yml` (`twitter`, `social` → JSON-LD `sameAs`, `logo`, `lang`).
 - **`og:image`** — `_plugins/seo_image.rb` (a `:post_init` hook) maps a work item's `hero` / a post's `image` onto `page.image` (the field seo-tag reads), falling back to **`default_image`** (`/assets/img/og-default.png`, a 1200×630 gruvbox-palette share card). A page's own `image` always wins. To regenerate the card, re-render `scripts`-style from an HTML source at 1200×630 (the current one was a headless-Chromium screenshot of a Monaspace/gruvbox card).
-- **`jekyll-sitemap`** → `/sitemap.xml`. **`robots.txt`** is front-matter'd (so the `Sitemap:` URL renders); it allows all and disallows the raw `/CLAUDE.md` + `/DESIGN.md` that ship verbatim.
+- **`jekyll-sitemap`** → `/sitemap.xml`. **`robots.txt`** is front-matter'd (so the `Sitemap:` URL renders) and links the sitemap; it's kept out of the sitemap itself via `sitemap: false`.
+
+## Code highlighting
+
+Fenced code is highlighted at **build time** by Rouge (kramdown's default) — token `<span>`s, no JS. Theme-aware gruvbox token colours live in `_tailwind/highlight.css` (imported by `app.css`), mapped to `--hl-*` vars that flip with the theme and AA-verified on `--color-code-bg`. `_includes/code-enhance.html` is a progressive enhancement adding a copy button + line-number gutter; with JS off you still get fully-coloured code. Inline `` `code` `` isn't tokenised. See DESIGN.md §5.
 
 ## Theming & no-JS
 
@@ -90,12 +95,19 @@ The site is **no-JS-first**: the nav and theme toggles are CSS checkboxes (`#nav
 - **Netlify** (`netlify.toml`): build command `JEKYLL_ENV=production npm run build`, `publish = "_site"`. Netlify auto-installs both Bundler and npm deps before the command. Deploy previews run on PRs.
 - **Node/Ruby versions are single-sourced**: `.nvmrc` (Node 26) and `.ruby-version` (Ruby 3.4.9) drive local, CI, **and** Netlify — Netlify reads both files directly, so `netlify.toml` deliberately sets **no** `NODE_VERSION`/`RUBY_VERSION` (they'd override and silently drift). CI reads both dotfiles too (`node-version-file: .nvmrc`; `setup-ruby` auto-reads `.ruby-version` when `ruby-version` is omitted). Bump the version by editing the dotfile only.
 - **CI** (`.github/workflows/build.yml`): sets up Ruby + Node (both from their dotfiles), `npm ci`, then `npm run build` on PRs/pushes to `main`. GitHub only activates a workflow once it exists on the **default branch**.
-- **`main` is protected** (ruleset: PR required, linear history) — land changes via PRs, don't push to `main` directly.
+- **`main` is protected** (ruleset: PR required, linear history) — land changes via PRs (squash), don't push to `main` directly.
+
+## Releases & automation (`.github/`)
+
+- **`release-please` owns versioning.** On every push to `main` it maintains a "release PR" (`release-please.yml` + `.github/release-please-config.json` / `.release-please-manifest.json`) that bumps the version and rewrites `CHANGELOG.md` from Conventional-Commit history; **merging that PR tags the release** (SemVer, `include-v-in-tag: false` → no `v`) **and cuts a GitHub Release**. So **never hand-edit `CHANGELOG.md` or version numbers** — write good `feat:`/`fix:` commits and PR titles (PRs squash-merge, so the PR title is the commit release-please reads). Force a version with a `Release-As: X.Y.Z` commit footer.
+- **Shared build recipe:** `./.github/actions/build-site` (composite: setup-ruby + setup-node from the dotfiles → `npm ci` → production build) is reused by `build.yml`, `lighthouse.yml`, and `link-check.yml` — change how CI builds in one place.
+- **Per-PR checks:** `build.yml` (production build), `lighthouse.yml` (Lighthouse; **accessibility is a hard gate** ≥0.9, auto-discovers every page in `_site`), `pr-title-lint.yml` (Conventional-Commit PR title), `labeler.yml` (path-based `area:` labels via `.github/labeler.yml`).
+- **Scheduled/maintenance:** `link-check.yml` (weekly lychee sweep → opens an issue on dead links); **Dependabot** (`dependabot.yml`: npm + bundler + github-actions, weekly, minor/patch grouped).
 
 ## Conventions & gotchas
 
 - **Design changes → follow `DESIGN.md`** (tokens, components, patterns). Prefer a theme token over a hardcoded color; keep both themes AA.
 - `_site/`, `node_modules/`, `assets/css/main.css`, the generated `assets/fonts/*.woff2` + `_includes/icons/`, and `.claude/` are **gitignored** build/local artifacts — never edit by hand or commit.
 - `exclude:` in `_config.yml` **replaces** Jekyll's defaults, so `node_modules` and `gemfiles` are re-added explicitly there — keep them if you touch `exclude:`.
-- `CLAUDE.md` and `DESIGN.md` have no front matter, so Jekyll copies them **verbatim** to `_site/` (they ship as raw files at `/CLAUDE.md`, `/DESIGN.md`). Add to `exclude:` if that's ever unwanted.
+- `CLAUDE.md` and `DESIGN.md` are in `exclude:` (with the other repo docs), so they **don't ship** to `_site/` — they live on GitHub, not the site. (They have no front matter, so without the exclude Jekyll would copy them verbatim to `/CLAUDE.md`, `/DESIGN.md`.)
 - Site-wide variables (title, email, social usernames, author) live in `_config.yml` (`{{ site.title }}`, `{{ site.email }}`, …).
