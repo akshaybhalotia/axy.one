@@ -1,7 +1,11 @@
-# Weekly broken-link sweep. Builds the site and checks every link in the output
-# (internal links resolved offline via --root-dir, external links hit live), then
-# opens a tracking issue if anything is dead. Scheduled rather than a PR gate, so
-# a flaky third-party host never blocks a merge.
+# Weekly broken-link sweep. Builds the site, then resolves every link in the
+# output against the live site (--base-url) and checks it — so page links, the
+# Netlify /short-link redirects, and their external targets are all validated
+# end-to-end on what's actually deployed. Opens a tracking issue if anything is
+# dead. Scheduled rather than a PR gate, so a flaky third-party host never blocks
+# a merge. (Per-PR internal link/image/HTML validity is html-proofer's job in
+# build.yml; resolving against --base-url is what avoids the redirect/clean-URL
+# false positives lychee's offline --root-dir mode produced — see issue #28.)
 name: Link check
 
 on:
@@ -20,13 +24,19 @@ jobs:
       - uses: actions/checkout@v7
       - uses: ./.github/actions/build-site
 
+      # Single-source the production URL from _config.yml (like _redirects drives
+      # html-proofer's ignore list) so this can't drift from the real domain.
+      - name: Resolve site URL
+        id: site
+        run: echo "url=$(sed -n 's/^url:[[:space:]]*"\([^"]*\)".*/\1/p' _config.yml)" >> "$GITHUB_OUTPUT"
+
       - name: Check links
         id: lychee
         uses: lycheeverse/lychee-action@v2
         with:
           args: >-
             --no-progress
-            --root-dir "${{ github.workspace }}/_site"
+            --base-url "${{ steps.site.outputs.url }}"
             "./_site/**/*.html"
           fail: false
 
