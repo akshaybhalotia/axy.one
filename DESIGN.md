@@ -19,6 +19,9 @@ For build/tooling and content architecture, see `CLAUDE.md`. This file is design
   (persistence, the typewriter). Toggles are CSS (`:checked`, `:has()`, `~`).
 - **Restraint, one signature.** The palette is monochrome; the one deliberate
   flourish is the hero (handwriting display + typed-in headline with a cursor).
+  The single sanctioned colour exception is **syntax highlighting**: code blocks
+  carry a functional gruvbox palette because readability there beats purity —
+  everything else stays monochrome (§5).
 - **Accessibility is a floor, not a feature.** WCAG AA contrast minimum,
   `:focus-visible` everywhere, `prefers-reduced-motion` respected, semantic
   landmarks, skip link.
@@ -61,7 +64,8 @@ its tiers widened so it doesn't crowd near-white.
 | `--color-social-border` | `transparent` | `rgb(0 0 0 / .18)` | Contact social badge border |
 
 There is intentionally **no accent hue** and **no per-category color** — interactive
-state is carried by underline / inversion / opacity, not color.
+state is carried by underline / inversion / opacity, not color. (The one exception
+is syntax highlighting inside code blocks — see §5.)
 
 ### Verified contrast (WCAG)
 
@@ -194,10 +198,26 @@ so it adapts to theme), and an sr-only "(opens in a new tab)". Use the `ext-link
 include for standalone links; the nav applies `.ext-arrow` to `new_tab` items.
 Icon-only social links opt out.
 
-### Code (`.rich code`, `.rich pre`)
+### Code (`.rich code`, `.rich pre`, `_tailwind/highlight.css`)
 Theme-aware surface `--color-code-bg` (near-black box in dark, warm near-white in
 light) + a hairline border, so both the box and its text stay crisp in both themes.
 Coding ligatures on (see §3).
+
+**Syntax highlighting** happens at **build time** — kramdown + Rouge emit token
+`<span>`s inside `<figure class="highlight">`, so it needs **zero JS** and a no-JS
+visitor sees fully-coloured code (the one place colour is allowed — §1). The
+gruvbox palette is mapped to theme-aware `--hl-*` tokens (dark defaults on `:root`,
+light overrides under the same `:has(#theme-toggle:checked)` / `[data-theme]`
+triggers as the rest of the theme) so it flips with the toggle. Every token colour
+is **AA-verified on `--color-code-bg`** in both modes; four light-mode hues
+(comment/string/type/class) are darkened from stock gruvbox-light to clear 4.5:1.
+Base text, operators and punctuation inherit `--color-ink`. **Inline** `` `code` ``
+has no language, so it is not tokenised — it keeps the plain code surface.
+
+A **line-number gutter** and **copy button** are added by `_includes/code-enhance.html`
+(progressive enhancement, §6): with JS off they're simply absent — you still get the
+highlighted block. The gutter is `aria-hidden`, non-selectable, and `position:sticky`
+so it stays put while the code scrolls.
 
 ### Sidebar socials vs Contact page
 Sidebar keeps two **monochrome** essentials (email + GitHub). The full, brand-colored,
@@ -258,4 +278,10 @@ a 2px `--color-focus` outline on `:focus-visible`.
 - **New surface/box:** reuse an existing surface token; if it needs its own, add a
   paired dark/light token like `--color-code-bg` rather than an overlay (overlays go
   muddy on one theme).
-- **Never** introduce an accent hue or per-category color without revisiting §1.
+- **Change the syntax-highlight theme:** regenerate the token colours with
+  `bundle exec rougify style <theme>.dark` / `.light`, map them onto the `--hl-*`
+  tokens in `_tailwind/highlight.css`, and re-check each against `--color-code-bg`
+  in both modes (AA 4.5:1) — darken any that fall short, as the light gruvbox hues
+  needed. Don't hardcode per-token colours outside the `--hl-*` tokens.
+- **Never** introduce an accent hue or per-category color without revisiting §1
+  (syntax highlighting in code blocks is the one sanctioned exception).

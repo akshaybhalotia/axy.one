@@ -1,0 +1,50 @@
+{%- comment -%} Progressive enhancement for code blocks: a line-number gutter and a
+copy button. Highlighting itself is build-time (Rouge) — this only adds chrome, so
+with JS disabled (or if this fails) you still get the fully-highlighted block, i.e.
+today's experience, never worse. Returns immediately on pages with no code. {%- endcomment -%}
+<script>
+  (function () {
+    var blocks = document.querySelectorAll(".rich figure.highlight");
+    if (!blocks.length) return;
+    var canCopy = !!(navigator.clipboard && navigator.clipboard.writeText);
+    blocks.forEach(function (fig) {
+      var pre = fig.querySelector("pre");
+      var code = fig.querySelector("code");
+      if (!pre || !code) return;
+      var text = code.textContent.replace(/\n+$/, "");
+
+      // Line-number gutter (skip trivial single-line blocks).
+      var lines = text.split("\n").length;
+      if (lines > 1) {
+        var nums = [];
+        for (var i = 1; i <= lines; i++) nums.push(i);
+        var gutter = document.createElement("span");
+        gutter.className = "code-lines";
+        gutter.setAttribute("aria-hidden", "true");
+        gutter.textContent = nums.join("\n");
+        pre.insertBefore(gutter, code);
+        fig.classList.add("has-lines");
+      }
+
+      // Copy button (only when the Clipboard API is available + permitted).
+      if (canCopy) {
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "code-copy";
+        btn.textContent = "Copy";
+        btn.setAttribute("aria-label", "Copy code to clipboard");
+        btn.addEventListener("click", function () {
+          navigator.clipboard.writeText(text).then(function () {
+            btn.textContent = "Copied";
+            btn.classList.add("is-copied");
+            setTimeout(function () {
+              btn.textContent = "Copy";
+              btn.classList.remove("is-copied");
+            }, 1600);
+          }).catch(function () {});
+        });
+        fig.appendChild(btn);
+      }
+    });
+  })();
+</script>

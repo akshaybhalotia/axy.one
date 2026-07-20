@@ -1,0 +1,104 @@
+/* ---- Syntax highlighting (Rouge · gruvbox) --------------------------------
+   Rouge emits token <span>s at build time inside <figure class="highlight">, so
+   this is pure CSS (no JS). The gruvbox colour exception, theme-awareness, and AA
+   contrast notes are documented in DESIGN.md §5 — the single source, not repeated
+   here. Base text, operators and punctuation inherit --color-ink (no rule). */
+
+:root {
+  --hl-comment: #928374; /* gruvbox gray   */
+  --hl-keyword: #fb4934; /* red            */
+  --hl-string:  #b8bb26; /* green          */
+  --hl-number:  #d3869b; /* purple         */
+  --hl-type:    #fabd2f; /* yellow         */
+  --hl-decl:    #fe8019; /* orange         */
+  --hl-class:   #8ec07c; /* aqua           */
+  --hl-symbol:  #83a598; /* blue           */
+}
+/* Light: gruvbox-light "faded" hues, four of them darkened to clear AA 4.5:1 on
+   the warm near-white code surface (comment/string/type/class fail otherwise). */
+html:has(#theme-toggle:checked),
+html[data-theme="light"] {
+  --hl-comment: #6f6357; /* darkened from #928374 (was 3.2:1) → 5.1:1 */
+  --hl-keyword: #9d0006;
+  --hl-string:  #6b660c; /* darkened from #79740e (was 4.2:1) → 5.2:1 */
+  --hl-number:  #8f3f71;
+  --hl-type:    #845408; /* darkened from #b57614 (was 3.3:1) → 5.6:1 */
+  --hl-decl:    #af3a03;
+  --hl-class:   #366344; /* darkened from #427b58 (was 4.4:1) → 6.1:1 */
+  --hl-symbol:  #076678;
+}
+
+/* Comments (italic, matching the site's existing faux-italic for prose emphasis). */
+.rich .highlight .c, .rich .highlight .ch, .rich .highlight .cd, .rich .highlight .cm,
+.rich .highlight .cpf, .rich .highlight .c1, .rich .highlight .cs { color: var(--hl-comment); font-style: italic; }
+/* Keywords, HTML tags, string affixes, errors. */
+.rich .highlight .k, .rich .highlight .kn, .rich .highlight .kp, .rich .highlight .kr,
+.rich .highlight .kv, .rich .highlight .nt, .rich .highlight .sa, .rich .highlight .err { color: var(--hl-keyword); }
+/* Type keywords. */
+.rich .highlight .kt { color: var(--hl-type); }
+/* Declaration keywords + string escapes. */
+.rich .highlight .kd, .rich .highlight .se { color: var(--hl-decl); }
+/* Strings + HTML/CSS attributes. */
+.rich .highlight .s, .rich .highlight .sb, .rich .highlight .sc, .rich .highlight .dl,
+.rich .highlight .sd, .rich .highlight .s2, .rich .highlight .sh, .rich .highlight .sx,
+.rich .highlight .s1, .rich .highlight .si, .rich .highlight .sr, .rich .highlight .na { color: var(--hl-string); }
+/* Numbers, constants, boolean/nil keyword-constants. */
+.rich .highlight .m, .rich .highlight .mb, .rich .highlight .mf, .rich .highlight .mh,
+.rich .highlight .mi, .rich .highlight .il, .rich .highlight .mo, .rich .highlight .mx,
+.rich .highlight .no, .rich .highlight .kc { color: var(--hl-number); }
+/* Class / namespace names, preprocessor. */
+.rich .highlight .nc, .rich .highlight .nn, .rich .highlight .cp { color: var(--hl-class); }
+/* Symbols. */
+.rich .highlight .ss { color: var(--hl-symbol); }
+/* Diff inserted / deleted lines. */
+.rich .highlight .gi { color: var(--hl-string); }
+.rich .highlight .gd { color: var(--hl-keyword); }
+
+/* ---- Progressive-enhancement chrome (added by code-enhance.html) -----------
+   The line-number gutter and copy button are injected by JS. Without JS none of
+   this exists — you get the plain highlighted block, i.e. today's experience. */
+.rich figure.highlight { position: relative; }
+
+/* Copy button: quiet chip, top-right; firms up on hover/focus. */
+.code-copy {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  font: inherit;
+  font-size: 0.72rem;
+  line-height: 1;
+  padding: 0.3rem 0.5rem;
+  color: var(--color-ink);
+  background-color: color-mix(in srgb, var(--color-code-bg) 82%, var(--color-ink) 18%);
+  border: 1px solid color-mix(in srgb, var(--color-ink) 22%, transparent);
+  border-radius: 0.4rem;
+  opacity: 0.55;
+  cursor: pointer;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+.rich figure.highlight:hover .code-copy,
+.code-copy:focus-visible { opacity: 1; }
+/* focus-visible outline is shared with the other controls in app.css */
+.code-copy.is-copied { color: var(--hl-string); }
+
+/* Line-number gutter: a sticky left column so it stays put while the code scrolls
+   horizontally. aria-hidden, non-selectable, so copy/readers get only the code. */
+/* Move the <pre>'s padding onto the gutter and the code so the gutter sits flush
+   in the box WITHOUT a negative margin — on a flex item a negative margin-left
+   shrinks the item's footprint and drags the next item over it, which collapsed
+   the divider→code gap. Both children carry --code-pad so their tops/bottoms align. */
+.rich figure.highlight.has-lines pre { display: flex; padding: 0; }
+.rich figure.highlight.has-lines pre > code { flex: 1 1 auto; padding: var(--code-pad); }
+.code-lines {
+  flex: 0 0 auto;
+  position: sticky;
+  left: 0;
+  padding: var(--code-pad) 0.85rem var(--code-pad) var(--code-pad); /* left aligns the numbers; right = numbers→divider gap */
+  background-color: var(--color-code-bg);
+  border-right: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent);
+  color: color-mix(in srgb, var(--color-ink) 45%, transparent);
+  text-align: right;
+  white-space: pre;
+  user-select: none;
+  -webkit-user-select: none;
+}
