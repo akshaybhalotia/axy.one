@@ -33,7 +33,7 @@ gem "nokogiri", "~> 1.13"
 
 # CI-only: html-proofer validates links/images/HTML over the built _site.
 group :test do
-  gem "html-proofer", "~> 5.0"
+  gem "html-proofer", "~> 5.2"
 end
 
 # Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem
