@@ -20,8 +20,8 @@ gem "jekyll", "~> 4.4"
 # gem "github-pages", group: :jekyll_plugins
 # If you have any plugins, put them here!
 group :jekyll_plugins do
-  gem "jekyll-feed", "~> 0.12"
-  gem "jekyll-seo-tag", "~> 2.8"
+  gem "jekyll-feed", "~> 0.18"
+  gem "jekyll-seo-tag", "~> 2.9"
   gem "jekyll-sitemap", "~> 1.4"
 end
 
@@ -33,7 +33,7 @@ gem "nokogiri", "~> 1.13"
 
 # CI-only: html-proofer validates links/images/HTML over the built _site.
 group :test do
-  gem "html-proofer", "~> 5.0"
+  gem "html-proofer", "~> 5.2"
 end
 
 # Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem
